@@ -1,0 +1,46 @@
+
+************************************************************************
+1/22
+更新內容:
+
+新增後台登入功能、權限功能	(BackstageController.java)
+新增商品查詢RESTful 	(ProductRESTfulController.java)
+修改ProductBean的itemStrtus --> itemStatus, 並補上缺少的get,set方法
+修改ProductTypeBean新增discount屬性, 並補上缺少的get,set方法
+
+未解問題:
+*
+商品管理撈資料的畫面還未完成 (demoMyProduct.jsp)
+新增商品畫面還未修正 (demoNewProduct.jsp)
+
+************************************************************************
+
+1/8
+更新內容:
+*
+將後台加入專案
+	-managementLogin套件
+	-product套件
+*
+WebAppComfig的addResourceHandlers下新增後台的相關路徑
+
+未解問題
+*
+後台登入取ID有問題 
+*
+記憶帳號還沒有功能
+
+************************************************************************
+1/7
+更新內容:
+*
+將model另外拉出，請大家將Bean放入此資料夾，RootAppConfig 組態檔無須再做更動
+*
+新增courseBean，請大家更新資料庫才能運作
+
+
+未解問題
+*
+進入課程搜尋後再連登入路徑會有問題
+*
+課程相關功能尚未完成

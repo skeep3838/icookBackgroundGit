@@ -1,0 +1,124 @@
+/*-------------------------------------------------*/
+ body{
+    background-color:#FFFFDD;
+}
+
+  /*-------------------------------------------------*/
+   
+   /* 切割-上方索引標籤 + 照片輪播區*/
+  .topList{
+        width: 100%; 
+        padding-top:0px; 
+        margin-top:0px;
+        /* background-color: lawngreen; */
+        height: 65px;
+        position: relative;
+        top: 0%;
+    }
+    /* 上方索引標籤設定 */
+    .navBar {
+        float: initial;
+        list-style-type: none;
+        text-align: center;
+        background-color: #F9B19F;
+        /* margin:0 auto */
+        
+    }
+   
+    .navBar li {
+        display: inline-block;
+        padding: 20px;
+    }
+    
+    .navBar li:hover {
+        background-color: #FCF0EA;
+    }
+    
+    .navBar li a {
+        color: white;
+        text-align: center;
+        text-decoration: none;
+    }
+    /*--------------------------------------------------------*/
+
+   
+    /* ------------------------------------------------------ */
+
+    .carousel-item img{
+        height: 350px;
+        object-fit: cover;
+    }
+
+    /*---------------------------------------------------------- */
+    /* 切割-搜尋區 */
+    /* 搜尋功能*/
+    .searchDB{
+        position: relative;
+        text-align:center; 
+    }
+
+    /* ----------------------------------------------------------- */
+    /* 切割-食譜及商品小卡區 */
+    #mainPart{
+        padding-top: 40px;
+        padding-bottom: 40px;
+        position: relative;
+        height: 1100px;
+        /* background-color: lightgreen; */
+    }
+
+    /* 首頁食譜區 */
+    #left{
+        position: relative;
+        float: left;
+        /* left: 2%; */
+        width: 50%;
+    }
+    /* 首頁商品區 */
+    #right{
+        position: relative;
+        float:right;
+        /* right: 2%; */
+        width: 50%;
+    }
+
+    /* 所有的table置中 */
+    /* 要設定一下表格樣式 */
+    .tableList{
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        /* height: 100px;*/
+        /* background-color: lightslategray;  */
+       
+    }
+    
+    /* 列表圖片設定 */
+    /* 圖片無法站滿框框 */
+    .conImg{
+       height:200px ;
+       size: 100%;
+
+    }
+    /* 列表文字區table設定 */
+    .iintrod{
+        /* background-color: moccasin; */
+        width: 350px;
+    }
+
+    /* 列表文字設定 */
+    /* table  */
+
+    /*----------------------------------------------------------*/
+    /* 底置區 */
+
+    #footZone{
+        width: 100%;
+        position: relative;
+        text-align:center;
+        /* height: 200px; */
+      
+        /* 用來確認這塊地位置，有點奇怪 */
+        /* background-color: khaki;  */
+        /* bottom:0px;  */
+    }

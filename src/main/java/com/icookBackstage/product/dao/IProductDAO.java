@@ -12,7 +12,8 @@ import com.icookBackstage.model.ProductBean;
  *	2.讀取全部商品 
  *	3.取頁數的商品資料 (上架or下架)
  *	4.取商品總數 (上架or下架)
- *	5.刪除商品...(後作)
+ *	5.刪除商品型別
+ *	6.更新商品(測試中)
  */
 public interface IProductDAO {
 
@@ -30,6 +31,8 @@ public interface IProductDAO {
 	ProductBean queryProduct();
 	//test2
 	ProductBean getProduct(int BeanPk);
+	//5.刪除商品型別
+	void deleteProductType(Integer productId);
 	//6.更新商品(測試中)
 	Boolean updateProduct(ProductBean prodocut);
 

@@ -17,7 +17,7 @@ import com.icookBackstage.product.dao.IProductDAO;
  *	2.讀取全部商品 
  *	3.取頁數的商品資料 (上架or下架)
  *	4.取商品總數 (上架or下架)
- *	5.刪除商品...(後作)
+ *	5.刪除商品型別
  *	6.更新商品(測試中)
  */
 @Repository
@@ -119,6 +119,16 @@ public class ProductDAOImpl implements IProductDAO {
 		System.out.println("=====done getProduct=====");
 		return bean;
 	}
+	
+	//5.刪除商品型別
+	@Override
+	public void deleteProductType(Integer productId) {
+		Session session = factory.getCurrentSession();
+		String hqlStr = "DELETE FROM ProductTypeBean WHERE productID = :productId";
+		int result = session.createQuery(hqlStr).setParameter("productId", productId).executeUpdate();
+		
+	}
+	
 	
 	//6.更新商品(測試中)
 	@Override

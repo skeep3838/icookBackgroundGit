@@ -86,12 +86,20 @@ public class ProductServiceImpl implements IProductService {
 		return dao.getAllProductNumber(status);
 	}
 	
+	//5.刪除商品型別
+	@Override
+	@Transactional
+	public void deleteProductType(Integer productId) {
+		dao.deleteProductType(productId);
+	}
+	
+	//6.更新商品(測試中)
 	@Override
 	@Transactional
 	public Boolean updateProduct(ProductBean prodocut) {
-		
 		return dao.updateProduct(prodocut);
-		
 	}
+	
+	
 }
 

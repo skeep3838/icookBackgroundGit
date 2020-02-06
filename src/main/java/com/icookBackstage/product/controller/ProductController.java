@@ -63,7 +63,8 @@ public class ProductController {
 		OutputStream outStream;
 		String fileName = "";
 		String allImg = "";
-		String imgAddress = "C:/_JSP/eclipse-workspace/iCookTest/src/main/webapp/ImgTest/";
+//		String imgAddress = "C:/_JSP/eclipse-workspace/iCookTest/src/main/webapp/ImgTest/";
+		String imgAddress = "E:/GitWorkspace/icookBackgroundGit/src/main/webapp/WEB-INF/views/images/";
 		File imgAddressMacker = new File(imgAddress);
 		byte[] buf = new byte[1024];
 		int data;
@@ -87,9 +88,9 @@ public class ProductController {
 					inStream.close();
 					outStream.close();
 					if (count == 1) {
-						allImg += imgAddress + fileName;
+						allImg += "images/" + fileName;
 					} else {
-						allImg += "," + imgAddress + fileName;
+						allImg += "," + "images/" + fileName;
 					}
 
 				}

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -112,11 +111,11 @@ public class ProductRESTfulController {
 	@PostMapping(value = "/updateProduct/{id}", produces = "application/json")
 	public Map<String, Object> updateOneProduct(@PathVariable Integer id,
 			@RequestParam("image1") MultipartFile[] image1, 
-			@RequestParam("imageStatrs") Integer[] imageStatrs, 
+//			@RequestParam("imageStatrs") Integer[] imageStatrs, 
 			Model model, HttpServletRequest req) {
 		System.out.println("===== Start updateProduct/{id} =====");
 
-		System.out.println("====== imageStatrs= " + imageStatrs + " ======");
+//		System.out.println("====== imageStatrs= " + imageStatrs + " ======");
 		// 回復OK訊息
 		Map<String, Object> json = new HashMap<>();
 		json.put("statuse", "OK");
@@ -126,6 +125,8 @@ public class ProductRESTfulController {
 		String[] typeTitles = req.getParameterValues("typeTitle");
 		String[] typeUnitprices = req.getParameterValues("unitPrice");
 		String[] typeUnitStocks = req.getParameterValues("unitStock");
+		String[] typeDiscount = req.getParameterValues("discount");
+		String[] typeUnitOrder = req.getParameterValues("unitOrder");
 		Set<ProductTypeBean> typesLink = new LinkedHashSet<>();
 		ProductTypeBean tempPTB;
 
@@ -135,17 +136,52 @@ public class ProductRESTfulController {
 		OutputStream outStream;
 		String fileName = "";
 		String allImg = "";
-		String imgAddress = "C:/_JSP/eclipse-workspace/iCookTest/src/main/webapp/ImgTest/";
+		//路徑暫時無法用技術克服, 要自行更改
+		String imgAddress = "E:/GitWorkspace/icookBackgroundGit/src/main/webapp/WEB-INF/views/images/";
 		File imgAddressMacker = new File(imgAddress);
 		byte[] buf = new byte[1024];
 		int data;
-//
+		
+		//取出舊的image1
+		ProductBean oldProduct = service.getProduct(id);
+		String[] oldProductImage1 = oldProduct.getImage1().split(",");
+		
 //		// 將圖片寫入雲端(本機)
-//		if (imgAddressMacker.exists() == false) {
-//			imgAddressMacker.mkdirs();
-//		}
-//		if (image1 != null) {
-//			try {
+		if (imgAddressMacker.exists() == false) {
+			imgAddressMacker.mkdirs();
+		}
+		
+		System.out.println("image1= " +image1);
+		if (image1 != null) {
+			try {
+				//固定更新三張圖片
+				for(int i = 0 ; i<=2 ; ++i) {
+					//判斷該張圖片是否有更新
+					if(image1[i].isEmpty() == false) {
+						inStream = image1[i].getInputStream();
+						System.out.println("==== inStream["+i+"]" + inStream + " ====");
+						fileName = productName + (i+1) + ".jpg";
+						outStream = new FileOutputStream(imgAddress + fileName);
+						while ((data = inStream.read(buf)) != -1) {
+							outStream.write(buf, 0, data);
+						}
+						inStream.close();
+						outStream.close();
+						if (i == 0) {
+							allImg += "images/" + fileName;
+						} else {
+							allImg += "," + "images/" + fileName;
+						}
+					}else {
+						if (i == 0) {
+							allImg += oldProductImage1[i];
+						} else {
+							allImg += "," + oldProductImage1[i];
+						}
+						
+					}
+				}
+				
 //				for (MultipartFile image : image1) {
 //					System.out.println("Part name=" + image.getName());
 //					++count;
@@ -163,12 +199,12 @@ public class ProductRESTfulController {
 //					} else {
 //						allImg += "," + imgAddress + fileName;
 //					}
-//
+
 //				}
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		// ProductBean填入設定值
 		ProductBean prodBean = new ProductBean(id, productName, true, req.getParameter("category"),
@@ -178,20 +214,26 @@ public class ProductRESTfulController {
 		int typeNum = typeTitles.length;
 		for (int i = 0; i < typeNum; ++i) {
 			tempPTB = new ProductTypeBean(null, (i + 1), typeTitles[i], Integer.parseInt(typeUnitprices[i]),
-					Integer.parseInt(typeUnitStocks[i]), 0, 1.0f);
+					Integer.parseInt(typeUnitStocks[i]), Integer.parseInt(typeUnitOrder[i]),
+					Float.parseFloat(typeDiscount[i]));
 			tempPTB.setProducts(prodBean);
 			typesLink.add(tempPTB);
 		}
 		
 		System.out.println(prodBean);
-		// 呼叫DAO方法更新DB的資料
+		
+		//呼叫DAO 刪除產品型別
+		System.out.println("--------Delete Start--------");
+		service.deleteProductType(id);
+		System.out.println("--------Delete End--------");		
+		
+		//呼叫DAO更新DB的資料
 		System.out.println("--------InsertStart--------");
-//		service.updateProduct(prodBean);
+		service.updateProduct(prodBean);
 		System.out.println("--------InsertEnd--------");
 
 		ProductBean productAfter = service.getProduct(id);
 		System.out.println("productAfter(id=" + id + ")= " + productAfter);
-		
 		
 		System.out.println("===== End updateProduct/{id} =====");
 

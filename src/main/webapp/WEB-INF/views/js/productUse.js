@@ -19,9 +19,12 @@ let maxPage = 1;
 let firstDataNumber = 1;
 let detailContant = "";
 let detailId = 1;
-let splitPictureStr = "";
+let splitPictureStr = null;
 let pathName = "";
 let projectName = "";
+let strTest = "";
+let index="";
+let viewImg="";
 
 
 //載入完成先觸發一次"上架商品"頁籤
@@ -128,25 +131,52 @@ function splitPicture(number){
 	//檢查有沒有圖檔
 	if(productPageJson[number].image1 !== ""){
 		splitPictureStr = productPageJson[number].image1.split(",");
-		console.log("splitPictureStr= " + splitPictureStr);
+		console.log(splitPictureStr);
 		getRootPath();
 		
 		//將圖檔加入路徑
 		for(let i = 0 ; i < splitPictureStr.length ; ++i){
-			splitPictureStr[i] += projectName + "/" + splitPictureStr[i];
+			splitPictureStr[i] = projectName + "/" + splitPictureStr[i];
+			console.log(i);
+			console.log(splitPictureStr);
 		}
-		
 	}else{
 		splitPictureStr = "";
 	}
 	
 }
 
+//預覽圖片功能
+function readURL(input) {
+	index = $(input).attr("index");
+	viewImg = "#viewImg" + index;
+	
+	console.log(viewImg);
+	
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			$(viewImg).attr('src', e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+//$(".imgs").change(function() {
+//	console.log("change done")
+//	readURL(this);
+//});
+$("body").on("change",".images",function(){
+	console.log("change done")
+	readURL(this);
+});
+
 function getRootPath(){
 	//獲取當前網址，如：/icookBackstage02035/demoMyProduct.page
 	pathName = window.document.location.pathname;
 	//取得專案名稱, 如: /icookBackstage0203
-	projectName = pathName.substring(0, pathName.substr(1).indexOf('/'))
+	projectName = pathName.substring(0, (pathName.substr(1).indexOf('/') + 1))
 	}
 
 
@@ -259,16 +289,15 @@ function detailUpdate(number){
 					+	"<tr><td>產品資訊:<td><textarea style='width: 500px; height: 180px;' id='productInfo'" 
 						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea></tr></table>"
 					+	"<table id='datailTable2'><tr><td colspan='3'>更新圖片" 
-					+	"<tr><td><input type='file' name='image1' index='1' id='img1'><td><input type='file' name='image1' index='1' id='img2'>" 
-					+	"<td><input type='file' name='image1' index='1' id='img3'><tr>";
+					+	"<tr><td><input type='file' name='image1' index='1' id='img1' class='images'> <td><input type='file' name='image1' index='2' id='img2' class='images'>" 
+					+	"<td><input type='file' name='image1' index='3' id='img3' class='images'><tr>";
 					
 	//產生預覽圖片
 	for(let i = 1 ; i <= 3 ; ++i){
-		detailContant 	+= 	"<td><img id='img" + i + "' src='" 
-						+ 	((splitPictureStr.length<=i)? splitPictureStr[i-1] : "#") + "'>"
+		detailContant 	+= 	"<td><img id='viewImg" + i + "' src='" 
+						+ 	((splitPictureStr.length>=i)? splitPictureStr[i-1] : "#") + "'>"
 	}
 	
-//	detailContant 	+=	"<tr><td><img id='img1' src=''><td><img id='img2' src=''><td><img id='img3' src=''>"
 	detailContant 	+=	"<tr><td>&nbsp</tr></table>"
 					+	"<table id='detailTable3'>";
 	//建立類型迴圈
@@ -293,7 +322,6 @@ function detailUpdate(number){
 	}
 	
 	detailContant		+=	"</table></form>" 
-//						+	"<button onclick='updateDetailData()' >update</button>";
 						+	"<input type='button' onclick='updateDetailData()' value='test'>"
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog

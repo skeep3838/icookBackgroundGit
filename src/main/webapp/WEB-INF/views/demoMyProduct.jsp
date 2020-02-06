@@ -5,7 +5,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" >
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -114,9 +114,8 @@ div.dataTables_paginate {
 
 <body id="page-top">
 
-<!-- test area -->
-<!-- <div id="dialog_div" title="視窗的標題">內容，亦可為form</div> -->
-<!-- <button id='opener'>open</button> -->
+<!-- <!-- test area --> 
+<!-- <img src='/icookBackstage02035/images/雞肉1.jpg'> -->
 
 <!-- dialog area -->
 <div id="dialog_div" title="ProductDetail">

@@ -27,12 +27,43 @@
 <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css"
 	rel="stylesheet" type="text/css">
 
+
+<script>
+
+function test2222(){
+	console.log("==== ajax doing ====")
+	$.ajax({
+		type:"gat",
+		url:"updateProductTest",
+		success:function(data){
+			console.log("success!!")
+		}
+	});
+}
+
+function test3333(){
+	console.log("==== ajax doing ====")
+	$.ajax({
+		type:"gat",
+		url:"updateProductTest2",
+		success:function(data){
+			console.log("success!!")
+		}
+	});
+}
+
+
+</script>
+
+
 </head>
 
 
 <body id="page-top">
 <!-- Test area -->
-
+<input id='test123' type='button' onclick='test2222()' value='updateProductTest'>
+<input id='test123' type='button' onclick='test3333()' value='updateProductTest2'>
+<%-- <img id='img1' src='<c:url value="/images/download.jpg"/>'> --%>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 		<!-- Sidebar -->
@@ -134,6 +165,8 @@
 						src="${pageContext.request.contextPath}/js/demo/chart-area-demo.js"></script>
 					<script type="text/javascript"
 						src="${pageContext.request.contextPath}/js/demo/chart-pie-demo.js"></script>
+
+
 </body>
 
 </html>

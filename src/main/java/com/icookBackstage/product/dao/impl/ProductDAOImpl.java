@@ -18,6 +18,7 @@ import com.icookBackstage.product.dao.IProductDAO;
  *	3.取頁數的商品資料 (上架or下架)
  *	4.取商品總數 (上架or下架)
  *	5.刪除商品...(後作)
+ *	6.更新商品(測試中)
  */
 @Repository
 public class ProductDAOImpl implements IProductDAO {
@@ -117,6 +118,18 @@ public class ProductDAOImpl implements IProductDAO {
 		ProductBean bean = session.get(ProductBean.class,BeanPk);
 		System.out.println("=====done getProduct=====");
 		return bean;
+	}
+	
+	//6.更新商品(測試中)
+	@Override
+	public Boolean updateProduct(ProductBean prodocut) {
+		Session session = factory.getCurrentSession();
+		System.out.println("=====do updateProduct=====");
+		session.update(prodocut);
+		System.out.println("=====done updateProduct=====");
+		
+		return null;
+		
 	}
 
 }

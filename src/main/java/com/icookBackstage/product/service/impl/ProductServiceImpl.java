@@ -85,5 +85,13 @@ public class ProductServiceImpl implements IProductService {
 	public Integer getAllProductNumber(Boolean status) {
 		return dao.getAllProductNumber(status);
 	}
+	
+	@Override
+	@Transactional
+	public Boolean updateProduct(ProductBean prodocut) {
+		
+		return dao.updateProduct(prodocut);
+		
+	}
 }
 

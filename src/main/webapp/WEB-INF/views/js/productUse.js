@@ -19,6 +19,10 @@ let maxPage = 1;
 let firstDataNumber = 1;
 let detailContant = "";
 let detailId = 1;
+let splitPictureStr = "";
+let pathName = "";
+let projectName = "";
+
 
 //載入完成先觸發一次"上架商品"頁籤
 $(document).ready(function(){
@@ -119,6 +123,33 @@ $("body").on("keyup",".unitPrice,.discount",function(){
 	$(calculatorId).text(price);
 });
 
+//切割圖片並加入路徑
+function splitPicture(number){
+	//檢查有沒有圖檔
+	if(productPageJson[number].image1 !== ""){
+		splitPictureStr = productPageJson[number].image1.split(",");
+		console.log("splitPictureStr= " + splitPictureStr);
+		getRootPath();
+		
+		//將圖檔加入路徑
+		for(let i = 0 ; i < splitPictureStr.length ; ++i){
+			splitPictureStr[i] += projectName + "/" + splitPictureStr[i];
+		}
+		
+	}else{
+		splitPictureStr = "";
+	}
+	
+}
+
+function getRootPath(){
+	//獲取當前網址，如：/icookBackstage02035/demoMyProduct.page
+	pathName = window.document.location.pathname;
+	//取得專案名稱, 如: /icookBackstage0203
+	projectName = pathName.substring(0, pathName.substr(1).indexOf('/'))
+	}
+
+
 //換頁數並刷新畫面
 $("#tabs").on("click",".paginate_button",function(){
 	//建立必要參數
@@ -212,20 +243,34 @@ function buildTable(){
 function detailUpdate(number){
 	//紀錄detailId
 	detailId = productPageJson[number].productID;
+
+	//切割圖片
+	
+	splitPicture(number);
 	
 	//Detail資訊內容建立
 	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
-					+	"<table id='detailTable'>"
+					+	"<table id='detailTable1'>"
 					+	"<tr><td>產品ID:<td>" + detailId
 					+	"<tr><td>產品名稱:<td><input type='text' id='productName' name='productName' value='" 
 						+ productPageJson[number].productName + "'></input>"
 					+	"<tr><td>產品種類:<td><input type='text' id='category' name='category' value='"
 						+ productPageJson[number].category + "'></input>"
 					+	"<tr><td>產品資訊:<td><textarea style='width: 500px; height: 180px;' id='productInfo'" 
-						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea>"
-					+	"<tr><td>更新圖片<td><input type='file' id=''>"
-					+	"<tr><td>圖片<td>預覽"
-					+	"<tr><td>&nbsp</tr>";
+						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea></tr></table>"
+					+	"<table id='datailTable2'><tr><td colspan='3'>更新圖片" 
+					+	"<tr><td><input type='file' name='image1' index='1' id='img1'><td><input type='file' name='image1' index='1' id='img2'>" 
+					+	"<td><input type='file' name='image1' index='1' id='img3'><tr>";
+					
+	//產生預覽圖片
+	for(let i = 1 ; i <= 3 ; ++i){
+		detailContant 	+= 	"<td><img id='img" + i + "' src='" 
+						+ 	((splitPictureStr.length<=i)? splitPictureStr[i-1] : "#") + "'>"
+	}
+	
+//	detailContant 	+=	"<tr><td><img id='img1' src=''><td><img id='img2' src=''><td><img id='img3' src=''>"
+	detailContant 	+=	"<tr><td>&nbsp</tr></table>"
+					+	"<table id='detailTable3'>";
 	//建立類型迴圈
 	let type = productPageJson[number].type;
 	for(let i=0 ; i < type.length ; ++i ){
@@ -258,11 +303,21 @@ function detailUpdate(number){
 
 //update Detail資訊
 function updateDetailData(){
+	//打包form(id="detailForm")的資料
 	let detailForm = new FormData($("#detailForm")[0]);
 	$.ajax({ 
 		type:"POST",
+		cache:true,
+		
+		//header不傳contexntType
+		contentType:false,
 		url:("updateProduct/"+ detailId),
+
+		
+		//ajax會自動將data改成字串型態, 這裡使用processData:false來阻止資料被轉成字串, 不然multipart資料接收會錯誤
 		data:detailForm,
+		processData:false,
+		
 		success:function(data){
 			console.log(data);
 		}

@@ -100,13 +100,13 @@ public class ProductController {
 
 		// ProductBean填入設定值
 		ProductBean prodBean = new ProductBean(null, productName, true, req.getParameter("category"),
-				req.getParameter("decument"), allImg, (new Date()), typesLink);
+				req.getParameter("productInfo"), allImg, (new Date()), typesLink);
 
 		// ProductTypeBean填入設定值
 		int typeNum = typeTitles.length;
 		for (int i = 0; i < typeNum; ++i) {
 			tempPTB = new ProductTypeBean(null, (i + 1), typeTitles[i], Integer.parseInt(typeUnitprices[i]),
-					Integer.parseInt(typeUnitStocks[i]), 0);
+					Integer.parseInt(typeUnitStocks[i]), 0, 1.0f);
 			tempPTB.setProducts(prodBean);
 			typesLink.add(tempPTB);
 		}
@@ -127,5 +127,61 @@ public class ProductController {
 		System.out.println(pbn);
 		return "getProductPage";
 	}
+	
+	//測試用: 更新多對一資料
+	@RequestMapping("updateProductTest")
+	public void updateProductTest(Model model) {
+		System.out.println("===== Start updateProductTest =====");
+		
+		//取出ProductId=10的資料(測試3)
+		ProductBean product = service.getProduct(10);
+		System.out.println("product(id=10)= " + product);
+		
+		ProductTypeBean addOne = new ProductTypeBean(null, 2, "測試123", 999, 999, 999, 1.0f);
+		//加入ProductBean
+		addOne.setProducts(product);
+		
+		Set<ProductTypeBean> temp = product.getType();
+		temp.add(addOne);
+		System.out.println("temp = " + temp);
+		product.setType(temp);
+		System.out.println("after: product(id=10)= " + product);
+		service.updateProduct(product);
+		
+		ProductBean productAfter = service.getProduct(10);
+		System.out.println("productAfter(id=10)= " + productAfter);
+		
+		System.out.println("===== End updateProductTest =====");
+		
+	}
+	
+	//測試用: 更新多對一資料
+		@RequestMapping("updateProductTest2")
+		public void updateProductTest2(Model model) {
+			System.out.println("===== Start updateProductTest2 =====");
+			
+			//取出ProductId=10的資料(測試3)
+			ProductBean product = service.getProduct(10);
+			System.out.println("product(id=10)= " + product);
+			
+			ProductTypeBean newProductType = new ProductTypeBean(null, 22, "新的資料", 222, 222, 222, 2.0f);
+			
+			//指向主Bean:ProductBean
+			newProductType.setProducts(product);
+			
+			
+			Set<ProductTypeBean> temp = new LinkedHashSet();
+			temp.add(newProductType);
+			System.out.println("temp = " + temp);
+			product.setType(temp);
+			System.out.println("after: product(id=10)= " + product);
+			service.updateProduct(product);
+			
+			ProductBean productAfter = service.getProduct(10);
+			System.out.println("productAfter(id=10)= " + productAfter);
+			
+			System.out.println("===== End updateProductTest =====");
+			
+		}
 
 }

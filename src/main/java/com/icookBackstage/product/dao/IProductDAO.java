@@ -28,8 +28,9 @@ public interface IProductDAO {
 	Integer getAllProductNumber(Boolean status);
 	//test
 	ProductBean queryProduct();
-	
 	//test2
 	ProductBean getProduct(int BeanPk);
+	//6.更新商品(測試中)
+	Boolean updateProduct(ProductBean prodocut);
 
 }

@@ -25,5 +25,7 @@ public interface IProductService {
 	List<ProductBean> getProductOfPage(Integer page, Boolean status);
 	//4.取商品總數 (上架or下架)
 	Integer getAllProductNumber(Boolean status);
+	
+	Boolean updateProduct(ProductBean prodocut);
 
 }

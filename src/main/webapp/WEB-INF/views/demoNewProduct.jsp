@@ -97,9 +97,8 @@ textarea {
 
 							<tr>
 								<td colspan="2">商品規格
-								<td colspan="2">
-									<input type="text" name="typeTitle">
-									<input type="button" value="新增">
+								<td colspan="2"><input type="text" name="typeTitle"><input
+									type="button" value="新增">
 								<td>售價
 								<td><input type="text" size="4" name="unitPrice">
 								<td>庫存
@@ -126,7 +125,7 @@ textarea {
 
 							<tr>
 								<td colspan="2">商品描述
-								<td colspan="6"><textarea name="decument"
+								<td colspan="6"><textarea name="productInfo"
 										style="width: 500px; height: 180px;"></textarea>
 							</tr>
 

@@ -30,7 +30,7 @@ public class ProductBean {
 	private String image1;
 	@Column(columnDefinition="smalldatetime")
 	private Date updateTime;
-	@OneToMany(mappedBy="products", cascade= {CascadeType.PERSIST}, orphanRemoval = false, fetch =FetchType.EAGER)
+	@OneToMany(mappedBy="products", cascade= {CascadeType.ALL}, orphanRemoval = false, fetch =FetchType.EAGER)
 	//將資料以typeID欄位 ASC方式排列後再寫進Set內
 	@OrderBy("typeID")
 	private Set<ProductTypeBean> type;

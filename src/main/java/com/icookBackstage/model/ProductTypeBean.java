@@ -56,6 +56,18 @@ public class ProductTypeBean {
 		this.products = products;
 	}
 
+	public ProductTypeBean(Integer id, Integer typeID, String typeTitle, Integer unitPrice,
+			Integer unitStock, Integer unitOrder, Float discount) {
+		super();
+		this.id = id;
+		this.typeID = typeID;
+		this.typeTitle = typeTitle;
+		this.unitPrice = unitPrice;
+		this.unitStock = unitStock;
+		this.unitOrder = unitOrder;
+		this.discount = discount;
+	}
+
 	public ProductBean getProducts() {
 		return products;
 	}

@@ -17,7 +17,7 @@ import com.icookBackstage.course.service.CourseService;
 import com.icookBackstage.model.ClassRoomBean;
 import com.icookBackstage.model.CourseBean;
 
-
+@Transactional
 @Service
 public class CourseServiceImpl implements CourseService{
 
@@ -120,6 +120,14 @@ public class CourseServiceImpl implements CourseService{
 		
 		return mapRoom;
 	}
+
+	@Transactional
+	@Override
+	public void deleteCourse(CourseBean bean) {
+		dao.deleteCourse(bean);
+	}
+	
+	
 
 //	@Transactional
 //	@Override

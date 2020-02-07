@@ -82,6 +82,13 @@ public class CourseController {
 		model.addAttribute("courseBean", courseBean);
 		return "course/courseUpdate";
 	}
+	
+	@GetMapping("/course/courseDelete")
+	public String deleteCourse(Model model,@RequestParam("id")Integer id) {
+		CourseBean courseBean = service.getCourseById(id);
+		service.deleteCourse(courseBean);
+		return "redirect:/course/courseList";
+	}
 
 //	新增課程確認日期
 //	提供已預約教室資訊

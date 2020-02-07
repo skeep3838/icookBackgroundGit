@@ -147,11 +147,16 @@
 								<td colspan="2">上課教室
 								<td colspan="2"><input type="text" name="roomNo">
 							</tr> --%>
-								
+							
+							<input type="hidden" name="courseName" id="courseName" value='${courseName}'>
+							<input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
+							<input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
+							<input type="hidden" name="courseEndDate" id="courseEndDate" value='${courseEndDate}'>	
 							<tr>
 								<td colspan="2"><input type="submit" value="送出">
 								<td colspan="6"><input type="reset" value="重置">
 							</tr>
+							
 
 						</table>
 					</form>

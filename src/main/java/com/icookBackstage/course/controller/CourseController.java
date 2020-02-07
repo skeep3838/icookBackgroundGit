@@ -70,6 +70,13 @@ public class CourseController {
 	}
 	
 	@GetMapping("/course/courseUpdate")
+	public String updateCourseForm(Model model,@RequestParam("id")Integer id) {
+		CourseBean courseBean = service.getCourseById(id);
+		model.addAttribute("courseBean", courseBean);
+		return "course/courseUpdate";
+	}
+	
+	@PostMapping("/course/courseUpdate")
 	public String updateCourse(Model model,@RequestParam("id")Integer id) {
 		CourseBean courseBean = service.getCourseById(id);
 		model.addAttribute("courseBean", courseBean);
@@ -95,24 +102,32 @@ public class CourseController {
 		return roomMap;
 	}
 
-	@GetMapping("/course/courseAdd")
+	@PostMapping("/course/courseAdd1")
 	public String addNewCourseForm(Model model,
-			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan) {
+			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan,
+			@RequestParam("courseName")String courseName,
+			@RequestParam("roomNo")String roomNo,
+			@RequestParam("courseStartDate")String courseStartDate,
+			@RequestParam("courseEndDate")String courseEndDate) {
 		// 如果session含有登入者資訊 就直接以該使用者登入
 		if (currentSesMan == null) {
 			return "managementLogin";
 		}
+		model.addAttribute("courseName",courseName);
+		model.addAttribute("roomNo", roomNo);
+		model.addAttribute("courseStartDate", courseStartDate);
+		model.addAttribute("courseEndDate", courseEndDate);
 		model.addAttribute("hostId",currentSesMan.getAccrount());
 		return "course/courseAdd";
 	}
 
-	@PostMapping("/course/courseAdd")
+	@PostMapping("/course/courseAdd2")
 	public String addNewCourse(Model model, HttpServletRequest req,
 			@RequestParam("courseImage") MultipartFile courseImage,
 			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan) {
 
 //		設定新增資料
-		Integer hostId = currentSesMan.getMaId();
+//		Integer hostId = currentSesMan.getMaId();
 		String courseName = req.getParameter("courseName");
 		String courseCategory = req.getParameter("courseCategory");
 		String hostName = req.getParameter("hostName");
@@ -128,7 +143,7 @@ public class CourseController {
 		String courseDiscount = req.getParameter("courseDiscount");
 
 		// 設定寫入圖片參數
-		int count = 0;
+//		int count = 0;
 		InputStream inStream;
 		OutputStream outStream;
 		String fileName = "";
@@ -164,7 +179,7 @@ public class CourseController {
 			}
 		}
 
-		CourseBean courseBean = new CourseBean(null, hostId, courseName, courseCategory, allImg, hostName,
+		CourseBean courseBean = new CourseBean(null, null, courseName, courseCategory, allImg, hostName,
 				courseStartDate, courseEndDate, roomNo, courseIntrod, coursePrice, saleStartDate, saleEndDate,
 				coursePhone, courseMail, courseDiscount);
 		

@@ -95,28 +95,35 @@
 								</li>
 							</ul>
 						</div>
-					</div>		
-					<select class="custom-select" style="height: 35px; width: 400px;" 
-							name="roomNo" id="roomNo" onchange="roomInfo()">
-						<option value="" disabled selected hidden>上課教室</option>
-						<c:forEach var='bean' items='${roomBean}'>
-							<option value='${bean.roomNo}'> ${bean.roomNo}   容納人數:  ${bean.roomCapacity}</option>
-						</c:forEach>
-					</select>
-					
-					<div id="courseInfo">
+					</div>
+					<div class='container'><form method="post" action="${pageContext.request.contextPath}/course/courseAdd1" enctype="multipart/form-data">
+	<!-- 					輸入課程名稱 -->
+						<input type='text' name='courseName' id='courseName' placeholder="請輸入課程名稱"
+								required="required" style="height: 35px; width: 400px;">
+						<br>
+						<select class="custom-select" style="height: 35px; width: 400px;" 
+								name="roomNo" id="roomNo" onchange="roomInfo()" required="required">
+							<option value="" disabled selected hidden>上課教室</option>
+							<c:forEach var='bean' items='${roomBean}'>
+								<option value='${bean.roomNo}'> ${bean.roomNo}   容納人數:  ${bean.roomCapacity}</option>
+							</c:forEach>
+						</select>
+	<!-- 					取得教室資訊 -->
 						<input type="hidden" id=courJson>${courseDate.get(bean.roomNo)}
-					</div>
-					<div>
-						<p id="showStartDate">開始上課日期: </p>
-						<input type="hidden" id="courseStartDate" name="courseStartDate">
-						<p id="showEndDate">課程結束日期: </p>
-						<input type="hidden" id="courseEndDate" name="courseEndDate">
-						<a href="<c:url value='/course/courseAdd' />">下一步</a>
-						<input type="button" id="clearAll" onclick="clearAll()" value="重新設定">
-					</div>
+						
+						<div>
+							<p id="showStartDate">開始上課日期: </p>
+							<input type="hidden" id="courseStartDate" name="courseStartDate">
+							<p id="showEndDate">課程結束日期: </p>
+							<input type="hidden" id="courseEndDate" name="courseEndDate">
+							<input type=submit value="下一步" onclick="checkDate(event)">
+							<input type="button" id="clearAll" onclick="clearAll()" value="重新設定">
+						</div>
+					</form></div>
+<!-- 					包到行事曆之前 -->
 					<div id="calendar" style="width:50%"></div>
 <!-- 					確認一下controller回傳的資料長怎樣 -->
+					</div>		
 					<div >
 						<c:forEach var='key' items='${courseDate.keySet()}'>
 							<h5>${key} - ${courseDate.get(key)}</h5>

@@ -106,8 +106,7 @@
 								<td colspan="2">課程優惠
 								<td colspan="2">
 								<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
-										<option value="" disabled selected hidden>${courseBean.coursePrice}</option>	
-										<option value='1'>無折扣</option>
+										<option value="1" >無折扣</option>	
 										<option value='0.95'>95折</option>
 										<option value='0.9'>9折</option>
 										<option value='0.85'>85折</option>
@@ -118,8 +117,7 @@
 
 							</tr>
 							<tr>
-								<td colspan="2">課程負責人
-								<td colspan="2"><input type="text" name="hostId" value='${courseBean.hostId}'>
+<!-- 								拿掉課程負責人 -->
 								<td colspan="2">主辦單位名稱
 								<td colspan="2"><input type="text" name="hostName" value='${courseBean.hostName}'>
 

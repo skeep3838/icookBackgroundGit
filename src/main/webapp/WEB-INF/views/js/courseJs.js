@@ -1,10 +1,14 @@
 //設定參數名稱
 let roomJsonMap={};
 var roomJson="";
-
-
-
-
+var courseEvent=
+		[{
+				id: 'a',
+				title:'麻婆豆腐',
+				start: '2020-01-15',
+				end: '2020-02-15',
+			}]
+		
 		document.addEventListener('DOMContentLoaded', function () {
 			//在HTML下要有個<div id="calendar">，calendar會塞入此div
 			var calendarEl = document.getElementById('calendar');
@@ -44,7 +48,12 @@ var roomJson="";
 				footer: {
 					right: 'DEMOButton submitButton',
 				},
-// 				events: 
+				events:courseEvent,
+					 //顏色
+//		            backgroundColor: 'white',
+//		            borderColor: 'black',
+//		            textColor: 'red',
+				
 // 					[
 // 					{
 // 						//id:可使用calendar.getElementById(id)獲取此eventObject資料
@@ -142,6 +151,8 @@ var roomJson="";
 			$("#showEndDate").html("課程結束日期: ");
 			$("#courseStartDate").val("");
 			$("#courseEndDate").val("");
+			$("#courseName").val("");
+			$("#roomNo").val("上課教室");
 		}
 		
 		function roomInfo(){
@@ -152,31 +163,41 @@ var roomJson="";
 					roomJsonMap=data;
 //					重整不可選擇今天以前的日期
 					var roomNo = document.getElementById("roomNo").value;
-					roomJson = JSON.parse(roomJsonMap[roomNo]);
+					roomJson = roomJsonMap[roomNo];
+//					roomJson = JSON.parse(roomJsonMap[roomNo]);
 					
-					alert(unclickDateFinal);
+//					alert(courseEvent);
 			 		
-			 	
 				}	
 			});
 		}
-			
+		
+		function checkDate(event){
+			var startDate=document.getElementById("courseStartDate").value;
+			var endDate=document.getElementById("courseEndDate").value;
+			console.log(startDate);
+			if(startDate==="" || endDate===""){
+				alert("填寫資料不完全，請確認是否已選課程日期!");
+				event.preventDefault();
+			}
+		}
+				
+		
 // 			$("#courseInfo").html(eventJson);
 //		}
 
- 		$('#calendar').fullCalendar('renderEvent', {
-// 			id:可使用calendar.getElementById(id)獲取此eventObject資料
-				"id": 'a',
-				//title:日曆上會出現的字
-				"title":'麻婆豆腐',
-				//在日曆上出現的開始與結束時間(ISO-8601 date)T18:00:00T21:00:00
-				"start": '2020-01-15',
-				"end": '2020-02-15',
+
+// 		id: 'a',
+//		title:'麻婆豆腐',
+//		start: '2020-01-15',
+//		end: '2020-02-15'
+
+				
 // 						editable:'false',
 				//顏色
 // 						backgroundColor: 'lightBlue',
 				// borderColor: 'black',
 // 						textColor: 'red',
- 			});
+ 			
 		
 		

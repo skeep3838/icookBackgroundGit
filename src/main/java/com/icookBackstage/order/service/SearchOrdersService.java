@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.icookBackstage.model.MemberBean;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
 import com.icookBackstage.order.dao.OrdersDao;
@@ -30,6 +31,17 @@ public class SearchOrdersService implements SearchOrdersServiceDao {
 	@Override
 	public void Delete(int orderId) {
 		dao.DeleteOrders(orderId);
+	}
+	
+	@Override
+	public MemberBean searchMember(int userId) {
+		MemberBean temp = dao.searchMem(userId);
+		return temp;
+	}
+	@Override
+	public boolean changeOrderStatus(int orderId,String status) {
+		boolean stat = dao.changeOrderStatus(orderId, status);
+		return stat;
 	}
 	
  }

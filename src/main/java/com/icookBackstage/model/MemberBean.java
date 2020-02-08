@@ -21,28 +21,34 @@ public class MemberBean implements Serializable {
 	String lastname;
 	String firstname;
 	String nickname;
-	String email;
 	String birthday;
 	String gender;
 	String phone;
 	String address;
+	String checkstatus;
 	
-	public MemberBean(Integer userId, String account, String password, String lastname, String firstname, String nickname,
-			String email, String birthday, String gender, String phone, String address) {
+	public MemberBean(Integer userId, String account, String password, String lastname, String firstname, String nickname, String birthday, String gender, String phone, String address, String checkstatus) {
 		this.userId = userId;
 		this.account = account;
 		this.password = password;
 		this.lastname = lastname;
 		this.firstname = firstname;
 		this.nickname = nickname;
-		this.email = email;
 		this.birthday = birthday;
 		this.gender = gender;
 		this.phone = phone;
 		this.address = address;
-		
+		this.checkstatus = checkstatus;
 	}
 	
+	public String getCheckstatus() {
+		return checkstatus;
+	}
+
+	public void setCheckstatus(String checkstatus) {
+		this.checkstatus = checkstatus;
+	}
+
 	public MemberBean() {
 		super();
 	}
@@ -82,12 +88,6 @@ public class MemberBean implements Serializable {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	public String getBirthday() {
 		return birthday;

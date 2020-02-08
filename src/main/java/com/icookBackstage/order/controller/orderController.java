@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.icookBackstage.model.CustomerInfo;
 import com.icookBackstage.model.MemberBean;
+import com.icookBackstage.model.ProductOrder;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
 import com.icookBackstage.order.service.SearchOrdersServiceDao;
+import com.icookBackstage.sendmail.service.mailService;
+import com.icookBackstage.sendmail.service.sendmailService;
 
 @Controller
 public class orderController {
@@ -32,6 +36,14 @@ public class orderController {
 	@Autowired
 	public void setService(SearchOrdersServiceDao service) {
 		this.service = service;
+	}
+	
+	@Autowired
+	sendmailService emailservice;
+
+	@Autowired
+	public void setService(sendmailService service) {
+		this.emailservice = service;
 	}
 	
 	//@RequestBody這個一班是在處理ajax請求中聲明contentType:"application/json; charset=utf-8"時候會用到的
@@ -107,23 +119,37 @@ public class orderController {
 		}
 	}
 	
-	@RequestMapping(value = "/MyOrders/DeleteOrders", method = RequestMethod.GET)
-	public String DeleteOrders(HttpServletRequest request
-			,HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/changeOrderStatus", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String changeOrderStatus(@RequestParam(value = "orderId") String Id,@RequestParam(value="status") String status,@RequestParam(value="userId") int userId,HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(false);
-		if(session.getAttribute("page") == null) {
-			response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
-			return "index";
+		System.out.println(userId);
+		MemberBean temp = (MemberBean)service.searchMember(userId);
+		int page = (int) session.getAttribute("page");
+		int orderId = Integer.parseInt(Id);
+		boolean result = service.changeOrderStatus(orderId, status);
+		if(result == true) {
+			System.out.println(temp.getNickname());
+			if(status.equals("出貨中")  || status.equals("已到貨")) {
+				emailservice.sendOrderConfirmation(getDummyOrder(temp,"OrderStatus",orderId,status));
+			}
+			return "true";
 		}
-		//取得當前的頁數
 		else {
-			int page = (int) session.getAttribute("page");
-			Serializable name = request.getQueryString();
-			String temp = (String)name;
-			int orderId = Integer.parseInt(temp.substring(6,temp.length()));
-			service.Delete(orderId);
-			return "redirect:/MyOrders/Orders?page=" + page;
-			//刪除後重新導向刪除資料的頁數並更新資料
+			return "false";
 		}
+	}
+	
+	public static ProductOrder getDummyOrder(MemberBean memberBean,String purpose,int Id,String status) {
+		ProductOrder order = new ProductOrder();
+		order.setOrderId(String.valueOf(Id));
+		order.setProductName(purpose);
+		order.setStatus(status);
+		CustomerInfo customerInfo = new CustomerInfo();
+		customerInfo.setName(memberBean.getNickname());
+		customerInfo.setAddress("WallStreet");
+		customerInfo.setEmail(memberBean.getAccount());
+		order.setCustomerInfo(customerInfo);
+		return order;
 	}
 }

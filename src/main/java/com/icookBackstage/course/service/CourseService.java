@@ -21,5 +21,6 @@ public interface CourseService {
 	List<ClassRoomBean> roomList();
 	public void insertProduct(CourseBean bean);
 	public Map<String, String> queryClassRoom();
+	public void deleteCourse(CourseBean bean);
 //	public String queryClassRoom();
 }

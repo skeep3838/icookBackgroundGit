@@ -125,7 +125,7 @@
 												value='修改課程資訊' />
 										<td><input style='float: right;' class='btn btn-default btn-secondary btn-sm'
 												type='button'
-												onclick="javascript:location.href='${pageContext.request.contextPath}/course/coursDrop?id=${bean.courseId}'"
+												onclick="javascript:location.href='${pageContext.request.contextPath}/course/courseDelete?id=${bean.courseId}'"
 												value='刪除課程' />
 
 											<%-- 							<input type='hidden' name='${order.orderId}' --%>

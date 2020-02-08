@@ -81,16 +81,15 @@
 					<!-- 標頭 -->
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">新增商品</h1>
+						<h1 class="h3 mb-0 text-gray-800">新增課程</h1>
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 標頭 End -->
 					<!-- 					新增課程表格 -->
-					<form method="post" action="${pageContext.request.contextPath}/course/courseAdd" enctype="multipart/form-data">
+					<form method="POST" action="${pageContext.request.contextPath}/course/courseAdd2" enctype="multipart/form-data">
 						<table>
 							<tr>
-								<td colspan="2">課程名稱
-								<td colspan="2"><input type="text" name="courseName">
+								
 								<td colspan="2">課程類別
 								<td colspan="2">
 									<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
@@ -127,18 +126,13 @@
 
 							</tr>
 							<tr>
-								<td colspan="2">課程負責人
-								<td colspan="2"><input type="text"  disabled value="${hostId}">
+<!-- 								<td colspan="2">課程負責人 -->
+<%-- 								<td colspan="2"><input type="text"  disabled value="${hostId}"> --%>
 								<td colspan="2">主辦單位名稱
 								<td colspan="2"><input type="text" name="hostName">
 
 							</tr>
 							
-							<tr>
-								<td colspan="2">上課時間
-								<td colspan="2"><input type="date" name="courseStartDate">
-								<td colspan="2"><input type="date" name="courseEndDate">
-							</tr>
 							<tr>
 								<td colspan="2">開賣時間
 								<td colspan="2"><input type="date" name="saleStartDate">
@@ -153,11 +147,16 @@
 								<td colspan="2">上課教室
 								<td colspan="2"><input type="text" name="roomNo">
 							</tr> --%>
-								
+							
+							<input type="hidden" name="courseName" id="courseName" value='${courseName}'>
+							<input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
+							<input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
+							<input type="hidden" name="courseEndDate" id="courseEndDate" value='${courseEndDate}'>	
 							<tr>
 								<td colspan="2"><input type="submit" value="送出">
 								<td colspan="6"><input type="reset" value="重置">
 							</tr>
+							
 
 						</table>
 					</form>

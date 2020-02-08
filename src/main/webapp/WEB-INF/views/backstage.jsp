@@ -42,14 +42,8 @@ function test2222(){
 }
 
 function test3333(){
-	console.log("==== ajax doing ====")
-	$.ajax({
-		type:"gat",
-		url:"updateProductTest2",
-		success:function(data){
-			console.log("success!!")
-		}
-	});
+	$("#testImg").attr('src','C:/img/測試產品21.jpg')
+	
 }
 
 
@@ -61,8 +55,9 @@ function test3333(){
 
 <body id="page-top">
 <!-- Test area -->
-<input id='test123' type='button' onclick='test2222()' value='updateProductTest'>
-<input id='test123' type='button' onclick='test3333()' value='updateProductTest2'>
+<!-- <input id='test123' type='button' onclick='test2222()' value='updateProductTest'> -->
+<!-- <input id='test123' type='button' onclick='test3333()' value='updateProductTest2'> -->
+<!-- <img id='testImg' src='#'> -->
 <%-- <img id='img1' src='<c:url value="/images/download.jpg"/>'> --%>
 	<!-- Page Wrapper -->
 	<div id="wrapper">

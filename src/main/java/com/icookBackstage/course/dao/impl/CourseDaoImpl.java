@@ -111,6 +111,13 @@ public class CourseDaoImpl implements CourseDao{
 		System.out.println("queryClassRoom: " + roomInfo);
 		return roomInfo;
 	}
+	
+	@Override
+	public void deleteCourse(CourseBean bean) {
+		Session session = factory.getCurrentSession();
+		session.delete(bean);
+		
+	}
 
 
 }

@@ -28,14 +28,26 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.icookBackstage._00_init.imgur.ImageResponse;
+import com.icookBackstage._00_init.imgur.ImgurAPI;
 import com.icookBackstage.model.ProductBean;
 import com.icookBackstage.model.ProductTypeBean;
 import com.icookBackstage.product.service.IProductService;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 //@ResponseBody跟@Controller的複合Annotation
 @RestController
 public class ProductRESTfulController {
 	IProductService service;
+
+	// retrofit建立request基底實例
+	static final ImgurAPI imgurApi = createImgurAPI();
 
 	// 注入Service
 	@Autowired
@@ -110,7 +122,7 @@ public class ProductRESTfulController {
 	// 更新單筆商品資料
 	@PostMapping(value = "/updateProduct/{id}", produces = "application/json")
 	public Map<String, Object> updateOneProduct(@PathVariable Integer id,
-			@RequestParam("image1") MultipartFile[] image1, 
+			@RequestParam("image1") MultipartFile[] image1,
 //			@RequestParam("imageStatrs") Integer[] imageStatrs, 
 			Model model, HttpServletRequest req) {
 		System.out.println("===== Start updateProduct/{id} =====");
@@ -132,75 +144,41 @@ public class ProductRESTfulController {
 
 		// 設定寫入圖片參數
 		int count = 0;
-		InputStream inStream;
-		OutputStream outStream;
-		String fileName = "";
+		String imgLink = "";
 		String allImg = "";
-		//路徑暫時無法用技術克服, 要自行更改
-		String imgAddress = "E:/GitWorkspace/icookBackgroundGit/src/main/webapp/WEB-INF/views/images/";
-		File imgAddressMacker = new File(imgAddress);
-		byte[] buf = new byte[1024];
-		int data;
-		
-		//取出舊的image1
+
+		// 取出舊的image1
 		ProductBean oldProduct = service.getProduct(id);
 		String[] oldProductImage1 = oldProduct.getImage1().split(",");
-		
-//		// 將圖片寫入雲端(本機)
-		if (imgAddressMacker.exists() == false) {
-			imgAddressMacker.mkdirs();
-		}
-		
-		System.out.println("image1= " +image1);
+
+		// 將圖片寫入雲端(本機)
+
+		// 測試存雲端
 		if (image1 != null) {
 			try {
-				//固定更新三張圖片
-				for(int i = 0 ; i<=2 ; ++i) {
-					//判斷該張圖片是否有更新
-					if(image1[i].isEmpty() == false) {
-						inStream = image1[i].getInputStream();
-						System.out.println("==== inStream["+i+"]" + inStream + " ====");
-						fileName = productName + (i+1) + ".jpg";
-						outStream = new FileOutputStream(imgAddress + fileName);
-						while ((data = inStream.read(buf)) != -1) {
-							outStream.write(buf, 0, data);
-						}
-						inStream.close();
-						outStream.close();
-						if (i == 0) {
-							allImg += "images/" + fileName;
+				for (MultipartFile image : image1) {
+					++count;
+					System.out.println("=== image.isEmpty()" + count + "= " + image.isEmpty() + " ===");
+					if (image.isEmpty() == false) {
+						RequestBody request = RequestBody.create(MediaType.parse("image/*"), image.getBytes());
+						Call<ImageResponse> call = imgurApi.postImage(request);
+						Response<ImageResponse> res = call.execute();
+
+						imgLink = res.body().data.link;
+
+						if (count == 1) {
+							allImg += imgLink;
 						} else {
-							allImg += "," + "images/" + fileName;
+							allImg += "," + imgLink;
 						}
 					}else {
-						if (i == 0) {
-							allImg += oldProductImage1[i];
+						if (count == 1) {
+							allImg += oldProductImage1[(count-1)];
 						} else {
-							allImg += "," + oldProductImage1[i];
+							allImg += "," + oldProductImage1[(count-1)];
 						}
-						
 					}
 				}
-				
-//				for (MultipartFile image : image1) {
-//					System.out.println("Part name=" + image.getName());
-//					++count;
-//					inStream = image.getInputStream();
-//					fileName = productName + count + ".jpg";
-//					outStream = new FileOutputStream(imgAddress + fileName);
-//
-//					while ((data = inStream.read(buf)) != -1) {
-//						outStream.write(buf, 0, data);
-//					}
-//					inStream.close();
-//					outStream.close();
-//					if (count == 1) {
-//						allImg += imgAddress + fileName;
-//					} else {
-//						allImg += "," + imgAddress + fileName;
-//					}
-
-//				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -219,26 +197,21 @@ public class ProductRESTfulController {
 			tempPTB.setProducts(prodBean);
 			typesLink.add(tempPTB);
 		}
-		
-		System.out.println(prodBean);
-		
-		//呼叫DAO 刪除產品型別
-		System.out.println("--------Delete Start--------");
-		service.deleteProductType(id);
-		System.out.println("--------Delete End--------");		
-		
-		//呼叫DAO更新DB的資料
-		System.out.println("--------InsertStart--------");
-		service.updateProduct(prodBean);
-		System.out.println("--------InsertEnd--------");
 
-		ProductBean productAfter = service.getProduct(id);
-		System.out.println("productAfter(id=" + id + ")= " + productAfter);
-		
-		System.out.println("===== End updateProduct/{id} =====");
+		// 呼叫DAO 刪除產品型別
+		service.deleteProductType(id);
+
+		// 呼叫DAO更新DB的資料
+		service.updateProduct(prodBean);
 
 		return json;
 	}
 
+	// 建立對ImgurAPI的request方法
+	static ImgurAPI createImgurAPI() {
+		Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+				.baseUrl(ImgurAPI.SERVER).build();
+		return retrofit.create(ImgurAPI.class);
+	}
 
 }

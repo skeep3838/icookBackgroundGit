@@ -132,14 +132,14 @@ function splitPicture(number){
 	if(productPageJson[number].image1 !== ""){
 		splitPictureStr = productPageJson[number].image1.split(",");
 		console.log(splitPictureStr);
-		getRootPath();
+//		getRootPath();
 		
 		//將圖檔加入路徑
-		for(let i = 0 ; i < splitPictureStr.length ; ++i){
-			splitPictureStr[i] = projectName + "/" + splitPictureStr[i];
-			console.log(i);
-			console.log(splitPictureStr);
-		}
+//		for(let i = 0 ; i < splitPictureStr.length ; ++i){
+//			splitPictureStr[i] = projectName + "/" + splitPictureStr[i];
+//			console.log(i);
+//			console.log(splitPictureStr);
+//		}
 	}else{
 		splitPictureStr = "";
 	}
@@ -163,10 +163,6 @@ function readURL(input) {
 	}
 }
 
-//$(".imgs").change(function() {
-//	console.log("change done")
-//	readURL(this);
-//});
 $("body").on("change",".images",function(){
 	console.log("change done")
 	readURL(this);

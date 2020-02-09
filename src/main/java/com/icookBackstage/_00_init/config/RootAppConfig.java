@@ -9,6 +9,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -34,6 +36,26 @@ public class RootAppConfig {
 		ds.setMaxPoolSize(8);
 		return ds;
 	}
+	@Bean//gmail�H�c�H�H
+	 public JavaMailSender getMailSender() {
+	  JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+	  // Using gmail
+	  mailSender.setHost("smtp.gmail.com");
+	  mailSender.setPort(587);
+	  mailSender.setUsername("u4ek7bp6d8zo@gmail.com");
+	  mailSender.setPassword("Aoqoghteeuosdbdw");
+//	  mailSender.setPassword("homeoaxejcrcrpbv");
+
+	  Properties javaMailProperties = new Properties();
+	  javaMailProperties.put("mail.smtp.ssl.trust", "*");
+	  javaMailProperties.put("mail.smtp.starttls.enable", "true");
+	  javaMailProperties.put("mail.smtp.auth", "true");
+	  javaMailProperties.put("mail.transport.protocol", "smtp");
+	  javaMailProperties.put("mail.debug", "true");// Prints out everything on screen
+
+	  mailSender.setJavaMailProperties(javaMailProperties);
+	  return mailSender;
+	 }
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean factory = new LocalSessionFactoryBean();

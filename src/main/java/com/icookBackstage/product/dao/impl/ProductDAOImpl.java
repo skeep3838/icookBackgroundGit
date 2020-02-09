@@ -69,10 +69,7 @@ public class ProductDAOImpl implements IProductDAO {
 		
 		//hql取得範圍內資料
 		productOfPage = session.createQuery(hql).setParameter("status", status).setFirstResult(first)
-											.setMaxResults(onePageNunber).getResultList();
-		//測試用
-//		productOfPage = session.createQuery(hql).setParameter("status", true).setFirstResult(first)
-//				.setMaxResults(onePageNunber).getResultList();
+												.setMaxResults(onePageNunber).getResultList();
 		return productOfPage;
 	}
 	
@@ -134,12 +131,14 @@ public class ProductDAOImpl implements IProductDAO {
 	@Override
 	public Boolean updateProduct(ProductBean prodocut) {
 		Session session = factory.getCurrentSession();
-		System.out.println("=====do updateProduct=====");
-		session.update(prodocut);
-		System.out.println("=====done updateProduct=====");
 		
-		return null;
-		
+		try {
+			session.update(prodocut);
+		}catch(Exception e) {
+			e.getStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

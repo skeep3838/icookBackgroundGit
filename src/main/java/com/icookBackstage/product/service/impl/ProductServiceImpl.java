@@ -50,7 +50,7 @@ public class ProductServiceImpl implements IProductService {
 		return dao.getAllProduct();
 	}
 	
-	//3.讀取頁面商品(上架or下架), page不對或是抓到空資料, 都已null回應
+	//3.讀取頁面商品(上架or下架), page不對或是抓到空資料, 都以null回應
 	@Override
 	@Transactional
 	public List<ProductBean> getProductOfPage(Integer page, Boolean status){

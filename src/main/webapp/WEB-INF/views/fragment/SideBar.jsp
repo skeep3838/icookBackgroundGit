@@ -45,8 +45,8 @@
 						data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<!--             <h6 class="collapse-header">Custom Components:</h6> -->
-							<a class="collapse-item" href="demoMyProduct.page">商品管理</a> 
-							<a class="collapse-item" href="demoNewProduct.page">新增商品</a>
+							<a class="collapse-item" href="<c:url value='/demoNewProduct.page' />">新增商品</a>
+							<a class="collapse-item" href="<c:url value='/demoMyProduct.page' />">商品管理</a> 
 						</div>
 					</div>
 				</c:if>	
@@ -115,8 +115,8 @@
 				<c:if test="${currentManager.accrountAuth}">
 					<div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="register.html">使用者帳戶</a> 
-							<a class="collapse-item" href="forgot-password.html">管理員帳戶</a>
+							<a class="collapse-item" href="<c:url value='/userAccountManag.page' />">使用者帳戶</a> 
+							<a class="collapse-item" href="<c:url value='/managerialManag.page' />">管理員帳戶</a>
 						</div>
 					</div>
 				</c:if>	

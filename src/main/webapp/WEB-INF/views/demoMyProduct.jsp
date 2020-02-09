@@ -5,30 +5,18 @@
 
 <head>
 
-<meta charset="utf-8" >
+<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-<meta http-equiv="pragma" content="no-cache"/>
-<meta http-equiv="cache-control" content="no-cache"/>
-<meta http-equiv="expires" content="0"/>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
 
 
 <style>
-/* ul.pagination { */
-/*     margin: 2px 0; */
-/*     white-space: nowrap; */
-/*     justify-content: flex-end; */
-/* } */
-/* .pagination { */
-/*     display: flex; */
-/*     padding-left: 0; */
-/*     list-style: none; */
-/*     border-radius: .35rem; */
-/* } */
-
 textarea {
 	width: 300px;
 	height: 100px;
@@ -39,8 +27,7 @@ textarea {
 	max-height: 150px;
 }
 
-
-@media(min-width:991px){
+@media ( min-width :991px) {
 	.div-height {
 		/* 			width:3000px;  */
 		height: 540px;
@@ -72,33 +59,33 @@ ul.pagination li a.active {
 	border: 1px solid #1e90ff;
 }
 
-ul.pagination li a:hover:not(.active) { 
- 	background-color: #ddd; 
- } 
+ul.pagination li a:hover:not (.active ) {
+	background-color: #ddd;
+}
 
 div.center {
 	text-align: center;
 }
 
 div.dataTables_paginate {
-    margin: 0;
-    white-space: nowrap;
-    text-align: right;
+	margin: 0;
+	white-space: nowrap;
+	text-align: right;
 }
 
-.images{
- 	display:none;
+.images {
+	display: none;
 }
 
-.viewImgClass{
+.viewImgClass {
 	width: 150px;
 	height: 150px;
 	object-fit: cover;
 	margin-right: 10px;
 }
 
-.viewImgTd{
-	width:33%;
+.viewImgTd {
+	width: 33%;
 }
 </style>
 
@@ -133,12 +120,11 @@ div.dataTables_paginate {
 
 <body id="page-top">
 
-<!-- <!-- test area --> 
-<!-- <img src='/icookBackstage02035/images/雞肉1.jpg'> -->
+	<!-- <!-- test area -->
+	<!-- <img src='/icookBackstage02035/images/雞肉1.jpg'> -->
 
-<!-- dialog area -->
-<div id="dialog_div" title="ProductDetail">
-</div>
+	<!-- dialog area -->
+	<div id="dialog_div" title="ProductDetail"></div>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -189,17 +175,11 @@ div.dataTables_paginate {
 							</form>
 							<!-- tabs-1資料顯示區 -->
 							<div>
-								<h4> tabs-1資料顯示區 </h4>
-<!-- 								<span id="test1"> -->
-<!-- 								</span> -->
-								<div id="test1">
-								</div>
-								<div class="row" id="pageArea1">
-								</div>
+								<div id="test1"></div>
+								<div class="row" id="pageArea1"></div>
 							</div>
-							<div>
-							</div>
-							
+							<div></div>
+
 						</div>
 						<div id="tabs-2">
 							<form style="margin-left: 500px;"
@@ -217,13 +197,8 @@ div.dataTables_paginate {
 							</form>
 							<!-- tabs-2資料顯示區 -->
 							<div>
-								<h4> tabs-2資料顯示區 </h4>
-<!-- 								<span id="test2"> -->
-<!-- 								</span> -->
-								<div id="test2">
-								</div>
-								<div class="row" id="pageArea2">
-								</div>
+								<div id="test2"></div>
+								<div class="row" id="pageArea2"></div>
 							</div>
 						</div>
 					</div>
@@ -232,31 +207,31 @@ div.dataTables_paginate {
 			<!-- /.container-fluid -->
 
 		</div>
-		</div>
-		<!-- End of Main Content -->
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	</div>
+	<!-- End of Main Content -->
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
 
-		<!-- Page level plugins -->
-<!-- 		<script src="vendor/chart.js/Chart.min.js"></script> -->
+	<!-- Page level plugins -->
+	<!-- 		<script src="vendor/chart.js/Chart.min.js"></script> -->
 
-		<!-- Page level custom scripts -->
-<!-- 		<script src="js/demo/chart-area-demo.js"></script> -->
-<!-- 		<script src="js/demo/chart-pie-demo.js"></script> -->
+	<!-- Page level custom scripts -->
+	<!-- 		<script src="js/demo/chart-area-demo.js"></script> -->
+	<!-- 		<script src="js/demo/chart-pie-demo.js"></script> -->
 
-		<!-- 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		
-		<!-- myJavaScript(products) -->
-		<script src="js/productUse.js"></script>
-		
+	<!-- 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<!-- myJavaScript(products) -->
+	<script src="js/productUse.js"></script>
+
 </body>
 
 </html>

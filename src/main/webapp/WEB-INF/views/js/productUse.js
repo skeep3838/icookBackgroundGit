@@ -231,7 +231,7 @@ function buildTable(){
 			}
 			//分頁左側內容, 顯示畫面上的資料數
 			paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
-								+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + productPageJson.length)
+								+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + productPageJson.length - 1)
 								+	" of "+ json.allProductNumber +" entries"
 								+	"</div></div>";
 			

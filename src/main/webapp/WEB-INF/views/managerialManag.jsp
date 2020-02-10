@@ -118,10 +118,10 @@ div.dataTables_paginate {
 <body id="page-top">
 
 	<!-- dialog area -->
-	<div id="dialog_div_insert" title="ProductDetail">
-	</div>
-	<div id="dialog_div_update" title="ProductDetail">
-	</div>
+	<div id="dialog_div_insert" title="Create New UserAccount"></div>
+	<div id="dialog_div_update" title="Update UserAccount"></div>
+	<div id="dialog_div_wait" title="Wait Upload"></div>
+	<div id="dialog_div_error" title="error"></div>
 	<!-- 	<input tpye='button' id='opener' value='dialog_div_insert Open'> -->
 
 
@@ -182,7 +182,7 @@ div.dataTables_paginate {
 					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 					<!-- myJavaScript(products) -->
-					<script src="js/userAccountUse.js"></script>
+					<script src="js/menagerialUse.js"></script>
 </body>
 
 </html>

@@ -12,6 +12,56 @@ let detailId= 1;
 let genderArray= ["男 ","女生","其他"];
 let checkstatusArray= ["Y","N"];
 let detailContant = "";
+let createNoError = 1;
+let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+let birthdayRule = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+//輸入判斷區
+
+//認證信箱
+$("body").on("change","#account2",function(){
+	let userMail = $(this).val();
+	//檢查格式
+	if(userMail.search(emailRule) != -1 ){
+		createNoError = 1;
+		$("#account2Meg").html("")
+		$("#account2Meg").attr("class","passMeg")
+	}else{
+		createNoError = 0;
+		$("#account2Meg").html("*信箱格式錯誤")
+		$("#account2Meg").attr("class","errorMeg")
+	}
+});
+
+//認證密碼
+$("body").on("change","#password2, #password3",function(){
+	let password2 = $("#password2").val();
+	let password3 = $("#password3").val();
+	if( password2 == password3 ){
+		createNoError = 1;
+		$("#password2Meg").html("")
+		$("#password2Meg").attr("class","passMeg")
+	}else{
+		createNoError = 0;
+		$("#password2Meg").html("*密碼不一致")
+		$("#password2Meg").attr("class","errorMeg")
+	}
+});
+
+//認證生日
+$("body").on("change","#birthday2",function(){
+	let userBirthday = $(this).val();
+	//檢查格式
+	if(userBirthday.search(birthdayRule) != -1 ){
+		createNoError = 1;
+		$("#birthday2Meg").html("")
+		$("#birthday2Meg").attr("class","passMeg")
+	}else{
+		createNoError = 0;
+		$("#birthday2Meg").html("*生日格式錯誤")
+		$("#birthday2Meg").attr("class","errorMeg")
+	}
+});
 
 //載入完成後匯入使用者帳戶資訊
 $(document).ready(function(){
@@ -92,7 +142,6 @@ function buildTable(){
 										+	i + "</a></li>";
 				}
 			}
-			
 			//補上下一頁按鈕
 			paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
 			
@@ -104,11 +153,12 @@ function buildTable(){
 	})
 }
 
-//顯示產品Detail的資訊(Dialog內)
+//使用者帳戶update的Detail資訊(Dialog內)
 function detailUpdate(number){
+	
 	//紀錄detailId
 	detailId = userAccountPageJson[number].userId;
-
+	
 	//Detail資訊內容建立
 	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
 					+	"<table id='detailTable1'>"
@@ -133,7 +183,7 @@ function detailUpdate(number){
 	detailContant 	+=	"</select>"
 					+	"<tr><td>生日:<td><input type='text' id='birthday' name='birthday' value='" 
 						+ userAccountPageJson[number].birthday 
-						+ "' placeholder='在此輸入變更的密碼'></input>"
+						+ "' placeholder='yyyy-MM-DD'></input>"
 					+	"<tr><td>電話:<td><input type='text' id='phone' name='phone' value='" 
 						+ userAccountPageJson[number].phone + "'></input>"
 					+	"<tr><td>住址:<td><input type='text' id='address' name='address' value='" 
@@ -146,8 +196,7 @@ function detailUpdate(number){
 						+	">" + checkstatusArray[i];
 	}
 	
-	detailContant 	+=	"</select></td></tr></table></from>"
-					+	"<input type='button' onclick='updateDetailData()' value='test'>";
+	detailContant 	+=	"</select></td></tr></table></from>";
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);
@@ -170,25 +219,118 @@ function updateDetailData(){
 		data:detailForm,
 		processData:false,
 		
+		//ajax傳送更新資料前 先出現upload畫面
+		beforeSend:function(){
+			$("#dialog_div_wait").html("<img src='images/ajaxload.gif'><br><span>載入中...</span>");
+	        $("#dialog_div_wait").dialog("open");
+		},
+		
+		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
-			console.log(data);
-		}
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_update").dialog("close");
+			buildTable();
+		},
+		
+		error:function(data){
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_error").html("<span class='errorFont'>更新帳戶失敗!</span>");
+			$("#dialog_div_error").dialog("open");
+		},
+		
+		
 	});
 }
 
+//使用者帳戶insert的Detail資訊(Dialog內)
+function detailInsert(){
+	
+	//Detail資訊內容建立
+	detailContant 	= 	"<form id='detailForm2' method='post' enctype='multipart/form-data'>"
+					+	"<table id='detailTable2'>"
+					+	"<tr><td>信箱:<td><input type='text' id='account2' name='account' required='required'></input>"
+						+ "<span id='account2Meg'></span>"	
+					+	"<tr><td>密碼:<td><input type='password' id='password2' name='password'" 
+						+ "placeholder='在此輸入變更的密碼' ></input> <span id='password2Meg'></span>"
+					+	"<tr><td>密碼:<td><input type='password' id='password3'" 
+						+ "placeholder='再次確認變更的密碼' ></input>"	
+					+	"<tr><td>姓氏:<td><input type='text' id='lastname2' name='lastname'></input>"
+						+ "<span id='lastname2Meg'></span>"
+					+	"<tr><td>名稱:<td><input type='text' id='firstname2' name='firstname'></input>"
+						+ "<span id='firstname2Meg'></span>"
+					+	"<tr><td>暱稱:<td><input type='text' id='nickname2' name='nickname'></input>"
+						+ "<span id='nickname2Meg'></span>"
+					+	"<tr><td>性別:<td><select id='gender2' name='gender'>";
+	//抓性別資料填預設值
+	for(let i=0 ; i < genderArray.length ; ++i){
+		detailContant 	+=	"<option value='"+ genderArray[i] +"'>" + genderArray[i];
+	}
+	detailContant 	+=	"</select>"
+					+	"<tr><td>生日:<td><input type='text' id='birthday2' name='birthday' "
+						+ "placeholder='yyyy-MM-DD'></input> <span id='birthday2Meg'></span>"
+					+	"<tr><td>電話:<td><input type='text' id='phone2' name='phone'></input>"
+						+ "<span id='phone2Meg'></span>"
+					+	"<tr><td>住址:<td><input type='text' id='address2' name='address'></input>"
+						+ "<span id='address2Meg'></span>"
+					+	"<tr><td>認證:<td><select id='checkstatus2' name='checkstatus'>";
+	//抓認證資料填預設值
+	for(let i=0 ; i < checkstatusArray.length ; ++i){
+		detailContant 	+=	"<option value='"+ checkstatusArray[i] +"'>" + checkstatusArray[i];
+	}
+	detailContant 	+=	"</select></td></tr></table></from>";
+					
+	//將Detail資訊寫到Dialog, 並顯示Dialog
+	$("#dialog_div_insert").html(detailContant);
+	$("#dialog_div_insert").dialog("open");
+}
 
+//update Detail資訊
+function insertDetailData(){
+	//打包form(id="detailForm")的資料
+	let detailForm = new FormData($("#detailForm2")[0]);
+	$.ajax({ 
+		type:"POST",
+		cache:true,
+		
+		//header不傳contexntType
+		contentType:false,
+		url:("insertUserAccount"),
 
+		//ajax會自動將data改成字串型態, 這裡使用processData:false來阻止資料被轉成字串, 不然multipart資料接收會錯誤
+		data:detailForm,
+		processData:false,
+		
+		//ajax傳送更新資料前 先出現upload畫面
+		beforeSend:function(){
+			$("#dialog_div_wait").html("<img src='images/ajaxload.gif'><br><span>載入中...</span>");
+	        $("#dialog_div_wait").dialog("open");
+		},
+		
+		//更新成功先關閉upload畫面, 再刷新當前畫面
+		success:function(data){
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_insert").dialog("close");
+			buildTable();
+		},
+		
+		error:function(data){
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_error").html("<span class='errorFont'>創立帳戶失敗!</span>");
+			$("#dialog_div_error").dialog("open");
+		},
+		
+		
+	});
+}
 
-
-
-//測試用Dialog
+//Dialog設定區
 $(function() {
     $("#dialog_div_insert").dialog({
     	//固定視窗
-    	maxHeight:	500,
-    	maxWidth:	300,
-    	minHeight:	500,
-    	minWidth:	300,
+    	maxHeight:	550,
+    	maxWidth:	450,
+    	minHeight:	550,
+    	minWidth:	450,
     	
     	//拖移設定
     	draggable: true,
@@ -198,20 +340,21 @@ $(function() {
         
         //視窗外無法操作設定
         modal : true,
-        
-        
-        closeText :"滑鼠指到X時顯示的文字訊息",
+
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
         
         buttons: {
-            "Ok": function() {
-            		
-            		$(this).dialog("close"); 
-            	  },
-            "Cancel": function() { $(this).dialog("close"); }
+            "Create": function() {
+            	insertDetailData();
+            },
+            "Cancel": function() { 
+            	$(this).dialog("close");
+            }
         }
     });
  
-    $("#insertButton").click(function(productId) {
+    $("#123").click(function(productId) {
         $("#dialog_div_insert").dialog("open");
     });
  
@@ -233,16 +376,17 @@ $(function() {
         
         //視窗外無法操作設定
         modal : true,
-        
-        
-        closeText :"滑鼠指到X時顯示的文字訊息",
+
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
         
         buttons: {
-            "Ok": function() {
-            		
-            		$(this).dialog("close"); 
-            	  },
-            "Cancel": function() { $(this).dialog("close"); }
+            "Update": function() {
+            	updateDetailData();
+            },
+            "Cancel": function() { 
+            	$(this).dialog("close");
+            }
         }
     });
  
@@ -250,4 +394,67 @@ $(function() {
         $("#dialog_div_update").dialog("open");
     });
  
+});
+
+
+$(function() {
+    $("#dialog_div_wait").dialog({
+    	//固定視窗
+    	maxHeight:	250,
+    	maxWidth:	250,
+    	minHeight:	250,
+    	minWidth:	250,
+    	
+    	//拖移設定
+    	draggable: false,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        //不能Esc關閉
+        closeOnEscape: true,
+        
+        //open事件發生時, 將dialog樣式右上的x隱藏
+        open:function(event,ui){$(".ui-dialog-titlebar-close").hide();}
+        
+    });
+    
+    $("#wait_butt").click(function(productId) {
+		$("#dialog_div_wait").html("<img src='images/ajaxload.gif'><br><span>載入中...</span>");
+        $("#dialog_div_wait").dialog("open");
+    });
+});
+
+$(function() {
+    $("#dialog_div_error").dialog({
+    	//固定視窗
+    	maxHeight:	250,
+    	maxWidth:	250,
+    	minHeight:	250,
+    	minWidth:	250,
+    	
+    	//拖移設定
+    	draggable: false,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        //不能Esc關閉
+        closeOnEscape: true,
+
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();}
+  
+    });
+    
+    $("#error_butt").click(function(productId) {
+		$("#dialog_div_error").html("<span class='errorFont'>更新失敗!</span>");
+        $("#dialog_div_error").dialog("open");
+    });
 });

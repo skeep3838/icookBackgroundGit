@@ -63,26 +63,44 @@ ul.pagination li a.active {
 }
 
 ul
+
+
 .pagination
+
  
+
 li
+
  
+
 a
+
+
 :hover
+
+
 :not
+
  
+
 (
 .active
+
  
+
 )
 {
 background-color
+
+
 :
+
  
+
 #ddd
+
+
 ;
-
-
 }
 div.center {
 	text-align: center;
@@ -92,6 +110,25 @@ div.dataTables_paginate {
 	margin: 0;
 	white-space: nowrap;
 	text-align: right;
+}
+
+#dialog_div_wait,#dialog_div_error {
+	text-align : center;
+}
+
+#dialog_div_wait img{
+	margin-top : 50px;
+	vertical-align : middle;
+}
+
+.errorFont{
+	line-height : 150px;
+	color : red;
+	font-weight : bold;
+}
+
+.errorMeg{
+	color : red;
 }
 </style>
 
@@ -118,10 +155,13 @@ div.dataTables_paginate {
 <body id="page-top">
 
 	<!-- dialog area -->
-	<div id="dialog_div_insert" title="Create New UserAccount">
-	</div>
-	<div id="dialog_div_update" title="Update UserAccount">
-	</div>
+	<div id="dialog_div_insert" title="Create New UserAccount"></div>
+	<div id="dialog_div_update" title="Update UserAccount"></div>
+	<div id="dialog_div_wait" title="Wait Upload"></div>
+	<div id="dialog_div_error" title="error"></div>
+<!-- 	<input type='button' id='wait_butt' value='openWait'> -->
+<!-- 	<input type='button' id='error_butt' value='openError'> -->
+<!-- 	<input id='testIn' type='text' onkeyup="value=value.replace(/[^\d]/g,'')"> -->
 	<!-- 	<input tpye='button' id='opener' value='dialog_div_insert Open'> -->
 
 
@@ -152,7 +192,7 @@ div.dataTables_paginate {
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 以下改寫 -->
-					<input type='button' id='insertButton' value='新增使用者'>
+					<input type='button' id='insertButton' value='新增使用者' onclick='detailInsert()'>
 					<div>
 						<div id="test1"></div>
 						<div class="row" id="pageArea1"></div>

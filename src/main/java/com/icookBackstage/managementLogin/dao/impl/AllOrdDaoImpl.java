@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.icookBackstage.managementLogin.dao.AllOrdDao;
+import com.icookBackstage.model.helpQuestion;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
 
@@ -40,6 +41,15 @@ public class AllOrdDaoImpl implements AllOrdDao{
 	@Override
 	public List<orderBean> Reverse(List<orderBean> list){
 		List<orderBean> list2 = new LinkedList<orderBean>();
+		for(int i=list.size()-1;i>=0;i--) {
+			list2.add(list.get(i));
+		}
+		return list2;
+	}
+	
+	@Override
+	public List<helpQuestion> Reverse2(List<helpQuestion> list){
+		List<helpQuestion> list2 = new LinkedList<helpQuestion>();
 		for(int i=list.size()-1;i>=0;i--) {
 			list2.add(list.get(i));
 		}
@@ -94,4 +104,22 @@ public class AllOrdDaoImpl implements AllOrdDao{
 		}
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<helpQuestion> getAllHelpQuestion() {
+		Session session = factory.getCurrentSession();
+		List<helpQuestion> list = null;
+		try {
+			String hql = "from helpQuestion";
+			list = session.createQuery(hql).getResultList();
+			list = Reverse2(list);
+			System.out.println("--------------CORRECT---------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("--------------ERROR---------------");
+		}
+		return list;
+	}
+
 }

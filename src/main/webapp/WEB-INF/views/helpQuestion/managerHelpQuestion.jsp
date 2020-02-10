@@ -43,7 +43,7 @@ textarea {
 @media ( min-width : 991px) {
 	.div-height {
 		/* 			width:3000px;  */
-		height: 580px;
+		height: 540px;
 	}
 }
 
@@ -73,27 +73,45 @@ ul.pagination li a.active {
 }
 
 ul
+
  
+
 .pagination
+
  
+
 li
+
  
+
 a
+
+
 :hover
+
+
 :not
+
  
+
 (
 .active
+
  
+
 )
 {
 background-color
+
+
 :
+
  
+
 #ddd
+
+
 ;
-
-
 }
 div.center {
 	text-align: center;
@@ -144,7 +162,7 @@ div.center {
 					<div class="services-breadcrumb">
 						<div class="container">
 							<ul>
-								<li>< 我的訂單> 共 ${orderSize} 筆訂單</li>
+								<li>< 客服管理 > 共 ${orderSize} 筆問題</li>
 							</ul>
 						</div>
 					</div>
@@ -152,58 +170,46 @@ div.center {
 						<table id='table1' class="table table-hover">
 							<thead>
 								<tr>
-									<th>訂單編號</th>
+									<th>問題編號</th>
 									<th>會員編號</th>
-									<th>地址</th>
-									<th>訂購日期</th>
-									<th>總金額</th>
-									<th>狀態</th>
+									<th>Email</th>
+									<th>標題</th>
+									<th>回覆狀態</th>
 									<th></th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody id='main'>
-								<c:forEach varStatus="i" var="order" items="${orderData}"
+								<c:forEach varStatus="i" var="Help" items="${HelpQuestionData}"
 									begin="${pageNo}" end="${endPage-1}">
 									<tr>
-										<td>${order.orderId}
-										<td>${order.userId}
-										<td>${order.shippingAddress}
-										<td>${fn:substring(order.orderDate,0,10)}
-										<td><fmt:formatNumber value="${order.totalAmount}"
-												pattern="#,###" />
-										<td id="tdtatus${i.index}"><c:choose>
-												<c:when test="${order.status == '已取消'}">
-													<select id="orderstatus${i.index}" class="form-control" disabled>
-															<option>${order.status}</option>
-													</select>
+										<td>${Help.helpQAId}
+										<td>${Help.userID}
+										<td style='width: 30%'>${Help.email}
+										<td>${Help.title}
+										<c:choose>
+												<c:when test="${Help.responseStatus == 'N'}">
+													<td> 未回覆
 												</c:when>
 												<c:otherwise>
-													<select id="orderstatus${i.index}"
-														class="form-control">
-															<option>${order.status}</option>
-													</select>
+													<td> 已回覆
 												</c:otherwise>
 											</c:choose>
 										<td><input style='float: right;'
 											class='btn btn-default btn-secondary btn-sm' type='button'
-											onclick="javascript:location.href='${pageContext.request.contextPath}/SearchOrderDetails?id=${order.orderId}'"
-											value='訂單明細' /> 
+											value='問題內容' /> 
 											<c:choose>
-												<c:when test="${order.status == '已取消'}">
+												<c:when test="${Help.responseStatus == 'N'}">
 													<td><input type='button'
 														class='btn btn-default btn-secondary btn-sm' disabled
-														value='儲存修改' />
+														value='回覆問題' />
 												</c:when>
 												<c:otherwise>
 													<td><input type='button'
 														class='btn btn-default btn-secondary btn-sm'
-														onclick="changeOrderStatus(${i.index},${order.orderId},${order.userId})"
-														value='儲存修改' />
+														value='回覆問題' />
 												</c:otherwise>
-											</c:choose> 
-											<input type='hidden' name='${order.orderId}'
-											value='${order.orderId}' />
+											</c:choose>
 								</c:forEach>
 
 							</tbody>
@@ -295,15 +301,13 @@ div.center {
 					var packageName = getRealPath();
 					$.ajax({
 							type: "POST",
-							url: "/" + packageName + "/managerJson?page=" + p,
+							url: "/" + packageName + "/helpQuestionJson?page=" + p,
 							dataType: "text",
 							success: function (data) {
-								console.log("you want to view no data" + data);
 								$("#main tr").remove();
 								var temp = "";
 								var lists = JSON.parse(data);
-
-
+								
 								if ((lists.length - pageNo) >= 8) {
 									EndPage = pageNo + 8;
 								} else {
@@ -311,46 +315,21 @@ div.center {
 								}
 								for (var i = pageNo; i < EndPage; i++) {
 									var orderStatus = "";
-									temp = "<tr><td>" + lists[i].orderId
-										+ "<td>" + lists[i].userId + "<td>"
-										+ lists[i].shippingAddress;
-									var orderDate = (lists[i].orderDate);
-									orderDate = orderDate.substring(0, 10);
-									temp += "<td>" + orderDate + "<td>"
-										+ parseInt(lists[i].totalAmount).toLocaleString();
-									//parseInt(字串).toLocaleString() 為字串數字加上千分位符號
-									switch (lists[i].status) {
-									case "N":
-										orderStatus += "<option>未出貨</option> <option>出貨中</option> <option>已到貨</option> <option>已取消</option>";
-										break;
-									case "S":
-										orderStatus += "<option>出貨中</option> <option>未出貨</option> <option>已到貨</option> <option>已取消</option>";
-										break;
-									case "F":
-										orderStatus += "<option>已到貨</option> <option>未出貨</option> <option>出貨中</option> <option>已取消</option>";
-										break;
-									case "C":
-										orderStatus += "<option>已取消</option> <option>未出貨</option> <option>出貨中</option> <option>已到貨</option>";
-										break;
-									}
-									if(lists[i].status == "C") {
-										temp += "<td id='tdtatus"+ i +"'><select id='orderstatus"+ i +"' class='form-control' disabled >"+ orderStatus +"</select>";
+									temp = "<tr><td>" + lists[i].helpQAId
+										+ "<td>" + lists[i].userID + "<td style='width: 30%'>"
+										+ lists[i].email + "<td>" + lists[i].title;
+									if (lists[i].responseStatus == "N") {
+										temp+= "<td> 未回覆";
 									}
 									else {
-										temp += "<td id='tdtatus"+ i +"'><select id='orderstatus"+ i +"' class='form-control'>" + orderStatus + "</select>"
+										temp+= "<td> 已回覆";
 									}
-									temp += "<td><input type='button' style='float:right;' class='btn btn-default btn-secondary btn-sm' onclick=\"javascript:location.href='/"
-										+ packageName
-										+ "/SearchOrderDetails?id="
-										+ lists[i].orderId
-										+ "'\" value='訂單明細'  />";
-									if (lists[i].status == "C") {
-										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='儲存修改'  />"
+									temp += "<td><input type='button' style='float:right;' class='btn btn-default btn-secondary btn-sm' value='問題內容'  />";
+									if (lists[i].responseStatus == "N") {
+										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='回覆問題'  />"
 									} else {
-										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' onclick=\"changeOrderStatus("+ i +","+ lists[i].orderId +","+ lists[i].userId +")\" value='儲存修改'  />";
+										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' value='回覆問題'  />";
 									}
-									temp += "<input type='hidden' name='" + lists[i].orderId + "' value='"
-										+ lists[i].orderId + "'/>";
 									$("#table1 tbody").append(temp);
 								}
 							},

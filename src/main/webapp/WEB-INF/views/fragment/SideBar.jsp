@@ -156,8 +156,7 @@
 					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="register.html">布告欄公告</a>
-							<a class="collapse-item" href="forgot-password.html">商品公告</a> 
-							<a class="collapse-item" href="forgot-password.html">活動公告</a>
+							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a>
 						</div>
 					</div>
 				</c:if>

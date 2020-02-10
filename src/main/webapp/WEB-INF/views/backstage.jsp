@@ -57,7 +57,10 @@ function test3333(){
 <!-- Test area -->
 <!-- <input id='test123' type='button' onclick='test2222()' value='updateProductTest'> -->
 <!-- <input id='test123' type='button' onclick='test3333()' value='updateProductTest2'> -->
+<<<<<<< Updated upstream
 <!-- <img id='testImg' src='#'> -->
+=======
+>>>>>>> Stashed changes
 <%-- <img id='img1' src='<c:url value="/images/download.jpg"/>'> --%>
 	<!-- Page Wrapper -->
 	<div id="wrapper">

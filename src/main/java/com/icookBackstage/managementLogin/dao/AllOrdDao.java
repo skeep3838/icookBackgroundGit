@@ -14,4 +14,5 @@ public interface AllOrdDao {
 	public List<helpQuestion> Reverse2(List<helpQuestion> list);
 	public void DeleteOrders(int orderId);
 	public List<helpQuestion> getAllHelpQuestion();
+	public helpQuestion getHelpQuestion(int helpQAId);
 }

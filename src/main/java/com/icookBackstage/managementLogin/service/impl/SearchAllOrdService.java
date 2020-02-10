@@ -40,5 +40,10 @@ public class SearchAllOrdService implements SearchAllOrdServiceDao {
 		List<helpQuestion> list = dao.getAllHelpQuestion();
 		return list;
 	}
+	@Override
+	public helpQuestion searchSingleHelpQuestion(int helpQAId) {
+		helpQuestion temp = dao.getHelpQuestion(helpQAId);
+		return temp;
+	}
 	
  }

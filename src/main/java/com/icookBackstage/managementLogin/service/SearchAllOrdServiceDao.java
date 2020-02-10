@@ -11,4 +11,5 @@ public interface SearchAllOrdServiceDao {
 	public List<orderDetail> searchAllOrdDetails(int orderId);
 	public void Delete(int orderId);
 	public List<helpQuestion> searchHelpQuestion();
+	public helpQuestion searchSingleHelpQuestion(int helpQAId);
 }

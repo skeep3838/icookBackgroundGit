@@ -214,4 +214,13 @@ public class managerController {
 		String json = gson.toJson(HelpQuestionData);
 		return json;
 	}
+	@RequestMapping(value = "/helpQuestionContent", method = RequestMethod.POST, produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String helpContent(@RequestParam("helpQAId")int helpQAId,Model model, HttpServletRequest request,
+			HttpServletResponse response) throws UnsupportedEncodingException {
+		helpQuestion temp = service.searchSingleHelpQuestion(helpQAId);
+		Gson gson = new Gson();
+		String json = gson.toJson(temp);
+		return json;
+	}
 }

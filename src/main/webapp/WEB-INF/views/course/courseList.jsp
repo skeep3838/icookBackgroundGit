@@ -127,9 +127,6 @@
 												type='button'
 												onclick="javascript:location.href='${pageContext.request.contextPath}/course/courseDelete?id=${bean.courseId}'"
 												value='刪除課程' />
-
-											<%-- 							<input type='hidden' name='${order.orderId}' --%>
-											<%-- 								value='${order.orderId}' /> --%>
 								</c:forEach>
 
 							</tbody>

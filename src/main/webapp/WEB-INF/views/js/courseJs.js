@@ -182,11 +182,6 @@ var courseEvent=
 			}
 		}
 				
-		
-// 			$("#courseInfo").html(eventJson);
-//		}
-
-
 // 		id: 'a',
 //		title:'麻婆豆腐',
 //		start: '2020-01-15',

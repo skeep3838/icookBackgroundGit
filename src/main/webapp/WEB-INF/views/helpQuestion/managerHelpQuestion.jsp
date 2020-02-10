@@ -20,13 +20,13 @@
 table, tr, td {
 	/* 	margin: auto; */
 	/* 	border: 1px red solid; */
-	/* 	text-align:center; */
+/* 	text-align:center; */
 	
 }
 
 textarea {
-	width: 300px;
-	height: 100px;
+	width: 388px;
+    height: 319px;
 }
 
 .testImgx {
@@ -129,6 +129,8 @@ div.center {
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
@@ -140,9 +142,9 @@ div.center {
 
 		<!-- Sidebar -->
 		<jsp:include page="/WEB-INF/views/fragment/SideBar.jsp" />
-		<!-- End of Sidebar -->
-
-		<!-- Content Wrapper -->
+		
+		<div id="dialog_div_helpContent" title="客戶問題"></div>
+		
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<!-- Main Content -->
@@ -195,17 +197,17 @@ div.center {
 													<td> 已回覆
 												</c:otherwise>
 											</c:choose>
-										<td><input style='float: right;'
+										<td style="text-align: center"><input 
 											class='btn btn-default btn-secondary btn-sm' type='button'
-											value='問題內容' /> 
+											onclick="QuestionContent(${Help.helpQAId})" value='問題內容' /> 
 											<c:choose>
 												<c:when test="${Help.responseStatus == 'N'}">
-													<td><input type='button'
+													<td style="text-align: left"><input type='button'
 														class='btn btn-default btn-secondary btn-sm' disabled
 														value='回覆問題' />
 												</c:when>
 												<c:otherwise>
-													<td><input type='button'
+													<td style="text-align: left"><input type='button' 
 														class='btn btn-default btn-secondary btn-sm'
 														value='回覆問題' />
 												</c:otherwise>
@@ -240,51 +242,6 @@ div.center {
 			var page = 1;
 			var allPage = 1;
 			var onePageQuantity = 8;
-			//取得自己專案的名稱
-			function getRealPath(){
-				var curWwwPath=window.document.location.href;
-				var pathName=window.document.location.pathname;
-				var projectName=pathName.substring(1,pathName.substr(1).indexOf('/')+1);
-				return projectName;
-			}
-			
-			$(window).load(function () {
-				var qty = $("#table1>tbody").children("tr").length;
-				for(var j = 0;j<qty;j++) {
-					var options = $("#orderstatus"+ j +" option:selected");
-					var colors = new Array("未出貨","出貨中","已到貨", "已取消");
-					var temp = "";
-					for(var i=0;i<colors.length;i++) {
-						if(colors[i] != options.text()) {
-							temp += "<option>"+ colors[i] +"</option>";
-						}
-					}
-					$("#orderstatus"+ j).append(temp);
-				}
-			});
-			
-			function changeOrderStatus(num,orderId,userId) {
-				var packageName = getRealPath();
-				var options = $("#orderstatus"+ num +" option:selected");
-				$.ajax({
-					type : "POST",
-					url : "/" + packageName + "/changeOrderStatus?orderId=" + orderId +"&status=" + options.text()+"&userId=" + userId,
-					dataType : "text",
-					success : function(data) {
-						alert("訂單儲存成功");
-						var temp = "";
-						if(options.text() == "已取消") {
-							$("#tdtatus"+ num + " select").remove();
-							temp = "<select id='orderstatus"+ num + "' class='form-control' disabled><option>已取消</option></select>";
-							$("#tdtatus"+ num).append(temp);
-						}
-					},
-					error : function(error) {
-						console.log(error);
-					},
-				});
-			}
-			
 			//取得自己專案的名稱
 			function getRealPath() {
 				var curWwwPath = window.document.location.href;
@@ -324,11 +281,11 @@ div.center {
 									else {
 										temp+= "<td> 已回覆";
 									}
-									temp += "<td><input type='button' style='float:right;' class='btn btn-default btn-secondary btn-sm' value='問題內容'  />";
+									temp += "<td style='text-align: center'><input type='button' class='btn btn-default btn-secondary btn-sm' onclick='QuestionContent("+ lists[i].helpQAId +")' value='問題內容'  />";
 									if (lists[i].responseStatus == "N") {
-										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='回覆問題'  />"
+										temp += "<td  style='text-align: left'><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='回覆問題'  />"
 									} else {
-										temp += "<td><input type='button'  class='btn btn-default btn-secondary btn-sm' value='回覆問題'  />";
+										temp += "<td  style='text-align: left'><input type='button'  class='btn btn-default btn-secondary btn-sm' value='回覆問題'  />";
 									}
 									$("#table1 tbody").append(temp);
 								}
@@ -339,6 +296,63 @@ div.center {
 						});
 				}
 			}
+			
+			function QuestionContent(helpQAId) {
+				var packageName = getRealPath();
+				$.ajax({
+					type: "POST",
+					url: "/" + packageName + "/helpQuestionContent?helpQAId=" + helpQAId,
+					dataType: "text",
+					success: function (data) {
+						var lists = JSON.parse(data);
+						var temp = "<textarea name='Message' onfocus='if (this.value == 'Message...') {this.value = '';}' onblur='if (this.value == '') {this.value = 'Message...';}' required='' >"+ lists.contentText +"</textarea>";
+						$("#dialog_div_helpContent").html(temp);
+						$("#dialog_div_helpContent").dialog("open");
+					},
+					error: function (error) {
+						console.log(error);
+					},
+				});
+				
+				
+				
+			}
+			
+			$(function() {
+			    $("#dialog_div_helpContent").dialog({
+			    	//固定視窗
+			    	maxHeight:	478,
+			    	maxWidth:	451,
+			    	minHeight:	478,
+			    	minWidth:	451,
+			    	
+			    	//拖移設定
+			    	draggable: true,
+			    	
+			    	//dialog建立自動開啟設定
+			        autoOpen: false,
+			        
+			        //視窗外無法操作設定
+			        modal : true,
+
+			        //open事件發生時, 將dialog樣式右上的x顯示
+			        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
+			        
+			        buttons: {
+// 			            "Create": function() {
+// 			            	insertDetailData();
+// 			            },
+			            "Cancel": function() { 
+			            	$(this).dialog("close");
+			            }
+			        }
+			    });
+			 
+			    $("#123").click(function(productId) {
+			        $("#dialog_div_helpContent").dialog("open");
+			    });
+			 
+			});
 		</script>
 
 	<!-- Bootstrap core JavaScript-->
@@ -353,12 +367,13 @@ div.center {
 
 	<!-- Page level plugins -->
 	<script src="vendor/chart.js/Chart.min.js"></script>
-
+	
 	<!-- Page level custom scripts -->
 	<script src="js/demo/chart-area-demo.js"></script>
 	<script src="js/demo/chart-pie-demo.js"></script>
 	<script src="vendor/datatables/jquery.dataTables.min.js"></script>
 	<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 
 </html>

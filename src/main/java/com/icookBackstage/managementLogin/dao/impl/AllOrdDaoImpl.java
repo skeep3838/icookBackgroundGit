@@ -122,4 +122,19 @@ public class AllOrdDaoImpl implements AllOrdDao{
 		return list;
 	}
 
+	@Override
+	public helpQuestion getHelpQuestion(int helpQAId) {
+		Session session = factory.getCurrentSession();
+		helpQuestion list = null;
+		try {
+			String hql = "from helpQuestion m where m.helpQAId = :mid";
+			list = (helpQuestion)session.createQuery(hql).setParameter("mid",helpQAId).getSingleResult();
+			System.out.println("--------------CORRECT---------------");
+		} catch (Exception e) {
+			System.out.println("--------------ERROR---------------");
+		}
+		return list;
+	}
+	
+	
 }

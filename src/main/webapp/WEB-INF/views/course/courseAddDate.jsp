@@ -55,7 +55,7 @@
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.js'></script>
 	<!-- 	抓時間用的API -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
-	
+
 </head>
 
 <body>
@@ -88,53 +88,63 @@
 						<div class="container">
 							<ul>
 								<li>
-									< 確認上課教室及開課日期>
+									<確認上課教室及開課日期>
 								</li>
 							</ul>
 						</div>
 					</div>
-					
-					<div class='container'><form method="post" action="${pageContext.request.contextPath}/course/courseAdd1" enctype="multipart/form-data">
-	<!-- 					輸入課程名稱 -->
-						<table>
-						<tr>
-						<td><input type='text' name='courseName' id='courseName' placeholder="請輸入課程名稱"
-								required="required" style="height: 35px; width: 400px;">
-						<tr>
-						<td><select class="custom-select" style="height: 35px; width: 400px;" 
-								name="roomNo" id="roomNo" onchange="roomInfo()" required="required">
-							<option value="" disabled selected hidden>上課教室</option>
-							<c:forEach var='bean' items='${roomBean}'>
-								<option value='${bean.roomNo}'> ${bean.roomNo}   容納人數:  ${bean.roomCapacity}</option>
-							</c:forEach>
-						</select>
-	<!-- 					取得教室資訊 -->
-						<input type="hidden" id=courJson>${courseDate.get(bean.roomNo)}
-						<div>
-							<p id="showStartDate">開始上課日期: </p>
-							<input type="hidden" id="courseStartDate" name="courseStartDate">
-							<p id="showEndDate">課程結束日期: </p>
-							<input type="hidden" id="courseEndDate" name="courseEndDate">
-							
-							<input type="button" onclick="dateCalendar()" value="課程時間">
-							<input type=submit value="下一步" onclick="checkDate(event)">
-							<input type="button" onclick="clearAll()" value="重新設定">
+
+					<div class='container'>
+						<div class="row">
+							<div class="col-sm-5">
+								<form method="post" action="${pageContext.request.contextPath}/course/courseAdd1"
+									enctype="multipart/form-data">
+									<!-- 					輸入課程名稱 -->
+									<table>
+										<tr>
+											<td><input type='text' name='courseName' id='courseName'
+													placeholder="請輸入課程名稱" required="required"
+													style="height: 35px; width: 400px;">
+										<tr>
+											<td><select class="custom-select" style="height: 35px; width: 400px;"
+													name="roomNo" id="roomNo" onchange="roomInfo()" required="required">
+													<option value="" disabled selected hidden>上課教室</option>
+													<c:forEach var='bean' items='${roomBean}'>
+														<option value='${bean.roomNo}'> ${bean.roomNo} 容納人數:
+															${bean.roomCapacity}</option>
+													</c:forEach>
+												</select>
+												<!-- 					取得教室資訊 -->
+												<input type="hidden" id=courJson>${courseDate.get(bean.roomNo)}
+												<div>
+													<p id="showStartDate">開始上課日期: </p>
+													<input type="hidden" id="courseStartDate" name="courseStartDate">
+													<p id="showEndDate">課程結束日期: </p>
+													<input type="hidden" id="courseEndDate" name="courseEndDate">
+
+													<input type="button" onclick="dateCalendar()" value="課程時間">
+													<input type=submit value="下一步" onclick="checkDate(event)">
+													<input type="button" onclick="clearAll()" value="重新設定">
+												</div>
+
+
+									</table>
+								</form>
+							</div>
+							<div class="col-sm-7">
+								<!-- 				<div id="dialog_div" title="新增課程時間"></div></div> -->
+								<div id="calendar" style="width:100%;"></div>
+								<!-- 					包到行事曆之前 -->
+							</div>
 						</div>
-						
-					
-					</table></form></div>
-<!-- 				<div id="dialog_div" title="新增課程時間"></div></div> -->
-					<div id="calendar" style="width:50%"></div>
-<!-- 					包到行事曆之前 -->
-<!-- 					<div id="calendar" style="width:50%"></div> -->
-<!-- 					確認一下controller回傳的資料長怎樣 -->
-	
-					<div >
+					</div>
+
+					<!-- <div>
 						<c:forEach var='key' items='${courseDate.keySet()}'>
 							<h5>${key} - ${courseDate.get(key)}</h5>
 						</c:forEach>
-					</div>
-					
+					</div> -->
+
 				</div>
 				<!-- Begin Page Content --End -->
 			</div>
@@ -143,8 +153,8 @@
 		<!-- Content Wrapper --End-->
 	</div>
 	<!-- Page Wrapper --End-->
-	
-<!-- 	自己寫的JS -->
+
+	<!-- 	自己寫的JS -->
 	<script src="${pageContext.request.contextPath}/js/courseJs.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
@@ -161,7 +171,7 @@
 	<script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
+
 </body>
 
 </html>

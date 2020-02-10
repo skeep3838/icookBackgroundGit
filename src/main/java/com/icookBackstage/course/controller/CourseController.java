@@ -1,6 +1,8 @@
 package com.icookBackstage.course.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Date;
@@ -8,15 +10,21 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,6 +89,55 @@ public class CourseController {
 		CourseBean courseBean = service.getCourseById(id);
 		model.addAttribute("courseBean", courseBean);
 		return "course/courseUpdate";
+	}
+//	取得照片
+	@GetMapping(value = "/getPic/{courseId}")
+	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, 
+			@PathVariable Integer courseId) {
+		String filePath = "/WEB-INF/views/course/image/food1.jpg";
+		byte[] media = null;
+		HttpHeaders headers = new HttpHeaders();
+//		String filename = "";
+		int len = 0;
+		CourseBean bean = service.getCourseById(courseId);
+		if (bean != null) {
+			Blob blob = bean.getCourseImage();
+//			filename = bean.getFileName();
+			if (blob != null) {
+				try {
+					len = (int) blob.length();
+					media = blob.getBytes(1, len);
+				} catch (SQLException e) {
+					throw new RuntimeException("Controller的getPicture()發生SQLException:" + e.getMessage());
+				}
+			} else {
+				media = toByteArray(filePath);
+//				filename = filePath;
+			}
+		}
+		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+//		String mimeType = context.getMimeType(filePath);
+		MediaType mediaType = MediaType.IMAGE_JPEG;
+//		System.out.println("mediaType= " + mediaType);
+		headers.setContentType(mediaType);
+		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
+		return responseEntity;
+	}
+	
+//取得很多張照片
+	private byte[] toByteArray(String filePath) {
+		byte[] b = null;
+		String realPath = context.getRealPath(filePath);
+		File file = new File(realPath);
+		long size = file.length();
+		b = new byte[(int) size];
+		InputStream fis = context.getResourceAsStream(filePath);
+		try {
+			fis.read(b);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	@PostMapping("/course/courseUpdateFinal")

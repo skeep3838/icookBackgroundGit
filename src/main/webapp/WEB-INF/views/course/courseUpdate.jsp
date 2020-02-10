@@ -29,7 +29,7 @@
 		textarea {
 			width: 300px;
 			height: 100px;
-			
+
 		}
 
 		.testImgx {
@@ -86,15 +86,18 @@
 					</div>
 					<!-- 標頭 End -->
 					<!-- 					新增商品表格 -->
-					<form method="post" action="${pageContext.request.contextPath}/course/courseUpdateFinal" enctype="multipart/form-data">
+					<form method="post" action="${pageContext.request.contextPath}/course/courseUpdateFinal"
+						enctype="multipart/form-data">
 						<table>
 							<tr>
 								<td colspan="2">課程名稱
 								<td colspan="2"><input type="text" name="courseName" value='${courseBean.courseName}'>
 								<td colspan="2">課程類別
 								<td colspan="2">
-								<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
-										<option value="${courseBean.courseCategory}" >${courseBean.courseCategory}</option>	
+									<select class="custom-select" style="height: 35px; width: 200px;"
+										name="courseCategory">
+										<option value="${courseBean.courseCategory}">${courseBean.courseCategory}
+										</option>
 										<option value='中式'>中式</option>
 										<option value='義式'>義式</option>
 										<option value='法式'>法式</option>
@@ -107,8 +110,8 @@
 							<tr>
 								<td colspan="2">上課教室
 								<td colspan="2">
-								<select class="custom-select" style="height: 35px; width: 200px;" name="roomNo">
-										<option value="${courseBean.roomNo}" >${courseBean.roomNo}</option>	
+									<select class="custom-select" style="height: 35px; width: 200px;" name="roomNo">
+										<option value="${courseBean.roomNo}">${courseBean.roomNo}</option>
 										<option value='201'>201</option>
 										<option value='202'>202</option>
 										<option value='203'>203</option>
@@ -117,18 +120,31 @@
 									</select>
 							</tr>
 							<tr>
+								<div class="form-group col-md-4">
+									<label class="btn btn-info">
+										<input name="courseImage" onchange="readURL(this)" style="display: none;"
+											type="file" accept="image/jpg" /> <i class="fa fa-photo"></i> 上傳封面圖片
+									</label>
+									<div id="upload_img">
+										<img src="<c:url value='/getPic/${courseBean.courseId}' />" alt=" "
+											class="img-responsive" />
+									</div>
+								</div>
+							</tr>
+							<tr>
 								<td colspan="2">上傳圖片
-								<td><img alt="" src="${courseBean.courseImage}">
+								<td><img src="<c:url value='/getPic/${courseBean.courseId}'/>" alt=" "
+										class="testImgx" />
 								<td colspan="4"><input type="file" name="courseImage" id="image100">
-								<td colspan="2"><img id="testImg1" class="testImgx" src="">
 							</tr>
 							<tr>
 								<td colspan="2">課程價格
 								<td colspan="2"><input type="text" name="coursePrice" value='${courseBean.coursePrice}'>
 								<td colspan="2">課程優惠
 								<td colspan="2">
-								<select class="custom-select" style="height: 35px; width: 200px;" name="courseDiscount">
-										<option value="1" >無折扣</option>	
+									<select class="custom-select" style="height: 35px; width: 200px;"
+										name="courseDiscount">
+										<option value="1">無折扣</option>
 										<option value='0.95'>95折</option>
 										<option value='0.9'>9折</option>
 										<option value='0.85'>85折</option>
@@ -139,26 +155,28 @@
 
 							</tr>
 							<tr>
-<!-- 								拿掉課程負責人 -->
+								<!-- 								拿掉課程負責人 -->
 								<td colspan="2">主辦單位名稱
 								<td colspan="2"><input type="text" name="hostName" value='${courseBean.hostName}'>
 
 							</tr>
-							
+
 							<tr>
 								<td colspan="2">上課時間
-								<td colspan="2"><input type="date" name="courseStartDate" value='${courseBean.courseStartDate}'>
-								<td colspan="2"><input type="date" name="courseEndDate" value='${courseBean.courseEndDate}'>
+								<td colspan="2"><input type="date" name="courseStartDate"
+										value='${courseBean.courseStartDate}'>
+								<td colspan="2"><input type="date" name="courseEndDate"
+										value='${courseBean.courseEndDate}'>
 							</tr>
 							<tr>
 								<td colspan="2">課程描述
-								<td colspan="6"><textarea name="courseIntrod"
-										style="width: 500px; height: 180px;" value='${courseBean.courseIntrod}'></textarea>
+								<td colspan="6"><textarea name="courseIntrod" style="width: 500px; height: 180px;"
+										value='${courseBean.courseIntrod}'></textarea>
 							</tr>
-							
-								
+
+
 							<tr>
-							<input type="hidden" name="id" value="${courseBean.courseId}">
+								<input type="hidden" name="id" value="${courseBean.courseId}">
 								<td colspan="2"><input type="submit" value="送出">
 								<td colspan="6"><input type="reset" value="重置">
 							</tr>
@@ -166,7 +184,7 @@
 						</table>
 					</form>
 					<div id="calendar"></div>
-					
+
 
 				</div>
 				<!-- Begin Page Content --End -->
@@ -176,6 +194,25 @@
 		<!-- Content Wrapper --End-->
 	</div>
 	<!-- Page Wrapper --End-->
+
+	<script>
+		< !--預覽圖片功能 -->
+			function readURL100(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+
+					reader.onload = function (e) {
+						$('#testImg1').attr('src', e.target.result);
+					}
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+
+		$("#image100").change(function () {
+			readURL100(this);
+		});
+	</script>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>

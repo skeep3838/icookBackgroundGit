@@ -81,22 +81,44 @@
 					<!-- 標頭 -->
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">新增商品</h1>
+						<h1 class="h3 mb-0 text-gray-800">修改課程資訊</h1>
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 標頭 End -->
 					<!-- 					新增商品表格 -->
-					<form method="post" action="createNewProduct" enctype="multipart/form-data">
+					<form method="post" action="${pageContext.request.contextPath}/course/courseUpdateFinal" enctype="multipart/form-data">
 						<table>
 							<tr>
 								<td colspan="2">課程名稱
 								<td colspan="2"><input type="text" name="courseName" value='${courseBean.courseName}'>
 								<td colspan="2">課程類別
-								<td colspan="2"><input type="text" name="courseCategory" value='${courseBean.courseCategory}'>
+								<td colspan="2">
+								<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
+										<option value="${courseBean.courseCategory}" >${courseBean.courseCategory}</option>	
+										<option value='中式'>中式</option>
+										<option value='義式'>義式</option>
+										<option value='法式'>法式</option>
+										<option value='日式'>日式</option>
+										<option value='創意'>創意</option>
+										<option value='證照班'>證照班</option>
+									</select>
 
 							</tr>
 							<tr>
+								<td colspan="2">上課教室
+								<td colspan="2">
+								<select class="custom-select" style="height: 35px; width: 200px;" name="roomNo">
+										<option value="${courseBean.roomNo}" >${courseBean.roomNo}</option>	
+										<option value='201'>201</option>
+										<option value='202'>202</option>
+										<option value='203'>203</option>
+										<option value='204'>204</option>
+										<option value='205'>205</option>
+									</select>
+							</tr>
+							<tr>
 								<td colspan="2">上傳圖片
+								<td><img alt="" src="${courseBean.courseImage}">
 								<td colspan="4"><input type="file" name="courseImage" id="image100">
 								<td colspan="2"><img id="testImg1" class="testImgx" src="">
 							</tr>
@@ -105,7 +127,7 @@
 								<td colspan="2"><input type="text" name="coursePrice" value='${courseBean.coursePrice}'>
 								<td colspan="2">課程優惠
 								<td colspan="2">
-								<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
+								<select class="custom-select" style="height: 35px; width: 200px;" name="courseDiscount">
 										<option value="1" >無折扣</option>	
 										<option value='0.95'>95折</option>
 										<option value='0.9'>9折</option>
@@ -129,21 +151,14 @@
 								<td colspan="2"><input type="date" name="courseEndDate" value='${courseBean.courseEndDate}'>
 							</tr>
 							<tr>
-								<td colspan="2">開賣時間
-								<td colspan="2"><input type="date" name="saleStartDate" value='${courseBean.saleStartDate}'>
-								<td colspan="2"><input type="date" name="saleEndDate" value='${courseBean.saleEndDate}'>
-							</tr>
-							<tr>
 								<td colspan="2">課程描述
 								<td colspan="6"><textarea name="courseIntrod"
 										style="width: 500px; height: 180px;" value='${courseBean.courseIntrod}'></textarea>
 							</tr>
-							<tr>
-								<td colspan="2">上課教室
-								<td colspan="2"><input type="text" name="roomNo">
-							</tr>
+							
 								
 							<tr>
+							<input type="hidden" name="id" value="${courseBean.courseId}">
 								<td colspan="2"><input type="submit" value="送出">
 								<td colspan="6"><input type="reset" value="重置">
 							</tr>

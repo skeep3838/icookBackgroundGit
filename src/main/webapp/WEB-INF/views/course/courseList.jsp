@@ -103,7 +103,7 @@
 									<!-- 								<th>開課日期</th> -->
 									<!-- 								<th>結束日期</th> -->
 									<th>課程金額</th>
-									<th>販售狀態</th>
+									<th>更新時間</th>
 									<th></th>
 									<th></th>
 								</tr>
@@ -118,7 +118,7 @@
 											<%-- 									<td>${bean.courseEndDate} --%>
 										<td>
 											<fmt:formatNumber value="${bean.coursePrice}" pattern="#,###" />
-										<td>顯示庫存
+										<td>${bean.updateTime}
 										<td><input style='float: right;' class='btn btn-default btn-secondary btn-sm'
 												type='button'
 												onclick="javascript:location.href='${pageContext.request.contextPath}/course/courseUpdate?id=${bean.courseId}'"

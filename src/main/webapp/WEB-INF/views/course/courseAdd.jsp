@@ -133,11 +133,11 @@
 
 							</tr>
 							
-							<tr>
-								<td colspan="2">開賣時間
-								<td colspan="2"><input type="date" name="saleStartDate">
-								<td colspan="2"><input type="date" name="saleEndDate">
-							</tr>
+<!-- 							<tr> -->
+<!-- 								<td colspan="2">開賣時間 -->
+<!-- 								<td colspan="2"><input type="date" name="saleStartDate"> -->
+<!-- 								<td colspan="2"><input type="date" name="saleEndDate"> -->
+<!-- 							</tr> -->
 							<tr>
 								<td colspan="2">課程描述
 								<td colspan="6"><textarea name="courseIntrod"
@@ -181,7 +181,7 @@
 					$('#testImg1').attr('src', e.target.result);
 				}
 
-				eader.readAsDataURL(input.files[0]);
+				reader.readAsDataURL(input.files[0]);
 			}
 		}
 
@@ -201,8 +201,7 @@
 	<!-- Page level custom scripts -->
 	<script src="${pageContext.request.contextPath}/js/demo/chart-area-demo.js"></script>
 	<script src="${pageContext.request.contextPath}/js/demo/chart-pie-demo.js"></script>
-	<script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
-	<script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
 </body>
 
 </html>

@@ -118,6 +118,18 @@ public class CourseDaoImpl implements CourseDao{
 		session.delete(bean);
 		
 	}
+	
+	@Override
+	public Boolean updateCourse(CourseBean bean) {
+		Session session = factory.getCurrentSession();
+		try {
+			session.update(bean);
+		}catch (Exception e) {
+			e.getStackTrace();
+			return false;
+		}
+			return true;
+	}
 
 
 }

@@ -28,7 +28,6 @@
 	</style>
 
 	<title>Demo_MyProduct</title>
-
 	<!-- Custom fonts for this template-->
 	<link href="${pageContext.request.contextPath}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 		type="text/css">
@@ -42,12 +41,8 @@
 
 	<!-- dataTables的CSS -->
 	<!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
-
 	<!-- 測試 -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
-
 	<!-- 日曆專用 -->
 	<!-- 主檔案的css，此套件有很多不同的css可以使用 -->
 	<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
@@ -60,9 +55,11 @@
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.js'></script>
 	<!-- 	抓時間用的API -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+	
 </head>
 
 <body>
+	<div id="dialog_div" title="新增課程時間"></div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 		<!-- 側欄 -->
@@ -96,12 +93,15 @@
 							</ul>
 						</div>
 					</div>
+					
 					<div class='container'><form method="post" action="${pageContext.request.contextPath}/course/courseAdd1" enctype="multipart/form-data">
 	<!-- 					輸入課程名稱 -->
-						<input type='text' name='courseName' id='courseName' placeholder="請輸入課程名稱"
+						<table>
+						<tr>
+						<td><input type='text' name='courseName' id='courseName' placeholder="請輸入課程名稱"
 								required="required" style="height: 35px; width: 400px;">
-						<br>
-						<select class="custom-select" style="height: 35px; width: 400px;" 
+						<tr>
+						<td><select class="custom-select" style="height: 35px; width: 400px;" 
 								name="roomNo" id="roomNo" onchange="roomInfo()" required="required">
 							<option value="" disabled selected hidden>上課教室</option>
 							<c:forEach var='bean' items='${roomBean}'>
@@ -110,20 +110,25 @@
 						</select>
 	<!-- 					取得教室資訊 -->
 						<input type="hidden" id=courJson>${courseDate.get(bean.roomNo)}
-						
 						<div>
 							<p id="showStartDate">開始上課日期: </p>
 							<input type="hidden" id="courseStartDate" name="courseStartDate">
 							<p id="showEndDate">課程結束日期: </p>
 							<input type="hidden" id="courseEndDate" name="courseEndDate">
+							
+							<input type="button" onclick="dateCalendar()" value="課程時間">
 							<input type=submit value="下一步" onclick="checkDate(event)">
-							<input type="button" id="clearAll" onclick="clearAll()" value="重新設定">
+							<input type="button" onclick="clearAll()" value="重新設定">
 						</div>
-					</form></div>
-<!-- 					包到行事曆之前 -->
+						
+					
+					</table></form></div>
+<!-- 				<div id="dialog_div" title="新增課程時間"></div></div> -->
 					<div id="calendar" style="width:50%"></div>
+<!-- 					包到行事曆之前 -->
+<!-- 					<div id="calendar" style="width:50%"></div> -->
 <!-- 					確認一下controller回傳的資料長怎樣 -->
-					</div>		
+	
 					<div >
 						<c:forEach var='key' items='${courseDate.keySet()}'>
 							<h5>${key} - ${courseDate.get(key)}</h5>
@@ -155,6 +160,8 @@
 	<script src="${pageContext.request.contextPath}/js/demo/chart-pie-demo.js"></script>
 	<script src="${pageContext.request.contextPath}/vendor/datatables/jquery.dataTables.min.js"></script>
 	<script src="${pageContext.request.contextPath}/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
 </body>
 
 </html>

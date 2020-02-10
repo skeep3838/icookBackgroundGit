@@ -1,18 +1,86 @@
 //設定參數名稱
 let roomJsonMap={};
 var roomJson="";
+var roomNo="";
 var courseEvent=
 		[{
-				id: 'a',
+				id: '201',
 				title:'麻婆豆腐',
 				start: '2020-01-15',
 				end: '2020-02-15',
-			}]
-		
-		document.addEventListener('DOMContentLoaded', function () {
+			},{
+				id: '202',
+				title:'龍蝦蝦',
+				start: '2020-02-17',
+				end: '2020-02-28',
+			}];
+//var courseEvent2 = 
+//	[{
+//		id: '202',
+//		title:'龍蝦蝦',
+//		start: '2020-02-17',
+//		end: '2020-02-28',
+//	}];
+	
+$(function() {
+    $("#dialog_div").dialog({
+    	//固定視窗
+    	maxHeight:	800,
+    	maxWidth:	800,
+    	minHeight:	800,
+    	minWidth:	800,
+    	
+    	//拖移設定
+    	draggable: true,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        
+        closeText :"滑鼠指到X時顯示的文字訊息",
+        
+        buttons: {
+            "Ok": function() {
+            		
+            		$(this).dialog("close"); 
+            	  },
+            "Cancel": function() { $(this).dialog("close"); }
+        }
+    });
+})
+
+function dateCalendar(){
+	 if(document.getElementById("roomNo").value==""){
+ 		alert("請選擇上課教室。");
+ 	}else{
+ 		tex = '<div id="calendar" style="width:50%"></div>';
+// 		tex = '<h3>Hello World!!</h3>'
+ 		$("#dialog_div").html(tex);
+ 		$('#calendar').fullCalendar();
+ 			$("#dialog_div").dialog("open");
+ 	}
+	
+}
+
+
+
+//$(function () {
+//	  $( "#dialog1" ).dialog({
+//	    autoOpen: false
+//	  });
+//	  
+//	  $("#dateCalendar").click(function() {
+//	    $("#dialog1").dialog('open');
+//	  });
+//	});
+
+document.addEventListener('DOMContentLoaded', function () {
 			//在HTML下要有個<div id="calendar">，calendar會塞入此div
 			var calendarEl = document.getElementById('calendar');
-// 			var startDate=document.getElementById("courseStartDate").vlaue;
+ 			var startDate=document.getElementById("courseStartDate").vlaue;
 			//new一個calendar object，FullCalendar api會自動讀取此object來作動作
 			//(此object可在value中寫入Javascript程式碼)
 			//要呼叫calendar相關指令，必須在此object中進行
@@ -48,42 +116,47 @@ var courseEvent=
 				footer: {
 					right: 'DEMOButton submitButton',
 				},
-				events:courseEvent,
+//				events:courseEvent,
 					 //顏色
 //		            backgroundColor: 'white',
 //		            borderColor: 'black',
 //		            textColor: 'red',
 				
-// 					[
-// 					{
-// 						//id:可使用calendar.getElementById(id)獲取此eventObject資料
-// 						"id": 'a',
-// 						//title:日曆上會出現的字
-// 						"title":'麻婆豆腐',
-// 						//在日曆上出現的開始與結束時間(ISO-8601 date)T18:00:00T21:00:00
-// 						"start": '2020-01-15',
-// 						"end": '2020-02-15',
-// // 						editable:'false',
-// 						//顏色
-// // 						backgroundColor: 'lightBlue',
-// 						// borderColor: 'black',
-// // 						textColor: 'red',
-// 					}
-// 				],
+				// your event source
+				eventSources:[{
+				      url: 'roomJsonMap', // use the `url` property
+				      color: 'yellow',    // an option!
+				      textColor: 'black'  // an option!
+				    }],
+			
+ 				addEventSource:function(){
+ 					
+ 				},
 				
 				dateClick: function(date, event, view) {
-				    console.log('add event');
+					console.log('add event');
 				    console.log(date);
-				    console.log(event);
-				    console.log(view);
+				    var events = $('#calendar').fullCalendar('clientEvents', function(event) {
+				    	var eventStart = event.start.format('YYYY-MM-DD');
+			            var eventEnd = event.end ? event.end.format('YYYY-MM-DD') : null;
+			            var theDate = date.format('YYYY-MM-DD');
+			            // Make sure the event starts on or before date and ends afterward
+			            // Events that have no end date specified (null) end that day, so check if start = date
+			            return (eventStart <= theDate && (eventEnd >= theDate) && !(eventStart < theDate && (eventEnd == theDate))) || (eventStart == theDate && (eventEnd === null));
+				    
+				    });
+				    console.log(events);
 				    var startDate=document.getElementById("courseStartDate").value;
 				    var seleDate = moment(date.dateStr).format('YYYYMMDD');
-				    console.log("seleDate: "+seleDate);
+				    
+//				    console.log("seleDate: "+seleDate);
 
 				    if(document.getElementById("roomNo").value==""){
 			    		alert("請選擇上課教室。");
 			    	}else if(startDate==null || startDate=="" ){
-				    	 var r = confirm("是否設為課程開始日期?");
+			    		alert(document.getElementById("roomNo").value); 
+			    		
+			    		var r = confirm("是否設為課程開始日期?");
 						 if (r == true) {
 // 							 時間格式轉換，做比較用
 						   txt = "開始上課日期: " + date.dateStr;
@@ -114,20 +187,23 @@ var courseEvent=
 				   
 				},
 				
-				select:function( start,end ){
+//				select:function( start,end ){
+//
+//					console.log('select date');
+//					console.log(start);
+//					console.log(end);
+//				},
 
-					console.log('select date');
-					console.log(start);
-					console.log(end);
-				},
-
-				eventClick: function(date, event, view) {
-					var event = calendar.getEventById('a');
-					console.log('modify event');
-				    console.log(date);
-				    console.log(event);
-				    console.log(view);
-				  },
+//				eventClick: function(date, event, view) {
+//					console.log('modify event');
+//				    console.log(date.event.id);
+//				    document.getElementById(203);
+//				    var evento = $("#calendar").fullCalendar('203')[response.idEvent];
+//				    console.log(evento);
+////				    console.log(event);
+////				    console.log(view);
+//				  },
+				  
 				customButtons : {
 					submitButton : {
 						
@@ -165,9 +241,7 @@ var courseEvent=
 					var roomNo = document.getElementById("roomNo").value;
 					roomJson = roomJsonMap[roomNo];
 //					roomJson = JSON.parse(roomJsonMap[roomNo]);
-					
 //					alert(courseEvent);
-			 		
 				}	
 			});
 		}
@@ -182,17 +256,8 @@ var courseEvent=
 			}
 		}
 				
-// 		id: 'a',
-//		title:'麻婆豆腐',
-//		start: '2020-01-15',
-//		end: '2020-02-15'
+		
 
-				
-// 						editable:'false',
-				//顏色
-// 						backgroundColor: 'lightBlue',
-				// borderColor: 'black',
-// 						textColor: 'red',
  			
 		
 		

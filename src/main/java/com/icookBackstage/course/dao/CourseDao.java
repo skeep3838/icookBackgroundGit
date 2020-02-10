@@ -16,6 +16,7 @@ public interface CourseDao {
 	List<ClassRoomBean> roomList();
 	List<CourseBean> queryClassRoom(String roomNo);
 	public void deleteCourse(CourseBean bean);
+	Boolean updateCourse(CourseBean bean);
 	
 }
  

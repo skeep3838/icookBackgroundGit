@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.icookBackstage.managementLogin.service.SearchAllOrdServiceDao;
 import com.icookBackstage.model.MemberBean;
+import com.icookBackstage.model.helpQuestion;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
 
@@ -112,7 +113,10 @@ public class managerController {
 		
 		return "orderManagement";
 	}
-
+	
+	
+	
+	
 	@RequestMapping(value = "/SearchOrderDetails", method = RequestMethod.GET)
 	public String SearchOrdDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(false);
@@ -144,5 +148,70 @@ public class managerController {
 			return "redirect:/ManagerOrders?page=" + page;
 			// 刪除後重新導向刪除資料的頁數並更新資料
 		}
+	}
+	
+	
+	//----------------------------------------------------
+	
+	@RequestMapping(value = "/Managerhelp", method = RequestMethod.GET)
+	public String Searchhelp(@RequestParam(value="page", required=false) String page, HttpServletRequest request,
+			HttpServletResponse response,Model model) throws IOException {
+		HttpSession session = request.getSession(false);
+		if(page==null) {
+			page = "1";
+		}
+		session.setAttribute("LogYesNo", "Yes");
+		int pag = Integer.parseInt(page);
+		session.setAttribute("page", pag);
+		List<helpQuestion> HelpQuestionData = service.searchHelpQuestion();
+		if (HelpQuestionData.isEmpty()) {
+			session.setAttribute("stat", false);
+		} else {
+			session.setAttribute("stat", true);
+		}
+		
+		session.setAttribute("HelpQuestionData", HelpQuestionData);
+		model.addAttribute("orderSize",HelpQuestionData.size());
+		
+		int onePageQuantity = 8;
+		model.addAttribute("onePageQuantity",onePageQuantity);
+		int pageNo = (pag - 1) * onePageQuantity;
+		model.addAttribute("pageNo",pageNo);
+		int temp = (HelpQuestionData.size() - pageNo);
+		model.addAttribute("onePageTotalQuantity",temp);
+		int endPage = 0;
+		if(temp >= onePageQuantity) {
+			endPage = pageNo + onePageQuantity;
+			model.addAttribute("endPage",endPage);
+		}
+		else {
+			endPage = HelpQuestionData.size();
+			model.addAttribute("endPage",endPage);
+		}
+		
+		//range 帶表總共的頁數
+		int range = 0;
+		if ((HelpQuestionData.size() % onePageQuantity) == 0) {
+			range = HelpQuestionData.size() / onePageQuantity;
+			model.addAttribute("range",range);
+		} else {
+			range = (HelpQuestionData.size() / onePageQuantity) + 1;
+			model.addAttribute("range",range);
+		}
+		
+		return "helpQuestion/managerHelpQuestion";
+	}
+	
+	@RequestMapping(value = "/helpQuestionJson", method = RequestMethod.POST, produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public String helpJson(@RequestParam("page") String page,Model model, HttpServletRequest request,
+			HttpServletResponse response) throws UnsupportedEncodingException {
+		HttpSession session = request.getSession(false);
+		Gson gson = new Gson();
+		int pag = Integer.parseInt(page);
+		session.setAttribute("page", pag);
+		List<helpQuestion> HelpQuestionData = service.searchHelpQuestion();
+		String json = gson.toJson(HelpQuestionData);
+		return json;
 	}
 }

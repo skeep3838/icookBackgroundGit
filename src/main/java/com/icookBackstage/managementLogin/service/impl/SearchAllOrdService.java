@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.icookBackstage.managementLogin.dao.AllOrdDao;
 import com.icookBackstage.managementLogin.service.SearchAllOrdServiceDao;
+import com.icookBackstage.model.helpQuestion;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
 
@@ -25,6 +26,7 @@ public class SearchAllOrdService implements SearchAllOrdServiceDao {
 		List<orderBean> list = dao.getAllOrders();
 		return list;
 	}
+	@Override
 	public List<orderDetail> searchAllOrdDetails(int orderId) {
 		List<orderDetail> list = dao.getAllOrderDetails(orderId);
 		return list;
@@ -32,6 +34,11 @@ public class SearchAllOrdService implements SearchAllOrdServiceDao {
 	@Override
 	public void Delete(int orderId) {
 		dao.DeleteOrders(orderId);
+	}
+	@Override
+	public List<helpQuestion> searchHelpQuestion() {
+		List<helpQuestion> list = dao.getAllHelpQuestion();
+		return list;
 	}
 	
  }

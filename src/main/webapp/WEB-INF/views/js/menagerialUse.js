@@ -11,23 +11,29 @@ let firstDataNumber = 1;
 let detailId= 1;
 let detailContant = "";
 let createNoError = 1;
+let authArray = [true,false];
+let authName = ["accrountAuth","productAuth","orderAuth","webMaintainAuth"];
+
 
 
 //認證密碼
-$("body").on("change","#password2, #password3",function(){
-	let password2 = $("#password2").val();
-	let password3 = $("#password3").val();
-	if( password2 == password3 ){
+$("body").on("change",".passwordOne, .passwordTwo",function(){
+	let index = $(this).attr("index");
+	let paOneClas= "#passwordOne" + index;
+	let paTwoClas= "#passwordTwo" + index;
+	
+	let passwordOne = $(paOneClas).val();
+	let passwordTwo = $(paTwoClas).val();
+	if( passwordOne == passwordTwo ){
 		createNoError = 1;
-		$("#password2Meg").html("")
-		$("#password2Meg").attr("class","passMeg")
+		$("#passwordMeg").html("")
+		$("#passwordMeg").attr("class","passMeg")
 	}else{
 		createNoError = 0;
-		$("#password2Meg").html("*密碼不一致")
-		$("#password2Meg").attr("class","errorMeg")
+		$("#passwordMeg").html("*密碼不一致")
+		$("#passwordMeg").attr("class","errorMeg")
 	}
 });
-
 
 
 //載入完成後匯入使用者帳戶資訊
@@ -72,17 +78,69 @@ function buildTable(){
 			tableContant = "";
 			paginationContant = "";
 			firstDataNumber = (json.page-1)*onePageNunber + 1
-			//table內容
+			//table內容	
+			//新增用欄位
+			tableContant	+= 	"<tr id='inSertTr' class='hideTr'><td><span>新增資料:</span>"
+							+"<td><input size='12' type='text' id='inAccrount' name='accrount'>"
+							+"<br><span id='inAccountMeg'></span>"
+							+"<td><input size='12' type='password' id='inPasswordOne' class='passwordOne' placeholder='輸入密碼'>" 
+							+"<br><input size='12' type='password' id='inPasswordTwo' class='passwordTwo' placeholder='再次輸入密碼'>"
+							+"<br><span id='inPasswordMeg'></span>";
+			//authName內每個權限輪尋一遍
+			for(let j=0 ; j < authName.length ; ++j){
+				tableContant	+=	"<td><select id='"+ "in" + (authName[j]) +"'>";
+				//判斷true 或是false
+				for(let k=0 ; k < authArray.length ; ++k){
+					tableContant 	+=	"<option value='"+ authArray[k] +"' "
+					+ (k===1?"selected":"") +">"+ (authArray[k].toString());
+				}
+			}
+
+			tableContant	+=	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+					+ "value='新增資料' onclick='insertSubmit()'><br>"
+//					+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
+//					+ "value='取消新增' onclick='insertHide()'>";
+			
+				
+			
 			for(let i=0 ; i<managerialPageJson.length ; ++i){
-				tableContant	+= 	"<tr><td>" + managerialPageJson[i].maId
+				//顯示用資訊
+				tableContant	+= 	"<tr id='showTr"+ i +"'><td>" + managerialPageJson[i].maId
 								+	"<td>" + managerialPageJson[i].accrount
-								+	"<td>" + managerialPageJson[i].password
+								+	"<td>" 
 								+	"<td>" + managerialPageJson[i].accrountAuth
 								+	"<td>" + managerialPageJson[i].productAuth
 								+	"<td>" + managerialPageJson[i].orderAuth
 								+	"<td>" + managerialPageJson[i].webMaintainAuth
 								+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='詳細修改' onclick='detailUpdate("+ i +")'>";
+									+ "value='開啟修改' onclick='updateOpen("+ i +")'>";
+				//更新用欄位
+				tableContant	+= 	"<tr id='updateTr"+ i +"' class='hideTr'><td><span>更新資料:</span>"
+								+	"<input type='hidden' id='maId" + i + "' name='maId' value='"
+									+	managerialPageJson[i].maId + "'>"
+								+	"<td><input size='12' type='text' id='accrount" + i + "' name='accrount' value='"
+									+	managerialPageJson[i].accrount + "'><br><span id='accountMeg'></span>"
+								+	"<td><input size='12' type='password' index='" + i + "' id='passwordOne" + i + "' class='passwordOne' placeholder='輸入密碼'>" 
+									+	"<br><input size='12' type='password' index='" + i + "' id='passwordTwo" + i + "' class='passwordTwo' placeholder='再次輸入密碼'>"
+									+	"<br><span id='passwordMeg" + i + "'></span>";
+				
+				//抓權限填預設值
+				//authName內每個權限輪尋一遍
+				for(let j=0 ; j < authName.length ; ++j){
+					tableContant	+=	"<td><select id='"+ (authName[j] + i)
+									+	"' name='"+ authName[j] +"'>";
+					//判斷true 或是false
+					for(let k=0 ; k < authArray.length ; ++k){
+						tableContant 	+=	"<option value='"+ authArray[k] +"'"
+										+ 	((managerialPageJson[i][authName[j]] === authArray[k])?(" selected"):("")) 
+										+	">" + (authArray[k].toString());
+					}
+				}
+	
+				tableContant	+=	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+									+ "value='資料修改' onclick='updateSubmit("+ i +")'><br>"
+//									+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
+//									+ "value='取消修改' onclick='updateHide("+ i +")'>";
 			}
 			//分頁左側內容, 顯示畫面上的資料數
 			paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
@@ -119,70 +177,45 @@ function buildTable(){
 	})
 }
 
-//使用者帳戶update的Detail資訊(Dialog內)
-function detailUpdate(number){
-	
-	//紀錄detailId
-	detailId = managerialPageJson[number].userId;
-	
-	//Detail資訊內容建立
-	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
-					+	"<table id='detailTable1'>"
-					+	"<tr><td>使用者ID:<td>" + detailId
-					+	"<tr><td>信箱:<td><input type='text' id='account' name='account' value='" 
-						+ managerialPageJson[number].account + "'></input>"
-					+	"<tr><td>密碼:<td><input type='password' id='password' name='password'" 
-						+ "placeholder='在此輸入變更的密碼'></input>"
-					+	"<tr><td>姓氏:<td><input type='text' id='lastname' name='lastname' value='" 
-						+ managerialPageJson[number].lastname + "'></input>"
-					+	"<tr><td>名稱:<td><input type='text' id='firstname' name='firstname' value='" 
-						+ managerialPageJson[number].firstname + "'></input>"
-					+	"<tr><td>暱稱:<td><input type='text' id='nickname' name='nickname' value='" 
-						+ managerialPageJson[number].nickname + "'></input>"
-					+	"<tr><td>性別:<td><select id='gender' name='gender'>";
-	//抓性別資料填預設值
-	for(let i=0 ; i < genderArray.length ; ++i){
-		detailContant 	+=	"<option value='"+ genderArray[i] +"'"
-						+ 	((managerialPageJson[number].gender === genderArray[i])?(" selected"):("")) 
-						+	">" + genderArray[i];
-	}
-	detailContant 	+=	"</select>"
-					+	"<tr><td>生日:<td><input type='text' id='birthday' name='birthday' value='" 
-						+ managerialPageJson[number].birthday 
-						+ "' placeholder='yyyy-MM-DD'></input>"
-					+	"<tr><td>電話:<td><input type='text' id='phone' name='phone' value='" 
-						+ managerialPageJson[number].phone + "'></input>"
-					+	"<tr><td>住址:<td><input type='text' id='address' name='address' value='" 
-						+ managerialPageJson[number].address + "'></input>"
-					+	"<tr><td>認證:<td><select id='checkstatus' name='checkstatus'>";
-	//抓認證資料填預設值
-	for(let i=0 ; i < checkstatusArray.length ; ++i){
-		detailContant 	+=	"<option value='"+ checkstatusArray[i] +"'"
-						+ 	((managerialPageJson[number].checkstatus === checkstatusArray[i])?(" selected"):(""))
-						+	">" + checkstatusArray[i];
-	}
-	
-	detailContant 	+=	"</select></td></tr></table></from>";
-					
-	//將Detail資訊寫到Dialog, 並顯示Dialog
-	$("#dialog_div_update").html(detailContant);
-	$("#dialog_div_update").dialog("open");
+//管理員資訊update開啟與關閉按鈕, 會將其他按鈕關閉
+function updateOpen(number){
+	//把其他可隱藏的class(hideTr)藏起來
+	let tr =  "#updateTr" + number;
+	$(".hideTr:not("+ tr +")").hide("fast");
+	$(tr).toggle("fast");
 }
 
-//update Detail資訊
-function updateDetailData(){
-	//打包form(id="detailForm")的資料
-	let detailForm = new FormData($("#detailForm")[0]);
+//管理員資訊update關閉按鈕(!!暫時無用!!)
+//function updateHide(number){
+//	let tr =  "#updateTr" + number;
+//	$(tr).hide("fast");
+//}
+
+
+//管理員資訊update
+function updateSubmit(number){
+	
+	//抓傳送值
+	let formData = new FormData();
+	formData.append("maId" , $("#maId" + number).val() );
+	formData.append("accrount" , $("#accrount" + number).val() );
+	formData.append("password" , $("#passwordOne" + number).val() );
+	formData.append("accrountAuth" , $("#accrountAuth" + number).val() );
+	formData.append("productAuth" , $("#productAuth" + number).val() );
+	formData.append("orderAuth" , $("#orderAuth" + number).val() );
+	formData.append("webMaintainAuth" , $("#webMaintainAuth" + number).val() );
+	
+	//更新資料
 	$.ajax({ 
 		type:"POST",
 		cache:true,
 		
 		//header不傳contexntType
 		contentType:false,
-		url:("updateUserAccount/"+ detailId),
+		url:("updateUserManagerial"),
 
 		//ajax會自動將data改成字串型態, 這裡使用processData:false來阻止資料被轉成字串, 不然multipart資料接收會錯誤
-		data:detailForm,
+		data:formData,
 		processData:false,
 		
 		//ajax傳送更新資料前 先出現upload畫面
@@ -198,72 +231,51 @@ function updateDetailData(){
 			buildTable();
 		},
 		
+		//更新失敗先關閉upload畫面, 在顯示錯誤訊息
 		error:function(data){
 			$("#dialog_div_wait").dialog("close");
 			$("#dialog_div_error").html("<span class='errorFont'>更新帳戶失敗!</span>");
 			$("#dialog_div_error").dialog("open");
 		},
-		
-		
 	});
-}
-
-//使用者帳戶insert的Detail資訊(Dialog內)
-function detailInsert(){
 	
-	//Detail資訊內容建立
-	detailContant 	= 	"<form id='detailForm2' method='post' enctype='multipart/form-data'>"
-					+	"<table id='detailTable2'>"
-					+	"<tr><td>信箱:<td><input type='text' id='account2' name='account' required='required'></input>"
-						+ "<span id='account2Meg'></span>"	
-					+	"<tr><td>密碼:<td><input type='password' id='password2' name='password'" 
-						+ "placeholder='在此輸入變更的密碼' ></input> <span id='password2Meg'></span>"
-					+	"<tr><td>密碼:<td><input type='password' id='password3'" 
-						+ "placeholder='再次確認變更的密碼' ></input>"	
-					+	"<tr><td>姓氏:<td><input type='text' id='lastname2' name='lastname'></input>"
-						+ "<span id='lastname2Meg'></span>"
-					+	"<tr><td>名稱:<td><input type='text' id='firstname2' name='firstname'></input>"
-						+ "<span id='firstname2Meg'></span>"
-					+	"<tr><td>暱稱:<td><input type='text' id='nickname2' name='nickname'></input>"
-						+ "<span id='nickname2Meg'></span>"
-					+	"<tr><td>性別:<td><select id='gender2' name='gender'>";
-	//抓性別資料填預設值
-	for(let i=0 ; i < genderArray.length ; ++i){
-		detailContant 	+=	"<option value='"+ genderArray[i] +"'>" + genderArray[i];
-	}
-	detailContant 	+=	"</select>"
-					+	"<tr><td>生日:<td><input type='text' id='birthday2' name='birthday' "
-						+ "placeholder='yyyy-MM-DD'></input> <span id='birthday2Meg'></span>"
-					+	"<tr><td>電話:<td><input type='text' id='phone2' name='phone'></input>"
-						+ "<span id='phone2Meg'></span>"
-					+	"<tr><td>住址:<td><input type='text' id='address2' name='address'></input>"
-						+ "<span id='address2Meg'></span>"
-					+	"<tr><td>認證:<td><select id='checkstatus2' name='checkstatus'>";
-	//抓認證資料填預設值
-	for(let i=0 ; i < checkstatusArray.length ; ++i){
-		detailContant 	+=	"<option value='"+ checkstatusArray[i] +"'>" + checkstatusArray[i];
-	}
-	detailContant 	+=	"</select></td></tr></table></from>";
-					
-	//將Detail資訊寫到Dialog, 並顯示Dialog
-	$("#dialog_div_insert").html(detailContant);
-	$("#dialog_div_insert").dialog("open");
+}
+//新增區:
+//管理員資訊insert開啟與關閉按鈕, 會將其他按鈕關閉
+function insertShow(){
+	//把其他可隱藏的class(hideTr)藏起來
+	$(".hideTr:not(#inSertTr)").hide("fast");
+	$("#inSertTr").toggle("fast");
 }
 
-//update Detail資訊
-function insertDetailData(){
-	//打包form(id="detailForm")的資料
-	let detailForm = new FormData($("#detailForm2")[0]);
+//管理員資訊insert關閉按鈕(!!暫時無用!!)
+//function insertHide(){
+//	$("#inSertTr").hide("fast");
+//}
+
+//管理員資訊insert
+function insertSubmit(){
+	
+	//抓傳送值
+	let formData = new FormData();
+	formData.append("accrount" , $("#inAccrount").val() );
+	formData.append("password" , $("#inPasswordOne").val() );
+	formData.append("accrountAuth" , $("#inaccrountAuth").val() );
+	formData.append("productAuth" , $("#inproductAuth").val() );
+	formData.append("orderAuth" , $("#inorderAuth").val() );
+	formData.append("webMaintainAuth" , $("#inwebMaintainAuth").val() );
+	
+	//更新資料
 	$.ajax({ 
 		type:"POST",
 		cache:true,
 		
 		//header不傳contexntType
 		contentType:false,
-		url:("insertUserAccount"),
+		url:("insertManagerial"),
 
 		//ajax會自動將data改成字串型態, 這裡使用processData:false來阻止資料被轉成字串, 不然multipart資料接收會錯誤
-		data:detailForm,
+		data:formData,
 		processData:false,
 		
 		//ajax傳送更新資料前 先出現upload畫面
@@ -275,18 +287,18 @@ function insertDetailData(){
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
 			$("#dialog_div_wait").dialog("close");
-			$("#dialog_div_insert").dialog("close");
+			$("#dialog_div_update").dialog("close");
 			buildTable();
 		},
 		
+		//更新失敗先關閉upload畫面, 在顯示錯誤訊息
 		error:function(data){
 			$("#dialog_div_wait").dialog("close");
-			$("#dialog_div_error").html("<span class='errorFont'>創立帳戶失敗!</span>");
+			$("#dialog_div_error").html("<span class='errorFont'>更新帳戶失敗!</span>");
 			$("#dialog_div_error").dialog("open");
 		},
-		
-		
 	});
+	
 }
 
 //Dialog設定區

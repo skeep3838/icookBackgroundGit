@@ -132,42 +132,94 @@ public class accountController {
 		}
 		return json;
 	}
-	
+
 	// 用RESTful回傳頁數{page}對應的管理員帳戶資料(Json資料)
+	@ResponseBody
+	@GetMapping(value = "/managerial/{page}", produces = "application/json")
+	public Map<String, Object> getManagerialForPage(@PathVariable Integer page) {
+
+		System.out.println("==== getProductsForPage start====");
+		// 建立必要變數:
+		Map<String, Object> json = new HashMap<>();
+		String managerialPageJson = null;
+		Integer allAccountNumber;
+
+		// 將該頁的資料撈出來
+		List<Manageral> accountPage = service.getManagerialUserAccountOfPage(page);
+		System.out.println("==== accountPage= " + accountPage + " ====");
+
+		// 該頁諾有資料, 將資料轉利用Gson套件換成Json格式
+		if (accountPage != null) {
+			// 建立Gson
+			Gson gson = new Gson();
+
+			// 將productPage轉成Json格式的String字串
+			managerialPageJson = gson.toJson(accountPage);
+			System.out.println("gson.toJson(productPage)= " + managerialPageJson);
+		}
+
+		// 取得商品總數
+		System.out.println("==== Start getAllProductNumber ====");
+		allAccountNumber = service.getAllManagerialNumber();
+		System.out.println("===== allProductNumber= " + allAccountNumber + " =====");
+
+		// 建立Json內容(Map型態)
+		json.put("managerialPageJson", managerialPageJson);
+		json.put("page", page);
+		json.put("allAccountNumber", allAccountNumber);
+
+		return json;
+	}
+
+	// 更新管理員資訊
+	@ResponseBody
+	@PostMapping(value = "/updateUserManagerial", produces = "application/json")
+	public Map<String, Object> updateUserManagerial(@ModelAttribute Manageral member,
+			Model model, HttpServletRequest req) {
+		System.out.println("=== member:" + member + " ===");
+		// 建立必要參數
+		Boolean result = null;
+		Map<String, Object> json = new HashMap<>();
+
+		// 取maId
+		Integer id = member.getMaId();
+
+		// 確認是否有需要更換密碼, 密碼欄位為空的就塞回舊的密碼
+		if (member.getPassword().isEmpty()) {
+			member.setPassword(service.getOneManagerial(id).getPassword());
+		}
+
+		// 更新user account
+		result = service.updateUserManagerial(member);
+
+		// 確認更新結果
+		if (result == false) {
+			json.put("status", "false");
+		} else {
+			json.put("status", "OK");
+		}
+		return json;
+	}
+	
+	// 新增使用者帳戶資訊
 		@ResponseBody
-		@GetMapping(value = "/managerial/{page}", produces = "application/json")
-		public Map<String, Object> getManagerialForPage(@PathVariable Integer page) {
+		@PostMapping(value = "/insertManagerial", produces = "application/json")
+		public Map<String, Object> insertManagerial(@ModelAttribute Manageral member, Model model,
+				HttpServletRequest req) {
 
-			System.out.println("==== getProductsForPage start====");
-			// 建立必要變數:
+			System.out.println("=== insertMem:" + member + " ===");
+			// 建立必要參數
+			Boolean result = null;
 			Map<String, Object> json = new HashMap<>();
-			String managerialPageJson = null;
-			Integer allAccountNumber;
 
-			// 將該頁的資料撈出來
-			List<Manageral> accountPage = service.getManagerialUserAccountOfPage(page);
-			System.out.println("==== accountPage= " + accountPage + " ====");
+			result = service.insertOneManagerial(member);
 
-			// 該頁諾有資料, 將資料轉利用Gson套件換成Json格式
-			if (accountPage != null) {
-				// 建立Gson
-				Gson gson = new Gson();
-
-				// 將productPage轉成Json格式的String字串
-				managerialPageJson = gson.toJson(accountPage);
-				System.out.println("gson.toJson(productPage)= " + managerialPageJson);
+			// 確認更新結果
+			if (result == false) {
+				json.put("status", "false");
+			} else {
+				json.put("status", "OK");
 			}
-
-			// 取得商品總數
-			System.out.println("==== Start getAllProductNumber ====");
-			allAccountNumber = service.getAllManagerialNumber();
-			System.out.println("===== allProductNumber= " + allAccountNumber + " =====");
-
-			// 建立Json內容(Map型態)
-			json.put("managerialPageJson", managerialPageJson);
-			json.put("page", page);
-			json.put("allAccountNumber", allAccountNumber);
-
 			return json;
 		}
 

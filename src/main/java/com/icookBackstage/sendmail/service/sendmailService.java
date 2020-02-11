@@ -6,6 +6,8 @@ import com.icookBackstage.model.ProductOrder;
 public interface sendmailService {
 	
 	public void sendOrderConfirmation(ProductOrder productOrder);
+	
+	public boolean sendResponseQuestion(ProductOrder productOrder);
 
 	boolean searchAccount(String account);
 

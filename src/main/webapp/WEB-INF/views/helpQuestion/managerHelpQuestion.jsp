@@ -23,8 +23,18 @@ table, tr, td {
 /* 	text-align:center; */
 	
 }
-
+#ui-id-3 {
+	margin-left: 38%;
+}
+#div_wait {
+	margin-left: 33%;
+}
 textarea {
+	width: 388px;
+    height: 319px;
+}
+
+textarea.{
 	width: 388px;
     height: 319px;
 }
@@ -143,7 +153,9 @@ div.center {
 		<!-- Sidebar -->
 		<jsp:include page="/WEB-INF/views/fragment/SideBar.jsp" />
 		
-		<div id="dialog_div_helpContent" title="客戶問題"></div>
+		<div id="dialog_div_helpContent" title="客戶問題"></div>\
+		<div id="dialog_div_responseQuestion" title="問題回覆"></div>
+		<div id="dialog_div_wait" title="等待中"></div>
 		
 		<div id="content-wrapper" class="d-flex flex-column">
 
@@ -159,12 +171,12 @@ div.center {
 
 					<!-- 	----------------------------------------	 -->
 					<c:if test="${stat == false}">
-						<script>alert('沒有訂單資訊')</script>
+						<script>alert('沒有客戶問題')</script>
 					</c:if>
 					<div class="services-breadcrumb">
 						<div class="container">
 							<ul>
-								<li>< 客服管理 > 共 ${orderSize} 筆問題</li>
+								<li>< 客服管理 > 共 ${orderSize} 筆詢問</li>
 							</ul>
 						</div>
 					</div>
@@ -189,12 +201,12 @@ div.center {
 										<td>${Help.userID}
 										<td style='width: 30%'>${Help.email}
 										<td>${Help.title}
-										<c:choose>
+											<c:choose>
 												<c:when test="${Help.responseStatus == 'N'}">
-													<td> 未回覆
+													<td id="responseStatusTD${Help.helpQAId}"> 未回覆
 												</c:when>
 												<c:otherwise>
-													<td> 已回覆
+													<td id="responseStatusTD${Help.helpQAId}"> 已回覆
 												</c:otherwise>
 											</c:choose>
 										<td style="text-align: center"><input 
@@ -203,12 +215,14 @@ div.center {
 											<c:choose>
 												<c:when test="${Help.responseStatus == 'N'}">
 													<td style="text-align: left"><input type='button'
-														class='btn btn-default btn-secondary btn-sm' disabled
+														id="answer${Help.helpQAId}"
+														class='btn btn-default btn-secondary btn-sm' 
+														onclick="responseQuestionDialog('${Help.title}',${Help.helpQAId})"
 														value='回覆問題' />
 												</c:when>
 												<c:otherwise>
 													<td style="text-align: left"><input type='button' 
-														class='btn btn-default btn-secondary btn-sm'
+														class='btn btn-default btn-secondary btn-sm' disabled
 														value='回覆問題' />
 												</c:otherwise>
 											</c:choose>
@@ -276,16 +290,16 @@ div.center {
 										+ "<td>" + lists[i].userID + "<td style='width: 30%'>"
 										+ lists[i].email + "<td>" + lists[i].title;
 									if (lists[i].responseStatus == "N") {
-										temp+= "<td> 未回覆";
+										temp+= "<td id='responseStatusTD"+ lists[i].helpQAId +"'> 未回覆";
 									}
 									else {
-										temp+= "<td> 已回覆";
+										temp+= "<td id='responseStatusTD"+ lists[i].helpQAId +"'> 已回覆";
 									}
 									temp += "<td style='text-align: center'><input type='button' class='btn btn-default btn-secondary btn-sm' onclick='QuestionContent("+ lists[i].helpQAId +")' value='問題內容'  />";
 									if (lists[i].responseStatus == "N") {
-										temp += "<td  style='text-align: left'><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='回覆問題'  />"
+										temp += "<td  style='text-align: left'><input type='button' id='answer"+ lists[i].helpQAId +"' class='btn btn-default btn-secondary btn-sm' onclick=\"responseQuestionDialog('"+ lists[i].title +"',"+ lists[i].helpQAId +")\" value='回覆問題'  />"
 									} else {
-										temp += "<td  style='text-align: left'><input type='button'  class='btn btn-default btn-secondary btn-sm' value='回覆問題'  />";
+										temp += "<td  style='text-align: left'><input type='button'  class='btn btn-default btn-secondary btn-sm' disabled value='回覆問題'  />";
 									}
 									$("#table1 tbody").append(temp);
 								}
@@ -313,9 +327,47 @@ div.center {
 						console.log(error);
 					},
 				});
-				
-				
-				
+			}
+			
+			function responseQuestionDialog(title,helpQAId) {
+				var temp = "<h3>Re : "+ title +"</h3>";
+				temp += "<textarea id='textarea"+ helpQAId +"' style='margin-top: 2px' name='Message' onfocus='if (this.value == 'Message...') {this.value = '';}' onblur='if (this.value == '') {this.value = 'Message...';}' required='' ></textarea>";
+				$("#dialog_div_responseQuestion").html(temp);
+				$("#dialog_div_responseQuestion").val(helpQAId);
+				$("#dialog_div_responseQuestion").dialog("open");
+			}
+			
+			function responseQuestion() {
+				var packageName = getRealPath();
+				var temp = $("#dialog_div_responseQuestion").val();
+				var str = $("#textarea"+temp).val();
+				$.ajax({
+					type: "POST",
+					url: "/" + packageName + "/sendResponsemail?helpQAId=" + temp,
+					data:{ textarea: str },
+					dataType: "text",
+					beforeSend:function(){
+						$("#dialog_div_wait").html("<div id='div_wait'><img src='images/ajaxload.gif'>&nbsp&nbsp<span>寄送中...</span></div>");
+				        $("#dialog_div_wait").dialog("open");
+					},
+					success: function (data) {
+						$("#dialog_div_wait").dialog("close");
+						$("#dialog_div_responseQuestion").dialog("close");
+						if(data == "Y") {
+							$("#responseStatusTD" + temp).html("已回覆");
+							$("#answer" + temp).prop("disabled",true);
+							alert("寄件成功");
+						}
+						else {
+							alert("更新失敗");
+						}
+					},
+					error: function (error) {
+						console.log(error);
+						$("#dialog_div_wait").dialog("close");
+						$("#dialog_div_responseQuestion").dialog("close");
+					},
+				});
 			}
 			
 			$(function() {
@@ -325,33 +377,66 @@ div.center {
 			    	maxWidth:	451,
 			    	minHeight:	478,
 			    	minWidth:	451,
-			    	
 			    	//拖移設定
 			    	draggable: true,
-			    	
 			    	//dialog建立自動開啟設定
 			        autoOpen: false,
-			        
 			        //視窗外無法操作設定
 			        modal : true,
-
 			        //open事件發生時, 將dialog樣式右上的x顯示
 			        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
-			        
 			        buttons: {
-// 			            "Create": function() {
-// 			            	insertDetailData();
-// 			            },
 			            "Cancel": function() { 
 			            	$(this).dialog("close");
 			            }
 			        }
 			    });
-			 
-			    $("#123").click(function(productId) {
-			        $("#dialog_div_helpContent").dialog("open");
+			});
+			
+			
+			
+			$(function() {
+			    $("#dialog_div_responseQuestion").dialog({
+			    	//固定視窗
+			    	maxHeight:	510,
+			    	maxWidth:	451,
+			    	minHeight:	510,
+			    	minWidth:	451,
+			    	//拖移設定
+			    	draggable: true,
+			    	//dialog建立自動開啟設定
+			        autoOpen: false,
+			        //視窗外無法操作設定
+			        modal : true,
+			        //open事件發生時, 將dialog樣式右上的x顯示
+			        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
+			        buttons: {
+			            "回覆": function() {
+			            	responseQuestion();
+			            },
+			            "取消": function() { 
+			            	$(this).dialog("close");
+			            }
+			        }
 			    });
-			 
+			});
+			
+			$(function() {
+			    $("#dialog_div_wait").dialog({
+			    	//固定視窗
+			    	maxHeight:	110,
+			    	maxWidth:	110,
+			    	minHeight:	110,
+			    	minWidth:	110,
+			    	//拖移設定
+			    	draggable: true,
+			    	//dialog建立自動開啟設定
+			        autoOpen: false,
+			        //視窗外無法操作設定
+			        modal : true,
+			        //open事件發生時, 將dialog樣式右上的x顯示
+			        open:function(event,ui){$(".ui-dialog-titlebar-close").hide();},
+			    });
 			});
 		</script>
 

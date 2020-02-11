@@ -135,6 +135,20 @@ public class AllOrdDaoImpl implements AllOrdDao{
 		}
 		return list;
 	}
+
+	@Override
+	public void UpdateQuestionStatus(int helpQAId) {
+		Session session = factory.getCurrentSession();
+		try {
+			String hql = "update helpQuestion m set m.responseStatus = :status where m.helpQAId = :mid";
+			session.createQuery(hql).setParameter("status", "Y")
+			 .setParameter("mid", helpQAId)
+			 .executeUpdate();
+			System.out.println("--------------CORRECT---------------");
+		} catch (Exception e) {			
+			System.out.println("--------------ERROR---------------");
+		}
+	}
 	
 	
 }

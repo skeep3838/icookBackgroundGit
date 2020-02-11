@@ -29,6 +29,16 @@ public class sendmailServiceImpl implements sendmailService {
 	}
 	
 	
+	
+	@Override
+	public boolean sendResponseQuestion(ProductOrder productOrder) {
+		boolean result = mailService.sendEmail(productOrder);
+		if(result == true) return true;
+		else return false;
+	}
+
+
+
 	@Transactional
 	@Override
 	public boolean searchAccount(String account) {

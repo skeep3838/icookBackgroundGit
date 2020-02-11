@@ -20,15 +20,17 @@ public class MailServiceImpl implements mailService{
 	JavaMailSender mailSender;
 	
 	@Override
-	public void sendEmail(Object object) {
+	public boolean sendEmail(Object object) {
 		ProductOrder order = (ProductOrder) object;
         MimeMessagePreparator preparator = getMessagePreparator(order);
  
         try {
             mailSender.send(preparator);
             System.out.println("Message Send...Hurrey");
+            return true;
         } catch (MailException ex) {
             System.err.println(ex.getMessage());
+            return false;
         }
 	}
 
@@ -44,6 +46,10 @@ public class MailServiceImpl implements mailService{
                 if(order.getProductName() == "OrderStatus") {
                 	mimeMessage.setText("Dear " + order.getCustomerInfo().getName()
                             + ", 您的訂單編號為"+ order.getOrderId() +"的訂單，現在的運送狀況為 " + order.getStatus() + ".");
+                }
+                else if(order.getProductName() == "responseQuestion") {
+                	mimeMessage.setText("Dear " + order.getCustomerInfo().getName()
+                			+ " 感謝你的回覆\n" + order.getCustomerInfo().getAddress());
                 }
                 mimeMessage.setSubject("Your order on Demoapp");
             }

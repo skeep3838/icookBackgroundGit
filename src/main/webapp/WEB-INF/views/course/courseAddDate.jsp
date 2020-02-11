@@ -107,7 +107,7 @@
 													style="height: 35px; width: 400px;">
 										<tr>
 											<td><select class="custom-select" style="height: 35px; width: 400px;"
-													name="roomNo" id="roomNo" onchange="roomInfo()" required="required">
+													name="roomNo" id="roomNo" onchange="roomJson123()" required="required">
 													<option value="" disabled selected hidden>上課教室</option>
 													<c:forEach var='bean' items='${roomBean}'>
 														<option value='${bean.roomNo}'> ${bean.roomNo} 容納人數:
@@ -122,7 +122,7 @@
 													<p id="showEndDate">課程結束日期: </p>
 													<input type="hidden" id="courseEndDate" name="courseEndDate">
 
-													<input type="button" onclick="dateCalendar()" value="課程時間">
+													<input type="button" onclick="roomJson123()" value="課程時間">
 													<input type=submit value="下一步" onclick="checkDate(event)">
 													<input type="button" onclick="clearAll()" value="重新設定">
 												</div>

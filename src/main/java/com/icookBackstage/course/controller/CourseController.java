@@ -7,6 +7,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -189,8 +190,8 @@ public class CourseController {
 //	回傳教室的map資訊
 	@GetMapping(value = "/course/roomJsonMap", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String roomDateMap(Model model) {
-		String roomMap = service.queryClassRoom();
+	public Map<String, String> roomDateMap(Model model) {
+		Map<String, String> roomMap = service.queryClassRoom();
 		return roomMap;
 	}
 

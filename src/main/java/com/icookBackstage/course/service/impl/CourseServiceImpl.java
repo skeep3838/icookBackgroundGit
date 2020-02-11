@@ -87,29 +87,28 @@ public class CourseServiceImpl implements CourseService{
 
 	@Transactional
 	@Override
-	public String queryClassRoom() {
+	public Map<String, String> queryClassRoom() {
 //		Map<教室名稱, json-使用時間>
-//		Map<String, String> mapRoom = new LinkedHashMap<>();
+		Map<String, String> mapRoom = new LinkedHashMap<>();
 		List<CourseBean> rooms = dao.queryAllCourse();
 //		測試新的方法 ==> OK
 		GsonBuilder builder = new GsonBuilder();
 		builder.excludeFieldsWithoutExposeAnnotation();  
 		Gson gson1 = builder.create();
-		String json = gson1.toJson(rooms);
-		System.out.println("rooms: "+json);
-//		for(ClassRoomBean room:rooms) {
-//			String json = null;
-////			取得List-教室使用資訊
-//			List<CourseBean> courList = dao.queryClassRoom(room.getRoomNo());
-////			將List的內容轉為Json
-//			json = gson1.toJson(courList);
-//			mapRoom.put(room.getRoomNo(), json);
-//			System.out.println("courList: "+courList);
-//			System.out.println("json: "+mapRoom.get(room.getRoomNo()));
-//		}
+		Gson gson2 = builder.create();
+		for(CourseBean room:rooms) {
+			String json = null;
+//			取得List-教室使用資訊
+			List<CourseBean> courList = dao.queryClassRoom(room.getRoomNo());
+//			將List的內容轉為Json
+			json = gson1.toJson(courList);
+			mapRoom.put(room.getRoomNo(), json);
+			System.out.println("courList: "+courList);
+			System.out.println("json: "+mapRoom.get(room.getRoomNo()));
+		}
 //		String jsonMap = gson2.toJson(mapRoom);	
 		
-		return json;
+		return mapRoom;
 	}
 
 	@Transactional

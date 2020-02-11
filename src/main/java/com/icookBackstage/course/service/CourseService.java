@@ -19,7 +19,7 @@ public interface CourseService {
 	Map<Integer, CourseBean> courseODMap(Set<Integer> cartSet);
 	public void insertCourse(CourseBean bean);
 	List<ClassRoomBean> roomList();
-	public String queryClassRoom();
+	public Map<String, String> queryClassRoom();
 	public void deleteCourse(CourseBean bean);
 	Boolean updateCourse(CourseBean bean);
 //	public String queryClassRoom();

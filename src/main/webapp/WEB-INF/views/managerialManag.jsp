@@ -93,6 +93,14 @@ div.dataTables_paginate {
 	white-space: nowrap;
 	text-align: right;
 }
+
+#password2{
+	margin-top : 2px;
+}
+
+.hideTr{
+ 	display : none; 
+}
 </style>
 
 <title>Demo_NewProduct</title>
@@ -152,7 +160,7 @@ div.dataTables_paginate {
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 以下改寫 -->
-					<input type='button' value='新增使用者'>
+					<input type='button' class='btn btn-default btn-secondary btn-sm' onclick='insertShow()' value='新增使用者'>
 					<div>
 						<div id="test1"></div>
 						<div class="row" id="pageArea1"></div>

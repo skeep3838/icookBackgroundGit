@@ -1,5 +1,5 @@
 package com.icookBackstage.sendmail.service;
 
 public interface mailService {
-	public void sendEmail(final Object object);
+	public boolean sendEmail(final Object object);
 }

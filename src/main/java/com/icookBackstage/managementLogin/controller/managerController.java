@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.icookBackstage.managementLogin.service.SearchAllOrdServiceDao;
+import com.icookBackstage.model.CustomerInfo;
 import com.icookBackstage.model.MemberBean;
+import com.icookBackstage.model.ProductOrder;
 import com.icookBackstage.model.helpQuestion;
 import com.icookBackstage.model.orderBean;
 import com.icookBackstage.model.orderDetail;
+import com.icookBackstage.sendmail.service.sendmailService;
 
 @Controller
 public class managerController {
@@ -34,7 +37,15 @@ public class managerController {
 	public void setService(SearchAllOrdServiceDao service) {
 		this.service = service;
 	}
-		
+	
+	@Autowired
+	sendmailService mailService;
+
+	@Autowired
+	public void setService(sendmailService service) {
+		this.mailService = service;
+	}
+	
 	@RequestMapping(value = "/managerJson", method = RequestMethod.POST, produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public String changeJson(@RequestParam("page") String page,Model model, HttpServletRequest request,
@@ -222,5 +233,34 @@ public class managerController {
 		Gson gson = new Gson();
 		String json = gson.toJson(temp);
 		return json;
+	}
+	
+	@RequestMapping(value = "/sendResponsemail", method = RequestMethod.POST)
+	@ResponseBody
+	public String sendEmail(@RequestParam("helpQAId")int helpQAId,@RequestParam("textarea")String textarea,Model model, HttpServletRequest request, HttpServletResponse response) {
+		helpQuestion temp = service.searchSingleHelpQuestion(helpQAId);
+		MemberBean member = service.searchSingleMember(temp.getUserID());
+//		boolean result = mailService.sendResponseQuestion(responseQuestiob(textarea,member,"responseQuestion"));
+		boolean result = true;
+		if(result == true) {
+			service.finishUpdateResponseStatus(helpQAId);
+			return "Y";
+		}
+		else {
+			return "F";			
+		}
+	}
+	
+	public static ProductOrder responseQuestiob(String temp,MemberBean member,String purpose) {
+		ProductOrder order = new ProductOrder();
+		order.setProductName(purpose);
+		order.setOrderId("");
+		order.setStatus("");
+		CustomerInfo customerInfo = new CustomerInfo();
+		customerInfo.setName(member.getNickname());
+		customerInfo.setAddress(temp);
+		customerInfo.setEmail(member.getAccount());
+		order.setCustomerInfo(customerInfo);
+		return order;
 	}
 }

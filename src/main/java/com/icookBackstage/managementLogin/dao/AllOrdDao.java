@@ -15,4 +15,5 @@ public interface AllOrdDao {
 	public void DeleteOrders(int orderId);
 	public List<helpQuestion> getAllHelpQuestion();
 	public helpQuestion getHelpQuestion(int helpQAId);
+	public void UpdateQuestionStatus(int helpQAId);
 }

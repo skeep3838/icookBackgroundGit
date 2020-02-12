@@ -98,9 +98,33 @@ div.dataTables_paginate {
 	margin-top : 2px;
 }
 
-.hideTr{
+.hideTr, .hideBr{
  	display : none; 
 }
+.passwordTwo{
+	display : none; 
+}
+
+#dialog_div_wait,#dialog_div_error {
+	text-align : center;
+}
+
+#dialog_div_wait img{
+	margin-top : 50px;
+	vertical-align : middle;
+}
+
+.errorFont{
+	line-height : 150px;
+	color : red;
+	font-weight : bold;
+}
+
+.errorMeg{
+	color : red;
+	display : none; 
+}
+
 </style>
 
 <title>Demo_NewProduct</title>

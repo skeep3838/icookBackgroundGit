@@ -13,26 +13,43 @@ let detailContant = "";
 let createNoError = 1;
 let authArray = [true,false];
 let authName = ["accrountAuth","productAuth","orderAuth","webMaintainAuth"];
-
+let test1 = null;
+let passwordCount =1;
 
 
 //認證密碼
-$("body").on("change",".passwordOne, .passwordTwo",function(){
+$("body").on("keyup",".passwordOne, .passwordTwo",function(event){
+	console.log("input start");
+	//
 	let index = $(this).attr("index");
+
 	let paOneClas= "#passwordOne" + index;
 	let paTwoClas= "#passwordTwo" + index;
+	let paMeg = "#passwordMeg" + index;
 	
 	let passwordOne = $(paOneClas).val();
 	let passwordTwo = $(paTwoClas).val();
-	if( passwordOne == passwordTwo ){
-		createNoError = 1;
-		$("#passwordMeg").html("")
-		$("#passwordMeg").attr("class","passMeg")
+	
+	//如果輸入Enter就交換顯示, 第二組密碼組搭配錯誤訊息顯示
+	if( (event.keyCode === 13 || event.which === 13) && passwordCount === 1){
+		$(paOneClas).toggle("fast");
+		$(paTwoClas).toggle("fast");
+		$(paMeg).toggle("fast");
+		$(".hideBr").toggle("fast");
+		passwordCount = 2;
 	}else{
-		createNoError = 0;
-		$("#passwordMeg").html("*密碼不一致")
-		$("#passwordMeg").attr("class","errorMeg")
+		if( passwordOne === passwordTwo ){
+			$(paMeg).html("")
+			$(paMeg).attr("class","passMeg")
+			console.log(passwordOne === passwordTwo);
+		}else{
+			$(paMeg).html("*密碼不一致")
+			$(paMeg).attr("class","errorMeg")
+			console.log("123" + passwordOne === passwordTwo);
+		}
 	}
+	
+	
 });
 
 
@@ -78,14 +95,15 @@ function buildTable(){
 			tableContant = "";
 			paginationContant = "";
 			firstDataNumber = (json.page-1)*onePageNunber + 1
+			
 			//table內容	
 			//新增用欄位
 			tableContant	+= 	"<tr id='inSertTr' class='hideTr'><td><span>新增資料:</span>"
-							+"<td><input size='12' type='text' id='inAccrount' name='accrount'>"
+							+"<td><input size='12' type='text' id='accrountIn' name='accrount'>"
 							+"<br><span id='inAccountMeg'></span>"
-							+"<td><input size='12' type='password' id='inPasswordOne' class='passwordOne' placeholder='輸入密碼'>" 
-							+"<br><input size='12' type='password' id='inPasswordTwo' class='passwordTwo' placeholder='再次輸入密碼'>"
-							+"<br><span id='inPasswordMeg'></span>";
+							+"<td><input size='12' type='password' index='In' id='passwordOneIn' class='passwordOne' placeholder='輸入密碼'>" 
+							+"<input size='12' type='password' index='In' id='passwordTwoIn' class='passwordTwo' placeholder='再次輸入密碼'>"
+							+"<br class='hideBr'><span id='passwordMegIn' class='errorMeg'></span>";
 			//authName內每個權限輪尋一遍
 			for(let j=0 ; j < authName.length ; ++j){
 				tableContant	+=	"<td><select id='"+ "in" + (authName[j]) +"'>";
@@ -107,7 +125,7 @@ function buildTable(){
 				//顯示用資訊
 				tableContant	+= 	"<tr id='showTr"+ i +"'><td>" + managerialPageJson[i].maId
 								+	"<td>" + managerialPageJson[i].accrount
-								+	"<td>" 
+								+	"<td>***" 
 								+	"<td>" + managerialPageJson[i].accrountAuth
 								+	"<td>" + managerialPageJson[i].productAuth
 								+	"<td>" + managerialPageJson[i].orderAuth
@@ -121,8 +139,8 @@ function buildTable(){
 								+	"<td><input size='12' type='text' id='accrount" + i + "' name='accrount' value='"
 									+	managerialPageJson[i].accrount + "'><br><span id='accountMeg'></span>"
 								+	"<td><input size='12' type='password' index='" + i + "' id='passwordOne" + i + "' class='passwordOne' placeholder='輸入密碼'>" 
-									+	"<br><input size='12' type='password' index='" + i + "' id='passwordTwo" + i + "' class='passwordTwo' placeholder='再次輸入密碼'>"
-									+	"<br><span id='passwordMeg" + i + "'></span>";
+									+	"<input size='12' type='password' index='" + i + "' id='passwordTwo" + i + "' class='passwordTwo' placeholder='再次輸入密碼'>"
+									+	"<br class='hideBr'><span id='passwordMeg" + i + "' class='errorMeg'></span>";
 				
 				//抓權限填預設值
 				//authName內每個權限輪尋一遍
@@ -177,12 +195,32 @@ function buildTable(){
 	})
 }
 
+//============ 更新帳戶功能區: ============
+
 //管理員資訊update開啟與關閉按鈕, 會將其他按鈕關閉
 function updateOpen(number){
 	//把其他可隱藏的class(hideTr)藏起來
 	let tr =  "#updateTr" + number;
+	let paOneClas= "#passwordOne" + number;
+	let paTwoClas= "#passwordTwo" + number;
+	let paMeg = "#passwordMeg" + number;
+	
 	$(".hideTr:not("+ tr +")").hide("fast");
 	$(tr).toggle("fast");
+	
+	
+	//刷新確認密碼
+	passwordCount = 1;
+	
+	//清空密碼欄
+	$("#passwordOne" + number).val("");
+	$("#passwordTwo" + number).val("");
+	
+	//按鈕隱藏模式改為預設值
+	$(paOneClas).show();
+	$(paTwoClas).hide();
+	$(paMeg).hide();
+	$(".hideBr").hide();
 }
 
 //管理員資訊update關閉按鈕(!!暫時無用!!)
@@ -227,7 +265,6 @@ function updateSubmit(number){
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
 			$("#dialog_div_wait").dialog("close");
-			$("#dialog_div_update").dialog("close");
 			buildTable();
 		},
 		
@@ -240,12 +277,31 @@ function updateSubmit(number){
 	});
 	
 }
-//新增區:
+
+//============ 新增帳戶功能區: ============
+
 //管理員資訊insert開啟與關閉按鈕, 會將其他按鈕關閉
 function insertShow(){
 	//把其他可隱藏的class(hideTr)藏起來
 	$(".hideTr:not(#inSertTr)").hide("fast");
 	$("#inSertTr").toggle("fast");
+	
+	let paOneClas= "#passwordOneIn";
+	let paTwoClas= "#passwordTwoIn";
+	let paMeg = "#passwordMegIn";
+	
+	//刷新確認密碼
+	passwordCount = 1;
+	
+	//清空密碼欄
+	$("#passwordOneIn").val("");
+	$("#passwordTwoIn").val("");
+	
+	//按鈕隱藏模式改為預設值
+	$(paOneClas).show();
+	$(paTwoClas).hide();
+	$(paMeg).hide();
+	$(".hideBr").hide();
 }
 
 //管理員資訊insert關閉按鈕(!!暫時無用!!)
@@ -258,8 +314,8 @@ function insertSubmit(){
 	
 	//抓傳送值
 	let formData = new FormData();
-	formData.append("accrount" , $("#inAccrount").val() );
-	formData.append("password" , $("#inPasswordOne").val() );
+	formData.append("accrount" , $("#accrountIn").val() );
+	formData.append("password" , $("#passwordOneIn").val() );
 	formData.append("accrountAuth" , $("#inaccrountAuth").val() );
 	formData.append("productAuth" , $("#inproductAuth").val() );
 	formData.append("orderAuth" , $("#inorderAuth").val() );
@@ -287,7 +343,6 @@ function insertSubmit(){
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
 			$("#dialog_div_wait").dialog("close");
-			$("#dialog_div_update").dialog("close");
 			buildTable();
 		},
 		
@@ -301,80 +356,9 @@ function insertSubmit(){
 	
 }
 
-//Dialog設定區
-$(function() {
-    $("#dialog_div_insert").dialog({
-    	//固定視窗
-    	maxHeight:	550,
-    	maxWidth:	450,
-    	minHeight:	550,
-    	minWidth:	450,
-    	
-    	//拖移設定
-    	draggable: true,
-    	
-    	//dialog建立自動開啟設定
-        autoOpen: false,
-        
-        //視窗外無法操作設定
-        modal : true,
+//============ Dialog設定區: ============
 
-        //open事件發生時, 將dialog樣式右上的x顯示
-        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
-        
-        buttons: {
-            "Create": function() {
-            	insertDetailData();
-            },
-            "Cancel": function() { 
-            	$(this).dialog("close");
-            }
-        }
-    });
- 
-    $("#123").click(function(productId) {
-        $("#dialog_div_insert").dialog("open");
-    });
- 
-});
-
-$(function() {
-    $("#dialog_div_update").dialog({
-    	//固定視窗
-    	maxHeight:	550,
-    	maxWidth:	450,
-    	minHeight:	550,
-    	minWidth:	450,
-    	
-    	//拖移設定
-    	draggable: true,
-    	
-    	//dialog建立自動開啟設定
-        autoOpen: false,
-        
-        //視窗外無法操作設定
-        modal : true,
-
-        //open事件發生時, 將dialog樣式右上的x顯示
-        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
-        
-        buttons: {
-            "Update": function() {
-            	updateDetailData();
-            },
-            "Cancel": function() { 
-            	$(this).dialog("close");
-            }
-        }
-    });
- 
-    $("#opener").click(function(productId) {
-        $("#dialog_div_update").dialog("open");
-    });
- 
-});
-
-
+//等待資料傳輸轉圈圈
 $(function() {
     $("#dialog_div_wait").dialog({
     	//固定視窗
@@ -406,6 +390,7 @@ $(function() {
     });
 });
 
+//資料傳輸錯誤
 $(function() {
     $("#dialog_div_error").dialog({
     	//固定視窗

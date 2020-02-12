@@ -138,13 +138,11 @@
   <script>
  	<%-- 如果有儲存帳號cookie, 將帳號載入 +打勾remember--%>
   	if($.cookie("remAccrount")){
-  		console.log($.cookie("remAccrount"));
   		$("#customCheck").prop("checked", true);
   		$("#inputAccount").val($.cookie("remAccrount"));
   	}
   	<%-- 如果有儲存密碼cookie, 將密碼載入 --%>
  	if($.cookie("remPassword")){
-  		console.log($.cookie("remPassword"));
   		$("#inputPassword").val($.cookie("remPassword"));
   	}
   </script>

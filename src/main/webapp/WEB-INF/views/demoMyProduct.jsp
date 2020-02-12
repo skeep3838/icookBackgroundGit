@@ -102,6 +102,9 @@ div.dataTables_paginate {
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	
+<!-- 	加入文字編輯器ckEditor -->
+<script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 
 <!-- dataTables的CSS -->
 <!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
@@ -231,6 +234,7 @@ div.dataTables_paginate {
 
 	<!-- myJavaScript(products) -->
 	<script src="js/productUse.js"></script>
+
 
 </body>
 

@@ -324,6 +324,8 @@ function detailUpdate(number){
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div").html(detailContant);
 	$("#dialog_div").dialog("open");
+	//把textarea改成ckEditor
+	CKEDITOR.replace('productInfo');
 }
 
 //update Detail資訊

@@ -44,6 +44,9 @@ textarea {
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	
+<!-- 	加入文字編輯器ckEditor -->
+<script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 </head>
 
 <body id="page-top">
@@ -125,7 +128,7 @@ textarea {
 
 							<tr>
 								<td colspan="2">商品描述
-								<td colspan="6"><textarea name="productInfo"
+								<td colspan="6"><textarea id='test1' name="productInfo"
 										style="width: 500px; height: 180px;"></textarea>
 							</tr>
 
@@ -154,7 +157,7 @@ textarea {
 
 						</table>
 					</form>
-
+					
 					<script>
 					<!-- 預覽圖片功能 -->
 						function readURL100(input) {
@@ -205,6 +208,8 @@ textarea {
 						$("#image300").change(function() {
 							readURL300(this);
 						});
+						
+						CKEDITOR.replace('test1');
 					</script>
 
 					<!-- Bootstrap core JavaScript-->

@@ -1,6 +1,8 @@
 package com.icookBackstage.sendmail.controller;
 
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,5 +58,11 @@ public class sendmailController {
 		customerInfo.setEmail(memberBean.getAccount());
 		order.setCustomerInfo(customerInfo);
 		return order;
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(@RequestParam(value = "page", required = false) String page, HttpServletRequest request,
+			HttpServletResponse response, Model model) throws IOException {
+		return "test";
 	}
 }

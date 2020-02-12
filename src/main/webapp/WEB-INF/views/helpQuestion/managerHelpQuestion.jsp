@@ -153,7 +153,7 @@ div.center {
 		<!-- Sidebar -->
 		<jsp:include page="/WEB-INF/views/fragment/SideBar.jsp" />
 		
-		<div id="dialog_div_helpContent" title="客戶問題"></div>\
+		<div id="dialog_div_helpContent" title="客戶問題"></div>
 		<div id="dialog_div_responseQuestion" title="問題回覆"></div>
 		<div id="dialog_div_wait" title="等待中"></div>
 		

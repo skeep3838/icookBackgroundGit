@@ -97,7 +97,7 @@ public class ProductRESTfulController {
 				public boolean shouldSkipClass(Class<?> aClass) {
 					return false;
 				}
-			}).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			}).setDateFormat("yyyy-MM-dd").create();
 
 			// 將productPage轉成Json格式的String字串
 			productPageJson = gson.toJson(productPage);

@@ -5,6 +5,15 @@
 <%-- 反灰的CSS屬性  --%>
 <c:set var="opacity" value="style='opacity: 0.2'" />
 
+<c:when test="${currentManager} == null">
+	<script>
+	$.ajax({
+		type:"GET",
+		url:("managermentLogin.page")
+	});
+	</script>
+</c:when>
+
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 		<a class="sidebar-brand d-flex align-items-center justify-content-center" href=<c:url value='backstage.page'/>>
 
@@ -21,7 +30,7 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item active"><a class="nav-link"
-				href="backstage.page"> <!--           <i class="fas fa-fw fa-tachometer-alt"></i> -->
+				href="<c:url value='backstage.page' />"> <!--           <i class="fas fa-fw fa-tachometer-alt"></i> -->
 					<span style="margin-left: 18px">代辦事項</span></a></li>
 
 			<!-- Divider -->
@@ -156,7 +165,7 @@
 				<c:if test="${currentManager.webMaintainAuth}">
 					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="register.html">布告欄公告</a>
+							<a class="collapse-item" href="<c:url value='news.page' />">布告欄公告</a>
 							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a>
 							<a class="collapse-item" href="<c:url value='WebSocket'/>">客服回應</a>
 						</div>

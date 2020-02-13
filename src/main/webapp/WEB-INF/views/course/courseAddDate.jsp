@@ -121,8 +121,29 @@
 													<input type="hidden" id="courseStartDate" name="courseStartDate">
 													<p id="showEndDate">課程結束日期: </p>
 													<input type="hidden" id="courseEndDate" name="courseEndDate">
-
-													<input type="button" onclick="roomJson123()" value="課程時間">
+													<div>
+													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block"
+														name="courseHour" id="courseHour" required="required">
+														<option value="" disabled selected hidden>時</option>
+														<c:forEach var="i" begin="9" end="16">
+															<option value='${i}'>${i}</option>
+														</c:forEach>
+													</select>
+													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block"
+														name="courseMinu" id="courseMinu" required="required">
+														<option value="" disabled selected hidden>分</option>					
+															<option value='00'>00</option>
+															<option value='30'>30</option>
+													</select>
+													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block"
+														name="courseHour" id="courseHour" required="required">
+														<option value="" disabled selected hidden>上課時數</option>					
+															<c:forEach var="i" begin="1" end="6" step="1" >
+															<option value='${i}'>${i}</option>
+														</c:forEach>
+													</select>
+												</div>
+<!-- 													<input type="button" onclick="roomJson123()" value="課程時間"> -->
 													<input type=submit value="下一步" onclick="checkDate(event)">
 													<input type="button" onclick="clearAll()" value="重新設定">
 												</div>

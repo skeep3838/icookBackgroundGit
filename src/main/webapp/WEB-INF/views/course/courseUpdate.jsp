@@ -127,16 +127,11 @@
 									</label>
 									<div id="upload_img">
 										<img src="<c:url value='/getPic/${courseBean.courseId}' />" alt=" "
-											class="img-responsive" />
+											class="img-responsive" style="width:70%;"/>
 									</div>
 								</div>
 							</tr>
-							<tr>
-								<td colspan="2">上傳圖片
-								<td><img src="<c:url value='/getPic/${courseBean.courseId}'/>" alt=" "
-										class="testImgx" />
-								<td colspan="4"><input type="file" name="courseImage" id="image100">
-							</tr>
+							
 							<tr>
 								<td colspan="2">課程價格
 								<td colspan="2"><input type="text" name="coursePrice" value='${courseBean.coursePrice}'>
@@ -160,14 +155,14 @@
 								<td colspan="2"><input type="text" name="hostName" value='${courseBean.hostName}'>
 
 							</tr>
-
-							<tr>
-								<td colspan="2">上課時間
-								<td colspan="2"><input type="date" name="courseStartDate"
-										value='${courseBean.courseStartDate}'>
-								<td colspan="2"><input type="date" name="courseEndDate"
-										value='${courseBean.courseEndDate}'>
-							</tr>
+<!-- 上課時間先屏掉 -->
+<!-- 							<tr> -->
+<!-- 								<td colspan="2">上課時間 -->
+<!-- 								<td colspan="2"><input type="date" name="courseStartDate" -->
+<%-- 										value='${courseBean.courseStartDate}'> --%>
+<!-- 								<td colspan="2"><input type="date" name="courseEndDate" -->
+<%-- 										value='${courseBean.courseEndDate}'> --%>
+<!-- 							</tr> -->
 							<tr>
 								<td colspan="2">課程描述
 								<td colspan="6"><textarea name="courseIntrod" style="width: 500px; height: 180px;"
@@ -196,22 +191,17 @@
 	<!-- Page Wrapper --End-->
 
 	<script>
-		< !--預覽圖片功能 -->
-			function readURL100(input) {
-				if (input.files && input.files[0]) {
-					var reader = new FileReader();
-
-					reader.onload = function (e) {
-						$('#testImg1').attr('src', e.target.result);
-					}
-
-					reader.readAsDataURL(input.files[0]);
-				}
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var html = "";
+				html += "<img width='320px' height='200px' src='"+e.target.result+"'>";
+				$("#upload_img").html(html);
 			}
-
-		$("#image100").change(function () {
-			readURL100(this);
-		});
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 	</script>
 
 	<!-- Bootstrap core JavaScript-->

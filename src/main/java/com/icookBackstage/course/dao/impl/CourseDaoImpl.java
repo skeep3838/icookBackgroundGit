@@ -131,5 +131,14 @@ public class CourseDaoImpl implements CourseDao{
 			return true;
 	}
 
+	@Override
+	public List<Integer> querycourseOrser() {
+		Session session = factory.getCurrentSession();
+		String hql = "SELECT DISTINCT courseId FROM CourseOrderBean;";
+		@SuppressWarnings("unchecked")
+		List<Integer> list = (List<Integer>)session.createQuery(hql).getResultList();
+		return list;
+	}
+
 
 }

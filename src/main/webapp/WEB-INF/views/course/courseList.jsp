@@ -116,9 +116,8 @@
 										<td>${bean.courseName}
 											<%-- 									<td>${bean.courseStartDate} --%>
 											<%-- 									<td>${bean.courseEndDate} --%>
-										<td>
-											<fmt:formatNumber value="${bean.coursePrice}" pattern="#,###" />
-										<td>${bean.updateTime}
+										<td><fmt:formatNumber value="${bean.coursePrice}" pattern="#,###" />
+										<td><fmt:formatDate value="${bean.updateTime}" pattern="YYYY-MM-dd" />
 										<td><input style='float: right;' class='btn btn-default btn-secondary btn-sm'
 												type='button'
 												onclick="javascript:location.href='${pageContext.request.contextPath}/course/courseUpdate?id=${bean.courseId}'"

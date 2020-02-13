@@ -57,6 +57,7 @@ public class CourseBean implements Serializable {
 //			this.classRoomBean = classRoomBean;
 //		}
 		
+		public CourseBean() {}
 		
 		public CourseBean( String courseName, String courseStartDate, 
 				String courseEndDate) {

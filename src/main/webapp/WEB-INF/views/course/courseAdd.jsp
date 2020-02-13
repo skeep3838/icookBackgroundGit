@@ -113,7 +113,8 @@
 								<td colspan="2"><input type="text" name="coursePrice">
 								<td colspan="2">課程優惠
 								<td colspan="2">
-									<select class="custom-select" style="height: 35px; width: 200px;" name="courseDiscount">
+									<select class="custom-select" request="request"
+										style="height: 35px; width: 200px;" name="courseDiscount">
 										<option value="" disabled selected hidden>課程優惠</option>	
 										<option value='1'>無折扣</option>
 										<option value='0.95'>95折</option>

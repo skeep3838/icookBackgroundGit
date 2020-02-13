@@ -85,12 +85,19 @@ public class CourseController {
 		return "course/courseUpdate";
 	}
 
-	@PostMapping("/course/courseUpdate")
-	public String updateCourse(Model model, @RequestParam("id") Integer id) {
-		CourseBean courseBean = service.getCourseById(id);
-		model.addAttribute("courseBean", courseBean);
-		return "course/courseUpdate";
-	}
+//	@PostMapping("/course/courseUpdate")
+//	public String updateCourse(Model model, 
+//			@RequestParam("id") Integer id,
+//			@RequestParam("courseName") String courseName, @RequestParam("courseCategory") String courseCategory,
+////			@RequestParam("courseImage")String courseImage,
+//			@RequestParam("coursePrice") String coursePrice, @RequestParam("courseDiscount") String courseDiscount,
+//			@RequestParam("hostName") String hostName, @RequestParam("courseStartDate") String courseStartDate,
+//			@RequestParam("courseEndDate") String courseEndDate, @RequestParam("roomNo") String roomNo,
+//			@RequestParam("courseIntrod") String courseIntrod) {
+//		CourseBean courseBean = service.getCourseById(id);
+//		model.addAttribute("courseBean", courseBean);
+//		return "course/courseUpdate";
+//	}
 //	取得照片
 	@GetMapping(value = "/getPic/{courseId}")
 	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, 
@@ -142,20 +149,42 @@ public class CourseController {
 	}
 
 	@PostMapping("/course/courseUpdateFinal")
-	public String updateCourseFinal(Model model, @RequestParam("id") Integer id,
+	public String updateCourseFinal(Model model, 
+			@RequestParam("id") Integer id,
 			@RequestParam("courseName") String courseName, @RequestParam("courseCategory") String courseCategory,
-//			@RequestParam("courseImage")String courseImage,
+			@RequestParam("courseImage")MultipartFile courseImage,
 			@RequestParam("coursePrice") String coursePrice, @RequestParam("courseDiscount") String courseDiscount,
-			@RequestParam("hostName") String hostName, @RequestParam("courseStartDate") String courseStartDate,
-			@RequestParam("courseEndDate") String courseEndDate, @RequestParam("roomNo") String roomNo,
+			@RequestParam("hostName") String hostName,
+			 @RequestParam("roomNo") String roomNo,
 			@RequestParam("courseIntrod") String courseIntrod) {
 
 		CourseBean courseBean = service.getCourseById(id);
+		String courseStartDate = courseBean.getCourseStartDate();
+		String courseEndDate = courseBean.getCourseEndDate();
 		Integer hostId = courseBean.getHostId();
 		String coursePhone = courseBean.getCoursePhone();
 		String courseMail = courseBean.getCourseMail();
-		Blob courseImage = courseBean.getCourseImage();
-		CourseBean cb = new CourseBean(id, hostId, courseName, courseCategory, courseImage, hostName, courseStartDate,
+//		Blob courseImage = courseBean.getCourseImage();
+		
+		// 設定寫入圖片參數
+				MultipartFile coverImg = courseImage;
+				Blob imageBlob = null;
+
+				if (coverImg != null) {
+					byte[] buf;
+
+					try {
+						buf = coverImg.getBytes();
+						Blob blob = new SerialBlob(buf);
+						imageBlob = blob;
+
+					} catch (IOException | SQLException e) {
+						e.printStackTrace();
+						throw new RuntimeException("檔案上傳發生異常:" + e.getMessage());
+					}
+				}
+		
+		CourseBean cb = new CourseBean(id, hostId, courseName, courseCategory, imageBlob, hostName, courseStartDate,
 				courseEndDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
 				(new Date()));
 
@@ -235,21 +264,9 @@ public class CourseController {
 		String courseDiscount = req.getParameter("courseDiscount");
 
 		// 設定寫入圖片參數
-
-//		InputStream inStream;
-//		OutputStream outStream;
-//		String fileName = "";
-//		String allImg = "";
-//		String imgAddress = "C:\\Users\\User\\git\\icookBackgroundGit\\src\\main\\webapp\\WEB-INF\\views\\course\\image";
-//		File imgAddressMacker = new File(imgAddress);
 		MultipartFile coverImg = courseImage;
 		Blob imageBlob = null;
-//		int data;
-//
-//		// 將圖片寫入雲端(本機)
-//		if (imgAddressMacker.exists() == false) {
-//			imgAddressMacker.mkdirs();
-//		}
+
 		if (coverImg != null) {
 			byte[] buf;
 
@@ -257,22 +274,7 @@ public class CourseController {
 				buf = coverImg.getBytes();
 				Blob blob = new SerialBlob(buf);
 				imageBlob = blob;
-//				courseImage =  blob;
-////				for (MultipartFile image : courseImage) {
-////					System.out.println("Part name=" + image.getName());
-////					++count;
-//				inStream = courseImage.getInputStream();
-//				fileName = courseName + ".jpg";
-//				outStream = new FileOutputStream(imgAddress + fileName);
-//
-//				while ((data = inStream.read(buf)) != -1) {
-//					outStream.write(buf, 0, data);
-//				}
-//				inStream.close();
-//				outStream.close();
-//				allImg += imgAddress + fileName;
-//
-////				}
+
 			} catch (IOException | SQLException e) {
 				e.printStackTrace();
 				throw new RuntimeException("檔案上傳發生異常:" + e.getMessage());
@@ -288,37 +290,6 @@ public class CourseController {
 		return "redirect:/course/courseList";
 	}
 
-//	@GetMapping(value = "/coursePicture/{courseId}")
-//	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, @PathVariable Integer recipeNo) {
-//		String filePath = "/WEB-INF/views/images/food1.jpg";
-//		byte[] media = null;
-//		HttpHeaders headers = new HttpHeaders();
-////		String filename = "";
-//		int len = 0;
-//		RecipeBean bean = service.getRecipeByRecipeNo(recipeNo);
-//		if (bean != null) {
-//			Blob blob = bean.getCoverImg();
-////			filename = bean.getFileName();
-//			if (blob != null) {
-//				try {
-//					len = (int) blob.length();
-//					media = blob.getBytes(1, len);
-//				} catch (SQLException e) {
-//					throw new RuntimeException("Controller的getPicture()發生SQLException:" + e.getMessage());
-//				}
-//			} else {
-//				media = toByteArray(filePath);
-////				filename = filePath;
-//			}
-//		}
-//		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-////		String mimeType = context.getMimeType(filePath);
-//		MediaType mediaType = MediaType.IMAGE_JPEG;
-////		System.out.println("mediaType= " + mediaType);
-//		headers.setContentType(mediaType);
-//		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
-//		return responseEntity;
-//	}
 
 	@InitBinder
 	public void whiteListing(WebDataBinder binder) {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -27,18 +28,26 @@ public class BackstageController {
 	public void getService(IBackEndLoginService service) {
 		this.service = service;
 	}
-	
+
 	// 開啟網頁時轉跳到登入畫面
-	@RequestMapping("/")		
-	public String welcome() {	
-		
-		return "forward:/managermentLogin.page"; 
+	@RequestMapping("/")
+	public String welcome() {
+
+		return "forward:/managermentLogin.page";
 	}
-	
+
 	// 轉跳後台畫面
 	@RequestMapping("/backstage.page")
 	public String changeToBackstage() {
 		return "backstage";
+	}
+
+	// test
+	@ResponseBody
+	@RequestMapping("/test123")
+	public String test123(SessionStatus status) {
+		status.setComplete();
+		return "test";
 	}
 
 	// 轉跳管理者登入,並檢查Session
@@ -63,38 +72,38 @@ public class BackstageController {
 	// 進行帳號判斷 並取回登入者ID存放到session
 	@RequestMapping("/managementLogin.do")
 	public String chickPassword(@RequestParam("inputAccount") String inputAccount,
-			@RequestParam("inputPassword") String inputPassword, Model model,
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		//建立Remember Cookie的預設值
-		Cookie acCookie = new Cookie("remAccrount",null);
-		Cookie pasCookie = new Cookie("remPassword",null);
-		//檢查Remember有沒有被打勾
-		if(request.getParameter("rememberBox") != null) {
-			acCookie = new Cookie("remAccrount",inputAccount);
-			pasCookie = new Cookie("remPassword",inputPassword);
-		}else {
+			@RequestParam("inputPassword") String inputPassword, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		// 建立Remember Cookie的預設值
+		Cookie acCookie = new Cookie("remAccrount", null);
+		Cookie pasCookie = new Cookie("remPassword", null);
+		// 檢查Remember有沒有被打勾
+		if (request.getParameter("rememberBox") != null) {
+			acCookie = new Cookie("remAccrount", inputAccount);
+			pasCookie = new Cookie("remPassword", inputPassword);
+		} else {
 			acCookie.setMaxAge(0);
 			pasCookie.setMaxAge(0);
 		}
 		response.addCookie(acCookie);
 		response.addCookie(pasCookie);
-		
-		//建立帳密檢查的參數
+
+		// 建立帳密檢查的參數
 		String goBackPath = null;
 		Manageral inputBean = new Manageral(inputAccount, inputPassword);
 		Manageral loginBean = service.chickPasswordAndGetManageral(inputBean);
 
-		//判斷帳密是否正確
+		// 判斷帳密是否正確
 		if (loginBean != null) {
-			//密碼正確, 將登入者資訊寫進session並轉跳進後台畫面
+			// 密碼正確, 將登入者資訊寫進session並轉跳進後台畫面
 			model.addAttribute("currentManager", loginBean);
 			System.out.println("loginMaId= " + loginBean.getMaId());
 			System.out.println("====== goBackstage ======");
 			goBackPath = "backstage";
 
 		} else {
-			//密碼錯誤, 回傳錯誤訊息到登入畫面
+			// 密碼錯誤, 回傳錯誤訊息到登入畫面
 			model.addAttribute("errMessage", "The Password you enter is not match, <br>Please re-enter your password");
 			System.out.println("====== returnManagementLogin ======");
 			goBackPath = "managementLogin";

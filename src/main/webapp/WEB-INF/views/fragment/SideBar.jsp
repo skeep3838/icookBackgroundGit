@@ -1,18 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.icookBackstage.model.Manageral, java.io.PrintWriter" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%-- 反灰的CSS屬性  --%>
 <c:set var="opacity" value="style='opacity: 0.2'" />
 
-<c:when test="${currentManager} == null">
-	<script>
-	$.ajax({
-		type:"GET",
-		url:("managermentLogin.page")
-	});
-	</script>
-</c:when>
 
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 		<a class="sidebar-brand d-flex align-items-center justify-content-center" href=<c:url value='backstage.page'/>>

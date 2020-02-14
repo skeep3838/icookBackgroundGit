@@ -332,6 +332,10 @@ function detailUpdate(number){
 function updateDetailData(){
 	//打包form(id="detailForm")的資料
 	let detailForm = new FormData($("#detailForm")[0]);
+	
+	//更新CKEditor的內容到formDate上
+	detailForm.set("productInfo", CKEDITOR.instances.productInfo.getData());
+	
 	$.ajax({ 
 		type:"POST",
 		cache:true,

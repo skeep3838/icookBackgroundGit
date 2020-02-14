@@ -21,5 +21,11 @@ public interface IBackEndLoginDAO {
 	int getAccrountId(String inputAccrount);
 	//3.
 	Manageral getManageral(String inputAccrount);
+	
+	Integer getUnchickOrder();
+	
+	Integer getProductStock();
+	
+	Integer getUnchickMeg();
 
 }

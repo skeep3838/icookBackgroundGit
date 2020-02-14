@@ -85,21 +85,28 @@ function test3333(){
 					<div class="row">
 
 						<!-- Earnings (Monthly) Card Example -->
-						<div class="col-xl-3 col-md-6 mb-4">
-							<div class="card border-left-primary shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
-										<div style="text-align: center;" class="col mr-2">
-											<div style="font-size: 25px;"
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">未處裡訂單</div>
-											<div style="font-size: 25px;"
-												class="h5 mb-0 font-weight-bold text-gray-800">25筆</div>
+						<c:if test="${currentManager.orderAuth}">
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-primary shadow h-100 py-2">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div style="text-align: center;" class="col mr-2">
+												<div style="font-size: 25px;"
+													class="text-xs font-weight-bold text-primary text-uppercase mb-1">未處理訂單</div>
+												<div style="font-size: 25px;" id='chickOrder'
+													class="h5 mb-0 font-weight-bold text-gray-800">
+<!-- 													25筆 -->
+													${chickUnchickOrder}
+													</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-
+						</c:if> 
+						
+						
+						<c:if test="${currentManager.productAuth}">
 						<!-- Earnings (Monthly) Card Example -->
 						<div class="col-xl-3 col-md-6 mb-4">
 							<div class="card border-left-success shadow h-100 py-2">
@@ -108,32 +115,41 @@ function test3333(){
 										<div style="text-align: center;" class="col mr-2">
 											<div style="font-size: 25px;"
 												class="text-xs font-weight-bold text-success text-uppercase mb-1">庫存量不足商品</div>
-											<div style="font-size: 25px;"
-												class="h5 mb-0 font-weight-bold text-gray-800">10項</div>
+											<div style="font-size: 25px;" id='chickStock'
+												class="h5 mb-0 font-weight-bold text-gray-800">
+<!-- 												10項 -->
+												${chickProductStock}
+												</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						</c:if>
 
-
-						<!-- Pending Requests Card Example -->
-						<div class="col-xl-3 col-md-6 mb-4">
-							<div class="card border-left-warning shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
-										<div style="text-align: center;" class="col mr-2">
-											<div style="font-size: 25px;"
-												class="text-xs font-weight-bold text-warning text-uppercase mb-1">尚未回應的訊息</div>
-											<div style="font-size: 25px;"
-												class="h5 mb-0 font-weight-bold text-gray-800">18筆</div>
+						<c:if test="${currentManager.webMaintainAuth}">
+							<!-- Pending Requests Card Example -->
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-warning shadow h-100 py-2">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div style="text-align: center;" class="col mr-2">
+												<div style="font-size: 25px;"
+													class="text-xs font-weight-bold text-warning text-uppercase mb-1">尚未回應的訊息</div>
+												<div style="font-size: 25px;" id='chickHelp'
+													class="h5 mb-0 font-weight-bold text-gray-800">
+<!-- 												18筆 -->
+													${chickUnchickMeg}
+													</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</c:if>
 					</div>
-
+					
+					
 					<!-- Bootstrap core JavaScript-->
 					<script type="text/javascript"
 						src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>

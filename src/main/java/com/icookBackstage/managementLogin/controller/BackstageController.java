@@ -1,5 +1,8 @@
 package com.icookBackstage.managementLogin.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +41,11 @@ public class BackstageController {
 
 	// 轉跳後台畫面
 	@RequestMapping("/backstage.page")
-	public String changeToBackstage() {
+	public String changeToBackstage(Model model) {
+		
+		Map<String, Integer> chick = getChickNumber();
+		model.addAllAttributes(chick);
+		
 		return "backstage";
 	}
 
@@ -97,9 +104,16 @@ public class BackstageController {
 		// 判斷帳密是否正確
 		if (loginBean != null) {
 			// 密碼正確, 將登入者資訊寫進session並轉跳進後台畫面
+			
+			
+			
 			model.addAttribute("currentManager", loginBean);
 			System.out.println("loginMaId= " + loginBean.getMaId());
 			System.out.println("====== goBackstage ======");
+			
+			Map<String, Integer> chick = getChickNumber();
+			model.addAllAttributes(chick);
+			
 			goBackPath = "backstage";
 
 		} else {
@@ -109,6 +123,15 @@ public class BackstageController {
 			goBackPath = "managementLogin";
 		}
 		return goBackPath;
+	}
+	
+	public Map<String, Integer> getChickNumber(){
+		Map<String, Integer> numberMap = new HashMap<>();
+		numberMap.put("chickProductStock", service.getProductStock());
+		numberMap.put("chickUnchickMeg", service.getUnchickMeg());
+		numberMap.put("chickUnchickOrder", service.getUnchickOrder());
+		
+		return numberMap;
 	}
 
 }

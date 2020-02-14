@@ -8,5 +8,10 @@ public interface IBackEndLoginService {
 	void getBackEndLoginDAOImpl(BackEndLoginDAOImpl dao);
 	int chickPassword(Manageral managerl);
 	Manageral chickPasswordAndGetManageral(Manageral managerl);
+	Integer getUnchickOrder();
+	
+	Integer getProductStock();
+	
+	Integer getUnchickMeg();
 
 }

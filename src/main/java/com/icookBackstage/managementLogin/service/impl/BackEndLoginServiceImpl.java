@@ -38,4 +38,22 @@ public class BackEndLoginServiceImpl implements IBackEndLoginService {
 		return CurrentManager;
 	}
 	
+	@Override
+	@Transactional
+	public Integer getUnchickOrder() {
+		return dao.getUnchickOrder();
+	}
+	
+	@Override
+	@Transactional
+	public Integer getProductStock() {
+		return dao.getProductStock();
+	}
+
+	@Override
+	@Transactional
+	public Integer getUnchickMeg() {
+		return dao.getUnchickMeg();
+	}
+	
 }

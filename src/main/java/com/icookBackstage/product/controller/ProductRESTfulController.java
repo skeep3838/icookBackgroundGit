@@ -202,6 +202,7 @@ public class ProductRESTfulController {
 		service.deleteProductType(id);
 
 		// 呼叫DAO更新DB的資料
+		System.out.println("===== prodBean: " + prodBean + " =====");
 		service.updateProduct(prodBean);
 
 		return json;

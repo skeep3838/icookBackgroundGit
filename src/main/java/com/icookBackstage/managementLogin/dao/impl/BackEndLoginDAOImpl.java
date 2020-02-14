@@ -22,10 +22,11 @@ public class BackEndLoginDAOImpl implements IBackEndLoginDAO {
 		this.factory = factory;
 	}
 
-	/**************************************
+	/*
 	 * BackEndLoginDAOImpl方法: 1.輸入manageral檢查帳號密碼 2.輸入account取得maId
 	 * 3.輸入account取得manageral
-	 **************************************/
+	 * 
+	 */
 	// 1.檢查帳號密碼
 	@Override
 	@SuppressWarnings("unchecked")
@@ -63,7 +64,7 @@ public class BackEndLoginDAOImpl implements IBackEndLoginDAO {
 		List<Manageral> managerals = session.createQuery(hqlStr).setParameter("inputAccrount", inputAccrount)
 				.getResultList();
 		System.out.println("===== done getManageral =====");
-		
+
 		try {
 			if (managerals.get(0) == null) {
 				throw new Exception("this Accrount is not exist!!");
@@ -72,6 +73,47 @@ public class BackEndLoginDAOImpl implements IBackEndLoginDAO {
 			return null;
 		}
 		return managerals.get(0);
+	}
+
+	// 3.取得未確認訂單
+	@Override
+	@SuppressWarnings("unchecked")
+	public Integer getUnchickOrder() {
+		Integer number = null;
+		Session session = factory.getCurrentSession();
+		String hql = "SELECT COUNT(*) FROM orderBean o WHERE o.status = 'N'";
+
+		number = ((Long) session.createQuery(hql).getSingleResult()).intValue();
+		return number;
+	}
+
+	// 4.取得庫存過少商品
+	@Override
+	@SuppressWarnings("unchecked")
+	public Integer getProductStock() {
+		Integer number = null;
+		Session session = factory.getCurrentSession();
+		//hql不會用
+		String hql = "SELECT COUNT(*) FROM ProductTypeBean p  Where p.unitStock > 20 group by p.productID ";
+		String sql = "SELECT COUNT(*) FROM ProductType a where unitStock > 20 group by productID ";
+		
+		List list = session.createSQLQuery(sql).list();
+		
+		number = list.size();
+
+		return number;
+	}
+
+	// 5.取得未回復訊息
+	@Override
+	@SuppressWarnings("unchecked")
+	public Integer getUnchickMeg() {
+		Integer number = null;
+		Session session = factory.getCurrentSession();
+		String hql = "SELECT COUNT(*) FROM helpQuestion h WHERE h.responseStatus = 'N'";
+
+		number = ((Long) session.createQuery(hql).getSingleResult()).intValue();
+		return number;
 	}
 
 }

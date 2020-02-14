@@ -20,11 +20,13 @@
 
   <!-- Custom styles for this template-->
   <link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
+  
+  <link rel="icon" href="${pageContext.request.contextPath}/image/icookLogo.png" type="image/x-icon" />
 
   <style>
 	<%-- 調整login圖片 --%>
     .loginPicture{
-      background: url(${pageContext.request.contextPath}/image/download.jpg);
+      background: url(${pageContext.request.contextPath}/image/icookLogo.png);
       background-position: center;
       background-size: cover;
     }

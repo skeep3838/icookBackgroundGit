@@ -102,7 +102,7 @@
 			<hr class="sidebar-divider">
 
 			<!-- Heading -->
-			<div class="sidebar-heading">帳戶管理</div>
+			<div class="sidebar-heading">管理</div>
 
 			<!-- Nav Item - Pages Collapse Menu -->
 			<li class="nav-item">
@@ -110,7 +110,7 @@
 				aria-expanded="true" aria-controls="collapsePages"
 				<%-- 檢查 accrountAuth權限, 權限不夠就將字體反灰 --%>
 				<c:if test="${!currentManager.accrountAuth}" var="123">${opacity}</c:if>> 
-				<span style="margin-left: 20px">管理</span>
+				<span style="margin-left: 20px">帳戶管理</span>
 				</a>
 				<%-- 檢查 accrountAuth權限, 權限不夠就將連結拿掉 --%>
 				<c:if test="${currentManager.accrountAuth}">
@@ -122,10 +122,24 @@
 						</div>
 					</div>
 				</c:if>	
+				
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#test3Pages"
+				aria-expanded="true" aria-controls="collapsePages"
+				<%-- 檢查 webMaintainAuth權限, 權限不夠就將字體反灰 --%>
+				<c:if test="${!currentManager.webMaintainAuth}" var="123">${opacity}</c:if>>
+				<span style="margin-left: 20px">網頁維護</span>
+				</a>
+				<c:if test="${currentManager.webMaintainAuth}">
+					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<a class="collapse-item" href="<c:url value='news.page' />">布告欄公告</a>
+							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a>
+							<a class="collapse-item" href="<c:url value='WebSocket'/>">客服回應</a>
+						</div>
+					</div>
+				</c:if>
 			</li>
 
-			<!-- Nav Item - Pages Collapse Menu -->
-			<!-- 訊息回復功能, 暫時移除 -->
 
 <!-- 			<li class="nav-item"><a class="nav-link collapsed" href="#" -->
 <!-- 				data-toggle="collapse" data-target="#collapsePages2" -->
@@ -140,30 +154,30 @@
 <!-- 				</div></li> -->
 
 			<!-- Divider -->
-			<hr class="sidebar-divider">
+<!-- 			<hr class="sidebar-divider"> -->
 
-			<!-- Heading -->
-			<div class="sidebar-heading">網頁維護</div>
+<!-- 			<!-- Heading -->
+<!-- 			<div class="sidebar-heading">網頁維護</div> -->
 
-			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item">
-				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#test3Pages"
-				aria-expanded="true" aria-controls="collapsePages"
-				<%-- 檢查 webMaintainAuth權限, 權限不夠就將字體反灰 --%>
-				<c:if test="${!currentManager.webMaintainAuth}" var="123">${opacity}</c:if>>
-				<span style="margin-left: 20px">管理</span>
-				</a>
+<!-- 			<!-- Nav Item - Pages Collapse Menu -->
+<!-- 			<li class="nav-item"> -->
+<!-- 				<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#test3Pages" -->
+<!-- 				aria-expanded="true" aria-controls="collapsePages" -->
+<%-- 				檢查 webMaintainAuth權限, 權限不夠就將字體反灰 --%>
+<%-- 				<c:if test="${!currentManager.webMaintainAuth}" var="123">${opacity}</c:if>> --%>
+<!-- 				<span style="margin-left: 20px">管理</span> -->
+<!-- 				</a> -->
 				<%-- 檢查 webMaintainAuth權限, 權限不夠就將連結拿掉 --%>
-				<c:if test="${currentManager.webMaintainAuth}">
-					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="<c:url value='news.page' />">布告欄公告</a>
-							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a>
-							<a class="collapse-item" href="<c:url value='WebSocket'/>">客服回應</a>
-						</div>
-					</div>
-				</c:if>
-			</li>
+<%-- 				<c:if test="${currentManager.webMaintainAuth}"> --%>
+<!-- 					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar"> -->
+<!-- 						<div class="bg-white py-2 collapse-inner rounded"> -->
+<%-- 							<a class="collapse-item" href="<c:url value='news.page' />">布告欄公告</a> --%>
+<%-- 							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a> --%>
+<%-- 							<a class="collapse-item" href="<c:url value='WebSocket'/>">客服回應</a> --%>
+<!-- 						</div> -->
+<!-- 					</div> -->
+<%-- 				</c:if> --%>
+<!-- 			</li> -->
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 

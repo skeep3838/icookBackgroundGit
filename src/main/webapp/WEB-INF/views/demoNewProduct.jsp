@@ -30,6 +30,21 @@ textarea {
 	max-width: 150px;
 	max-height: 150px;
 }
+
+#dialog_div_wait,#dialog_div_error {
+	text-align : center;
+}
+
+#dialog_div_wait img{
+	margin-top : 50px;
+	vertical-align : middle;
+}
+
+.errorFont{
+	line-height : 150px;
+	color : red;
+	font-weight : bold;
+}
 </style>
 
 <title>Demo_NewProduct</title>
@@ -46,11 +61,19 @@ textarea {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	
+
+<!-- jqueryUi -->
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
 <!-- 	加入文字編輯器ckEditor -->
 <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 </head>
 
 <body id="page-top">
+	<!-- dialog area -->
+	<div id="dialog_div_wait" title="Wait Upload"></div>
+	<div id="dialog_div_error" title="error"></div>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -81,7 +104,7 @@ textarea {
 					<!-- 以下改寫 -->
 
 <!-- 					<form method="post" action="createNewProduct"> -->
-					<form method="post" action="createNewProduct"
+					<form id='insertForm' method="post" action="createNewProduct"
 						enctype="multipart/form-data">
 						<table>
 							<tr>
@@ -152,7 +175,8 @@ textarea {
 								<td colspan="2"><img id="testImg3" class="testImgx" src="">
 							</tr>
 							<tr>
-								<td colspan="2"><input type="submit" value="送出">
+								<td colspan="2"><input type="submit" onclick='openWait()' value="送出">
+<!-- 								<td colspan="2"><input type="button" onclick='openWait()' value="送出"> -->
 								<td colspan="6"><input type="reset" value="重置">
 							</tr>
 
@@ -229,6 +253,11 @@ textarea {
 					<!-- Page level custom scripts -->
 					<script src="js/demo/chart-area-demo.js"></script>
 					<script src="js/demo/chart-pie-demo.js"></script>
+					
+					<!-- 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+					<!-- myJavaScript(products) -->
+					<script src="js/productUse2.js"></script>
 </body>
 
 </html>

@@ -79,7 +79,7 @@ function stockChick(array){
 	chickMap = [{"name":"已經沒有庫存","value":""},{"name":"已經沒有庫存(補貨中..)","value":""}
 					,{"name":"即將沒有庫存","value":""},{"name":"即將沒有庫存(補貨中..)","value":""}
 					,{"name":"庫存充足","value":""}];
-	let stockLow = 5;
+	let stockLow = 10;
 	let result = "";
 	
 	for(let i=0 ; i<array.length ; ++i ){
@@ -281,7 +281,7 @@ function detailUpdate(number){
 						+ productPageJson[number].productName + "'></input>"
 					+	"<tr><td>產品種類:<td><input type='text' id='category' name='category' value='"
 						+ productPageJson[number].category + "'></input>"
-					+	"<tr><td>產品資訊:<td><textarea style='width: 500px; height: 180px;' id='productInfo'" 
+					+	"<tr><td>產品資訊:<td><textarea style='width: 700px; height: 240px;' id='productInfo'" 
 						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea></tr></table>"
 					+	"<table id='datailTable2'><tbody style='width:100%;'><tr><td colspan='3'>更新圖片" 
 					+	"<tr><td><input type='file' name='image1' index='1' id='img1' class='images'> <td><input type='file' name='image1' index='2' id='img2' class='images'>" 
@@ -319,11 +319,11 @@ function detailUpdate(number){
 	}
 	
 	detailContant		+=	"</table></form>" 
-						+	"<input type='button' onclick='updateDetailData()' value='test'>"
+//						+	"<input type='button' onclick='updateDetailData()' value='test'>"
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
-	$("#dialog_div").html(detailContant);
-	$("#dialog_div").dialog("open");
+	$("#dialog_div_update").html(detailContant);
+	$("#dialog_div_update").dialog("open");
 	//把textarea改成ckEditor
 	CKEDITOR.replace('productInfo');
 }
@@ -349,15 +349,29 @@ function updateDetailData(){
 		data:detailForm,
 		processData:false,
 		
+		//ajax傳送更新資料前 先出現upload畫面
+		beforeSend:function(){
+			$("#dialog_div_wait").html("<img src='images/ajaxload.gif'><br><span>上傳圖片中...</span>");
+	        $("#dialog_div_wait").dialog("open");
+		},
+		
 		success:function(data){
-			console.log(data);
-		}
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_update").dialog("close");
+			buildTable();
+		},
+		
+		error:function(data){
+			$("#dialog_div_wait").dialog("close");
+			$("#dialog_div_error").html("<span class='errorFont'>創立帳戶失敗!</span>");
+			$("#dialog_div_error").dialog("open");
+		},
 	});
 }
 
 //測試用Dialog
 $(function() {
-    $("#dialog_div").dialog({
+    $("#dialog_div_update").dialog({
     	//固定視窗
     	maxHeight:	800,
     	maxWidth:	800,
@@ -373,22 +387,84 @@ $(function() {
         //視窗外無法操作設定
         modal : true,
         
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();},
         
         closeText :"滑鼠指到X時顯示的文字訊息",
         
         buttons: {
-            "Ok": function() {
-            		
-            		$(this).dialog("close"); 
+            "Update": function() {
+            		updateDetailData();
             	  },
             "Cancel": function() { $(this).dialog("close"); }
         }
     });
  
-    $("#opener").click(function(productId) {
-        $("#dialog_div").dialog("open");
+    	$("#opener").click(function(productId) {
+    	$("#dialog_div_update").dialog("open");
     });
  
 });
 
+$(function() {
+    $("#dialog_div_wait").dialog({
+    	//固定視窗
+    	maxHeight:	250,
+    	maxWidth:	250,
+    	minHeight:	250,
+    	minWidth:	250,
+    	
+    	//拖移設定
+    	draggable: false,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        //不能Esc關閉
+        closeOnEscape: true,
+        
+        //open事件發生時, 將dialog樣式右上的x隱藏
+        open:function(event,ui){$(".ui-dialog-titlebar-close").hide();}
+        
+    });
+    
+    $("#wait_butt").click(function(productId) {
+		$("#dialog_div_wait").html("<img src='images/ajaxload.gif'><br><span>載入中...</span>");
+        $("#dialog_div_wait").dialog("open");
+    });
+});
+
+$(function() {
+    $("#dialog_div_error").dialog({
+    	//固定視窗
+    	maxHeight:	250,
+    	maxWidth:	250,
+    	minHeight:	250,
+    	minWidth:	250,
+    	
+    	//拖移設定
+    	draggable: false,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        //不能Esc關閉
+        closeOnEscape: true,
+
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();}
+  
+    });
+    
+    $("#error_butt").click(function(productId) {
+		$("#dialog_div_error").html("<span class='errorFont'>更新失敗!</span>");
+        $("#dialog_div_error").dialog("open");
+    });
+});
 

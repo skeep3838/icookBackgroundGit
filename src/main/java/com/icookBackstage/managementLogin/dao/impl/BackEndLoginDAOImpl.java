@@ -94,8 +94,8 @@ public class BackEndLoginDAOImpl implements IBackEndLoginDAO {
 		Integer number = null;
 		Session session = factory.getCurrentSession();
 		//hql不會用
-		String hql = "SELECT COUNT(*) FROM ProductTypeBean p  Where p.unitStock > 20 group by p.productID ";
-		String sql = "SELECT COUNT(*) FROM ProductType a where unitStock > 20 group by productID ";
+		String hql = "SELECT COUNT(*) FROM ProductTypeBean p  Where p.unitStock < 10 group by p.productID ";
+		String sql = "SELECT COUNT(*) FROM ProductType a where unitStock < 10 group by productID ";
 		
 		List list = session.createSQLQuery(sql).list();
 		

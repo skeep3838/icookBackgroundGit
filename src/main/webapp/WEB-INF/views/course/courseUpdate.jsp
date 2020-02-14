@@ -165,15 +165,14 @@
 <!-- 							</tr> -->
 							<tr>
 								<td colspan="2">課程描述
-								<td colspan="6"><textarea name="courseIntrod" style="width: 500px; height: 180px;"
-										value='${courseBean.courseIntrod}'></textarea>
+								<td colspan="6"><textarea name="courseIntrod" style="width: 500px; height: 180px;" value='${courseBean.courseIntrod}'>${courseBean.courseIntrod}</textarea>
 							</tr>
 
 
 							<tr>
-								<input type="hidden" name="id" value="${courseBean.courseId}">
-								<td colspan="2"><input type="submit" value="送出">
-								<td colspan="6"><input type="reset" value="重置">
+								<td><input type="hidden" name="id" value="${courseBean.courseId}">
+								<td><input type="submit" value="送出">
+								<td><input type="reset" value="重置">
 							</tr>
 
 						</table>
@@ -203,7 +202,8 @@
 		}
 	}
 	</script>
-
+<!-- 	自己寫的JS -->
+	<script src="${pageContext.request.contextPath}/js/courseJs.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

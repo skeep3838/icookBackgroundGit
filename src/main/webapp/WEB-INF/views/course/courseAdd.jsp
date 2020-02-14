@@ -92,7 +92,8 @@
 								
 								<td colspan="2">課程類別
 								<td colspan="2">
-									<select class="custom-select" style="height: 35px; width: 200px;" name="courseCategory">
+									<select class="custom-select" style="height: 35px; width: 200px;" 
+										id="courseCategory" name="courseCategory" required="required" >
 										<option value="" disabled selected hidden>課程類別</option>	
 										<option value='中式'>中式</option>
 										<option value='義式'>義式</option>
@@ -105,15 +106,17 @@
 							</tr>
 							<tr>
 								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="courseImage" id="image100">
+								<td colspan="4"><input type="file" name="courseImage" id="image100" required="required">
 								<td colspan="2"><img id="testImg1" class="testImgx" src="">
 							</tr>
 							<tr>
 								<td colspan="2">課程價格
-								<td colspan="2"><input type="text" name="coursePrice">
+								<td colspan="2"><input type="text" id="coursePrice" name="coursePrice" required="required">
+							</tr>
+							<tr>
 								<td colspan="2">課程優惠
 								<td colspan="2">
-									<select class="custom-select" request="request"
+									<select class="custom-select" required="required" id="courseDiscount"
 										style="height: 35px; width: 200px;" name="courseDiscount">
 										<option value="" disabled selected hidden>課程優惠</option>	
 										<option value='1'>無折扣</option>
@@ -127,37 +130,26 @@
 
 							</tr>
 							<tr>
-<!-- 								<td colspan="2">課程負責人 -->
-<%-- 								<td colspan="2"><input type="text"  disabled value="${hostId}"> --%>
-								<td colspan="2">主辦單位名稱
-								<td colspan="2"><input type="text" name="hostName">
+								<td colspan="2">講師名稱
+								<td colspan="2"><input type="text" name="hostName" id="hostName">
 
 							</tr>
-							
-<!-- 							<tr> -->
-<!-- 								<td colspan="2">開賣時間 -->
-<!-- 								<td colspan="2"><input type="date" name="saleStartDate"> -->
-<!-- 								<td colspan="2"><input type="date" name="saleEndDate"> -->
-<!-- 							</tr> -->
 							<tr>
 								<td colspan="2">課程描述
-								<td colspan="6"><textarea name="courseIntrod"
+								<td colspan="6"><textarea name="courseIntrod" id="courseIntrod"
 										style="width: 500px; height: 180px;"></textarea>
 							</tr>
-							<%-- <tr>
-								<td colspan="2">上課教室
-								<td colspan="2"><input type="text" name="roomNo">
-							</tr> --%>
-							
-							<input type="hidden" name="courseName" id="courseName" value='${courseName}'>
-							<input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
-							<input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
-							<input type="hidden" name="courseEndDate" id="courseEndDate" value='${courseEndDate}'>	
 							<tr>
-								<td colspan="2"><input type="submit" value="送出">
-								<td colspan="6"><input type="reset" value="重置">
+								<td><input type="hidden" name="courseName" id="courseName" value='${courseName}'>
+								<td><input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
+								<td><input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
+								<td><input type="hidden" name="courseEndDate" id="courseEndDate" value='${courseEndDate}'>	
 							</tr>
-							
+							<tr>
+								<td><input type=button value="一鍵輸入" onclick="keyIn2()">
+								<td><input type="submit" value="送出">
+								<td><input type="reset" value="重置">
+							</tr>
 
 						</table>
 					</form>
@@ -189,7 +181,13 @@
 		$("#image100").change(function() {
 			readURL100(this);
 		});
+		
+		function keyIn(){
+			
+		}
 	</script>
+	<!-- 	自己寫的JS -->
+	<script src="${pageContext.request.contextPath}/js/courseJs.js"></script>
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

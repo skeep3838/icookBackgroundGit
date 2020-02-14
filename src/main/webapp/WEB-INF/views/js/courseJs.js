@@ -143,7 +143,8 @@ function roomInfo(roomJson) {
 
 		// your event source
 		events:roomJson,
-		
+		eventBackgroundColor:"white",
+		eventTextColor:"red",
 		dateClick: function (date, event, view) {
 			console.log('add event');
 			console.log(date);
@@ -155,34 +156,34 @@ function roomInfo(roomJson) {
 			if (document.getElementById("roomNo").value == "") {
 				alert("請選擇上課教室。");
 			} else if (startDate == null || startDate == "") {
-				alert(document.getElementById("roomNo").value);
+//				alert(document.getElementById("roomNo").value);
 
-				var r = confirm("是否設為課程開始日期?");
+				var r = confirm("是否設為課程日期?");
 				if (r == true) {
 					// 							 時間格式轉換，做比較用
-					txt = "開始上課日期: " + date.dateStr;
+					txt = "課程日期: " + date.dateStr;
 					document.getElementById("courseStartDate").value = date.dateStr;
 					startDate = document.getElementById("courseStartDate").value;
 				} else {
-					txt = "開始上課日期: ";
+					txt = "課程日期: ";
 				}
 				document.getElementById("showStartDate").innerHTML = txt;
-			} else {
-				startDate = moment(startDate).format('YYYYMMDD');
-				console.log(parseInt(seleDate) > parseInt(startDate));
-
-				if (parseInt(seleDate) <= parseInt(startDate)) {
-					alert("結束時間不可在開始時間之前，請重新選擇日期。");
-				} else {
-					var r = confirm("是否設為課程結束日期?");
-					if (r == true) {
-						txt = "課程結束日期: " + moment(date.dateStr).format('YYYY-MM-DD');
-						document.getElementById("courseEndDate").value = date.dateStr;
-					} else {
-						txt = "課程結束日期: ";
-					}
-					document.getElementById("showEndDate").innerHTML = txt;
-				}
+//			} else {
+//				startDate = moment(startDate).format('YYYYMMDD');
+//				console.log(parseInt(seleDate) > parseInt(startDate));
+//
+//				if (parseInt(seleDate) <= parseInt(startDate)) {
+//					alert("結束時間不可在開始時間之前，請重新選擇日期。");
+//				} else {
+//					var r = confirm("是否設為課程結束日期?");
+//					if (r == true) {
+//						txt = "課程結束日期: " + moment(date.dateStr).format('YYYY-MM-DD');
+//						document.getElementById("courseEndDate").value = date.dateStr;
+//					} else {
+//						txt = "課程結束日期: ";
+//					}
+//					document.getElementById("showEndDate").innerHTML = txt;
+//				}
 			}
 			console.log(document.getElementById("courseStartDate").value);
 
@@ -222,12 +223,26 @@ function clearAll() {
 
 function checkDate(event) {
 	var startDate = document.getElementById("courseStartDate").value;
-	var endDate = document.getElementById("courseEndDate").value;
+//	var endDate = document.getElementById("courseEndDate").value;
+//	|| endDate === ""
 	console.log(startDate);
-	if (startDate === "" || endDate === "") {
+	if (startDate === "" ) {
 		alert("填寫資料不完全，請確認是否已選課程日期!");
 		event.preventDefault();
 	}
+}
+
+function keyIn1(){
+	$("#courseName").val("法式料理課 - 鮮蝦義大利麵");
+	
+}
+function keyIn2(){
+	$("#courseCategory").val("法式");
+	$("#coursePrice").val("10000");
+	$("#courseDiscount").val("1");
+	$("#hostName").val("李嚴");
+	$("#courseIntrod").val("蝦的挑選、烹煮與保存蝦去殼的完整手法； 製作濃郁的蝦濃湯、醬汁與乾燥義大利麵的烹煮");
+	
 }
 
 

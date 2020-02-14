@@ -240,8 +240,8 @@ public class managerController {
 	public String sendEmail(@RequestParam("helpQAId")int helpQAId,@RequestParam("textarea")String textarea,Model model, HttpServletRequest request, HttpServletResponse response) {
 		helpQuestion temp = service.searchSingleHelpQuestion(helpQAId);
 		MemberBean member = service.searchSingleMember(temp.getUserID());
-//		boolean result = mailService.sendResponseQuestion(responseQuestiob(textarea,member,"responseQuestion"));
-		boolean result = true;
+		boolean result = mailService.sendResponseQuestion(responseQuestiob(textarea,member,"responseQuestion"));
+//		boolean result = true;
 		if(result == true) {
 			service.finishUpdateResponseStatus(helpQAId);
 			return "Y";

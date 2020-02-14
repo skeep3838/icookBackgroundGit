@@ -49,7 +49,7 @@ public class MailServiceImpl implements mailService{
                 }
                 else if(order.getProductName() == "responseQuestion") {
                 	mimeMessage.setText("Dear " + order.getCustomerInfo().getName()
-                			+ " 感謝你的回覆\n" + order.getCustomerInfo().getAddress());
+                			+ " 感謝你的通知\n" + order.getCustomerInfo().getAddress());
                 }
                 mimeMessage.setSubject("Your order on Demoapp");
             }

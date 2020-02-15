@@ -100,8 +100,7 @@ public class CourseController {
 //	}
 //	取得照片
 	@GetMapping(value = "/getPic/{courseId}")
-	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, 
-			@PathVariable Integer courseId) {
+	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, @PathVariable Integer courseId) {
 		String filePath = "/WEB-INF/views/course/image/food1.jpg";
 		byte[] media = null;
 		HttpHeaders headers = new HttpHeaders();
@@ -131,7 +130,7 @@ public class CourseController {
 		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
 		return responseEntity;
 	}
-	
+
 //取得很多張照片
 	private byte[] toByteArray(String filePath) {
 		byte[] b = null;
@@ -151,42 +150,44 @@ public class CourseController {
 	@PostMapping("/course/courseUpdateFinal")
 	public String updateCourseFinal(Model model, 
 			@RequestParam("id") Integer id,
-			@RequestParam("courseName") String courseName, @RequestParam("courseCategory") String courseCategory,
-			@RequestParam("courseImage")MultipartFile courseImage,
-			@RequestParam("coursePrice") String coursePrice, @RequestParam("courseDiscount") String courseDiscount,
+			@RequestParam("courseName") String courseName, 
+			@RequestParam("courseCategory") String courseCategory,
+			@RequestParam("courseImage") MultipartFile courseImage, 
+			@RequestParam("coursePrice") Integer coursePrice,
+			@RequestParam("courseDiscount") Double courseDiscount,
 			@RequestParam("hostName") String hostName,
-			 @RequestParam("roomNo") String roomNo,
-			@RequestParam("courseIntrod") String courseIntrod) {
+			@RequestParam("roomNo") String roomNo, 
+			@RequestParam("courseIntrod") String courseIntrod,
+			@RequestParam("courseTime") String courseTime,
+			@RequestParam("courseHour") Integer courseHour,
+			@RequestParam("courseStartDate") Date courseStartDate) {
 
 		CourseBean courseBean = service.getCourseById(id);
-		String courseStartDate = courseBean.getCourseStartDate();
-		String courseEndDate = courseBean.getCourseEndDate();
 		Integer hostId = courseBean.getHostId();
 		String coursePhone = courseBean.getCoursePhone();
 		String courseMail = courseBean.getCourseMail();
-//		Blob courseImage = courseBean.getCourseImage();
-		
+
 		// 設定寫入圖片參數
-				MultipartFile coverImg = courseImage;
-				Blob imageBlob = null;
+		MultipartFile coverImg = courseImage;
+		Blob imageBlob = null;
 
-				if (coverImg != null) {
-					byte[] buf;
+		if (coverImg != null) {
+			byte[] buf;
 
-					try {
-						buf = coverImg.getBytes();
-						Blob blob = new SerialBlob(buf);
-						imageBlob = blob;
+			try {
+				buf = coverImg.getBytes();
+				Blob blob = new SerialBlob(buf);
+				imageBlob = blob;
 
-					} catch (IOException | SQLException e) {
-						e.printStackTrace();
-						throw new RuntimeException("檔案上傳發生異常:" + e.getMessage());
-					}
-				}
-		
-		CourseBean cb = new CourseBean(id, hostId, courseName, courseCategory, imageBlob, hostName, courseStartDate,
-				courseEndDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
-				(new Date()));
+			} catch (IOException | SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException("檔案上傳發生異常:" + e.getMessage());
+			}
+		}
+
+		CourseBean cb = new CourseBean(id, hostId, courseName, courseCategory, imageBlob, hostName,
+				courseStartDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
+				(new Date()), courseTime, courseHour);
 
 		Boolean flag = service.updateCourse(cb);
 		if (flag == true) {
@@ -224,12 +225,13 @@ public class CourseController {
 		return roomMap;
 	}
 
+//	新增課程: 名稱、教室、上課時間、時數
 	@PostMapping("/course/courseAdd1")
 	public String addNewCourseForm(Model model,
 			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan,
 			@RequestParam("courseName") String courseName, @RequestParam("roomNo") String roomNo,
-			@RequestParam("courseStartDate") String courseStartDate,
-			@RequestParam("courseEndDate") String courseEndDate) {
+			@RequestParam("courseStartDate") String courseStartDate, @RequestParam("courseTime") String courseTime,
+			@RequestParam("courseHour") Double courseHour) {
 		// 如果session含有登入者資訊 就直接以該使用者登入
 		if (currentSesMan == null) {
 			return "managementLogin";
@@ -237,31 +239,22 @@ public class CourseController {
 		model.addAttribute("courseName", courseName);
 		model.addAttribute("roomNo", roomNo);
 		model.addAttribute("courseStartDate", courseStartDate);
-		model.addAttribute("courseEndDate", courseEndDate);
-		model.addAttribute("hostId", currentSesMan.getAccrount());
+		model.addAttribute("courseTime", courseTime);
+		model.addAttribute("courseHour", courseHour);
 		return "course/courseAdd";
 	}
 
 	@PostMapping("/course/courseAdd2")
-	public String addNewCourse(Model model, HttpServletRequest req,
-			@RequestParam("courseImage") MultipartFile courseImage,
+	public String addNewCourse(Model model, HttpServletRequest req, @RequestParam("courseName") String courseName,
+			@RequestParam("courseCategory") String courseCategory, @RequestParam("hostName") String hostName,
+			@RequestParam("courseStartDate") Date courseStartDate, @RequestParam("coursePrice") Integer coursePrice,
+			@RequestParam("roomNo") String roomNo, @RequestParam("courseDiscount") Double courseDiscount,
+			@RequestParam("courseIntrod") String courseIntrod, @RequestParam("coursePhone") String coursePhone,
+			@RequestParam("courseMail") String courseMail, @RequestParam("courseTime") String courseTime,
+			@RequestParam("courseHour") Integer courseHour, @RequestParam("courseImage") MultipartFile courseImage,
 			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan) {
-
 //		設定新增資料
 //		Integer hostId = currentSesMan.getMaId();
-		String courseName = req.getParameter("courseName");
-		String courseCategory = req.getParameter("courseCategory");
-		String hostName = req.getParameter("hostName");
-		String courseStartDate = req.getParameter("courseStartDate");
-		String courseEndDate = req.getParameter("courseEndDate");
-//		String saleStartDate = req.getParameter("saleStartDate");
-//		String saleEndDate = req.getParameter("saleEndDate");
-		String coursePrice = req.getParameter("coursePrice");
-		String roomNo = req.getParameter("roomNo");
-		String courseIntrod = req.getParameter("courseIntrod");
-		String coursePhone = req.getParameter("coursePhone");
-		String courseMail = req.getParameter("courseMail");
-		String courseDiscount = req.getParameter("courseDiscount");
 
 		// 設定寫入圖片參數
 		MultipartFile coverImg = courseImage;
@@ -282,14 +275,13 @@ public class CourseController {
 		}
 
 		CourseBean courseBean = new CourseBean(null, null, courseName, courseCategory, imageBlob, hostName,
-				courseStartDate, courseEndDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail,
-				courseDiscount, (new Date()));
+				courseStartDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
+				(new Date()), courseTime, courseHour);
 
 		service.insertCourse(courseBean);
 
 		return "redirect:/course/courseList";
 	}
-
 
 	@InitBinder
 	public void whiteListing(WebDataBinder binder) {

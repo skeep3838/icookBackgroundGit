@@ -125,10 +125,10 @@ public class accountController {
 		result = service.insertOneUserAcc(member);
 
 		// 確認更新結果
-		if (result == false) {
-			json.put("status", "false");
-		} else {
+		if (result) {
 			json.put("status", "OK");
+		} else {
+			json.put("status", "false");
 		}
 		return json;
 	}
@@ -193,10 +193,10 @@ public class accountController {
 		result = service.updateUserManagerial(member);
 
 		// 確認更新結果
-		if (result == false) {
-			json.put("status", "false");
-		} else {
+		if (result) {
 			json.put("status", "OK");
+		} else {
+			json.put("status", "false");
 		}
 		return json;
 	}
@@ -215,10 +215,10 @@ public class accountController {
 			result = service.insertOneManagerial(member);
 
 			// 確認更新結果
-			if (result == false) {
-				json.put("status", "false");
-			} else {
+			if (result) {
 				json.put("status", "OK");
+			} else {
+				json.put("status", "false");
 			}
 			return json;
 		}

@@ -29,5 +29,7 @@ public interface IProductService {
 	void deleteProductType(Integer productId);
 	//6.更新商品(測試中)
 	Boolean updateProduct(ProductBean prodocut);
+	//7.改變商品狀態
+	Boolean changeProductStr(Integer id, Integer status);
 
 }

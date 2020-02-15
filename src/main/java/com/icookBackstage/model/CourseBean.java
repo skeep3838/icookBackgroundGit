@@ -32,7 +32,7 @@ public class CourseBean implements Serializable {
 		private String hostName;
 		@Expose
 		@SerializedName("start")
-		private Date courseStartDate;
+		private String courseStartDate;
 //		@Expose
 //		2/15更新Table-已移除
 //		@SerializedName("end")
@@ -58,7 +58,7 @@ public class CourseBean implements Serializable {
 		
 		public CourseBean() {}
 		
-		public CourseBean( String courseName, Date courseStartDate, 
+		public CourseBean( String courseName, String courseStartDate, 
 				String courseEndDate) {
 			this.courseName = courseName;
 			this.courseStartDate = courseStartDate;
@@ -72,7 +72,7 @@ public class CourseBean implements Serializable {
 			String courseCategory,
 			Blob courseImage, //資料類型待確認
 			String hostName,
-			Date courseStartDate,
+			String courseStartDate,
 			String roomNo,
 			String courseIntrod,
 			Integer coursePrice,
@@ -156,10 +156,10 @@ public class CourseBean implements Serializable {
 		public void setHostName(String hostName) {
 			this.hostName = hostName;
 		}
-		public Date getCourseStartDate() {
+		public String getCourseStartDate() {
 			return courseStartDate;
 		}
-		public void setCourseStartDate(Date courseStartDate) {
+		public void setCourseStartDate(String courseStartDate) {
 			this.courseStartDate = courseStartDate;
 		}
 //		public String getCourseEndDate() {

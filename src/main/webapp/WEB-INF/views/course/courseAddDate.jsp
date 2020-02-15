@@ -125,28 +125,31 @@
 													<input type="hidden" id="courseStartDate" name="courseStartDate">
 <!-- 													<p id="showEndDate">課程結束日期: </p> -->
 													<input type="hidden" id="courseEndDate" name="courseEndDate">
-<!-- 													<div> -->
-<!-- 													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block" -->
-<!-- 														name="courseHour" id="courseHour" required="required"> -->
-<!-- 														<option value="" disabled selected hidden>時</option> -->
-<%-- 														<c:forEach var="i" begin="9" end="16"> --%>
-<%-- 															<option value='${i}'>${i}</option> --%>
-<%-- 														</c:forEach> --%>
-<!-- 													</select> -->
-<!-- 													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block" -->
-<!-- 														name="courseMinu" id="courseMinu" required="required"> -->
-<!-- 														<option value="" disabled selected hidden>分</option>					 -->
-<!-- 															<option value='00'>00</option> -->
-<!-- 															<option value='30'>30</option> -->
-<!-- 													</select> -->
-<!-- 													<select class="custom-select2" style="height: 35px; width: 400px;display:inline-block" -->
-<!-- 														name="courseHour" id="courseHour" required="required"> -->
-<!-- 														<option value="" disabled selected hidden>上課時數</option>					 -->
-<%-- 															<c:forEach var="i" begin="1" end="6" step="1" > --%>
-<%-- 															<option value='${i}'>${i}</option> --%>
-<%-- 														</c:forEach> --%>
-<!-- 													</select> -->
-<!-- 												</div> -->
+													<div>
+													<select class="custom-select2" style="height: 35px; width: 50px;display:inline-block"
+														name="courseH" id="courseH" required="required">
+														<option value="" disabled selected hidden>時</option>
+														<c:forEach var="i" begin="9" end="16">
+															<option value='${i}'>${i}</option>
+														</c:forEach>
+													</select>
+													<span> :　</span>
+													<select class="custom-select2" style="height: 35px; width: 50px;display:inline-block"
+														name="courseM" id="courseM" required>
+														<option value="" disabled selected hidden>分</option>					
+															<option value='00'>00</option>
+															<option value='30'>30</option>
+													</select>
+													<span> -　上課時數:</span>
+													<select class="custom-select2" style="height: 35px; width: 100px;display:inline-block"
+														name="courseHour" id="courseHour" required >
+														<option value="" disabled selected hidden>Hour</option>					
+															<c:forEach var="i" begin="1" end="6" step="1" >
+															<option value='${i}'>${i}</option>
+														</c:forEach>
+													</select>
+												</div>
+													
 <!-- 													<input type="button" onclick="roomJson123()" value="課程時間"> -->
 													<input type=button value="一鍵輸入" onclick="keyIn1()">
 													<input type=submit value="下一步" onclick="checkDate(event)">

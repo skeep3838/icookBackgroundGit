@@ -143,7 +143,8 @@
 								<td><input type="hidden" name="courseName" id="courseName" value='${courseName}'>
 								<td><input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
 								<td><input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
-								<td><input type="hidden" name="courseEndDate" id="courseEndDate" value='${courseEndDate}'>	
+								<td><input type="hidden" name="courseTime" id="courseTime" value='${courseTime}'>
+								<td><input type="hidden" name="courseHour" id="courseHour" value='${courseHour}'>	
 							</tr>
 							<tr>
 								<td><input type=button value="一鍵輸入" onclick="keyIn2()">

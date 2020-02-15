@@ -160,7 +160,7 @@ public class CourseController {
 			@RequestParam("courseIntrod") String courseIntrod,
 			@RequestParam("courseTime") String courseTime,
 			@RequestParam("courseHour") Integer courseHour,
-			@RequestParam("courseStartDate") Date courseStartDate) {
+			@RequestParam("courseStartDate") String courseStartDate) {
 
 		CourseBean courseBean = service.getCourseById(id);
 		Integer hostId = courseBean.getHostId();
@@ -226,16 +226,22 @@ public class CourseController {
 	}
 
 //	新增課程: 名稱、教室、上課時間、時數
+//	回傳的時間是整數字串，需改成時間格式
 	@PostMapping("/course/courseAdd1")
 	public String addNewCourseForm(Model model,
 			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan,
 			@RequestParam("courseName") String courseName, @RequestParam("roomNo") String roomNo,
-			@RequestParam("courseStartDate") String courseStartDate, @RequestParam("courseTime") String courseTime,
-			@RequestParam("courseHour") Double courseHour) {
+			@RequestParam("courseStartDate") String courseStartDate, 
+			@RequestParam("courseM") String courseM,
+			@RequestParam("courseH") Integer courseH,
+			@RequestParam("courseHour") Integer courseHour) {
 		// 如果session含有登入者資訊 就直接以該使用者登入
 		if (currentSesMan == null) {
 			return "managementLogin";
 		}
+//		處理回傳的時間
+		String courseTime = courseH +":"+ courseM;
+//		String StartDate = (String)courseStartDate;
 		model.addAttribute("courseName", courseName);
 		model.addAttribute("roomNo", roomNo);
 		model.addAttribute("courseStartDate", courseStartDate);
@@ -245,17 +251,23 @@ public class CourseController {
 	}
 
 	@PostMapping("/course/courseAdd2")
-	public String addNewCourse(Model model, HttpServletRequest req, @RequestParam("courseName") String courseName,
-			@RequestParam("courseCategory") String courseCategory, @RequestParam("hostName") String hostName,
-			@RequestParam("courseStartDate") Date courseStartDate, @RequestParam("coursePrice") Integer coursePrice,
-			@RequestParam("roomNo") String roomNo, @RequestParam("courseDiscount") Double courseDiscount,
-			@RequestParam("courseIntrod") String courseIntrod, @RequestParam("coursePhone") String coursePhone,
-			@RequestParam("courseMail") String courseMail, @RequestParam("courseTime") String courseTime,
-			@RequestParam("courseHour") Integer courseHour, @RequestParam("courseImage") MultipartFile courseImage,
+	public String addNewCourse(Model model, HttpServletRequest req, 
+			@RequestParam("courseName") String courseName,
+			@RequestParam("courseCategory") String courseCategory, 
+			@RequestParam("hostName") String hostName,
+			@RequestParam("courseStartDate") String courseStartDate, 
+			@RequestParam("coursePrice") Integer coursePrice,
+			@RequestParam("roomNo") String roomNo, 
+			@RequestParam("courseDiscount") Double courseDiscount,
+			@RequestParam("courseIntrod") String courseIntrod,
+			@RequestParam("courseTime") String courseTime,
+			@RequestParam("courseHour") Integer courseHour, 
+			@RequestParam("courseImage") MultipartFile courseImage,
 			@SessionAttribute(value = "currentManager", required = false) Manageral currentSesMan) {
 //		設定新增資料
 //		Integer hostId = currentSesMan.getMaId();
-
+		String coursePhone = "";
+		String courseMail= "";
 		// 設定寫入圖片參數
 		MultipartFile coverImg = courseImage;
 		Blob imageBlob = null;

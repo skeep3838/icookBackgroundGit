@@ -33,29 +33,28 @@ public class CourseBean implements Serializable {
 		@Expose
 		@SerializedName("start")
 		private String courseStartDate;
-		@Expose
-		@SerializedName("end")
-		private String courseEndDate;
+//		@Expose
+//		2/15更新Table-已移除
+//		@SerializedName("end")
+//		private String courseEndDate;
 		private String courseIntrod;
-		private String coursePrice;
+		private Integer coursePrice;
 		private String coursePhone;
 		private String courseMail;
-		private String courseDiscount;
+		private Double courseDiscount;
 		private Date updateTime;
-//		課程多 => 教室一
 		@Expose
 		@SerializedName("className")
 		private String roomNo;
-//		@ManyToOne
-//		@JoinColumn(name = "roomNo")
-//		ClassRoomBean classRoomBean;
-//		
-//		public ClassRoomBean getClassRoomBean() {
-//			return classRoomBean;
-//		}
-//		public void setClassRoomBean(ClassRoomBean classRoomBean) {
-//			this.classRoomBean = classRoomBean;
-//		}
+//		新增時間和時數欄位
+		@Expose
+		@SerializedName("cTime")
+		private String courseTime;
+		@Expose
+		@SerializedName("cHour")
+		private Integer courseHour;
+		
+
 		
 		public CourseBean() {}
 		
@@ -63,7 +62,7 @@ public class CourseBean implements Serializable {
 				String courseEndDate) {
 			this.courseName = courseName;
 			this.courseStartDate = courseStartDate;
-			this.courseEndDate = courseEndDate;
+//			this.courseEndDate = courseEndDate;
 		}
 		
 		public CourseBean(
@@ -74,14 +73,15 @@ public class CourseBean implements Serializable {
 			Blob courseImage, //資料類型待確認
 			String hostName,
 			String courseStartDate,
-			String courseEndDate,
 			String roomNo,
 			String courseIntrod,
-			String coursePrice,
+			Integer coursePrice,
 			String coursePhone,
 			String courseMail,
-			String courseDiscount,
-			Date updateTime) {
+			Double courseDiscount,
+			Date updateTime,
+			String courseTime,
+			Integer courseHour) {
 				this.courseId = courseId;
 				this.hostId = hostId;
 				this.courseName = courseName;
@@ -89,7 +89,6 @@ public class CourseBean implements Serializable {
 				this.courseImage = courseImage;
 				this.hostName = hostName;
 				this.courseStartDate = courseStartDate;
-				this.courseEndDate = courseEndDate;
 				this.roomNo = roomNo;
 				this.courseIntrod = courseIntrod;
 				this.coursePrice = coursePrice;
@@ -97,10 +96,28 @@ public class CourseBean implements Serializable {
 				this.courseMail = courseMail;
 				this.courseDiscount = courseDiscount;
 				this.updateTime = updateTime;
+				this.courseTime = courseTime;
+				this.courseHour = 	courseHour;
 		}
 		
 		
 		
+
+		public String getCourseTime() {
+			return courseTime;
+		}
+
+		public void setCourseTime(String courseTime) {
+			this.courseTime = courseTime;
+		}
+
+		public Integer getCourseHour() {
+			return courseHour;
+		}
+
+		public void setCourseHour(Integer courseHour) {
+			this.courseHour = courseHour;
+		}
 
 		public Integer getCourseId() {
 			return courseId;
@@ -145,12 +162,12 @@ public class CourseBean implements Serializable {
 		public void setCourseStartDate(String courseStartDate) {
 			this.courseStartDate = courseStartDate;
 		}
-		public String getCourseEndDate() {
-			return courseEndDate;
-		}
-		public void setCourseEndDate(String courseEndDate) {
-			this.courseEndDate = courseEndDate;
-		}
+//		public String getCourseEndDate() {
+//			return courseEndDate;
+//		}
+//		public void setCourseEndDate(String courseEndDate) {
+//			this.courseEndDate = courseEndDate;
+//		}
 		public String getRoomNo() {
 			return roomNo;
 		}
@@ -163,10 +180,10 @@ public class CourseBean implements Serializable {
 		public void setCourseIntrod(String courseIntrod) {
 			this.courseIntrod = courseIntrod;
 		}
-		public String getCoursePrice() {
+		public Integer getCoursePrice() {
 			return coursePrice;
 		}
-		public void setCoursePrice(String coursePrice) {
+		public void setCoursePrice(Integer coursePrice) {
 			this.coursePrice = coursePrice;
 		}
 		
@@ -186,11 +203,11 @@ public class CourseBean implements Serializable {
 			return serialVersionUID;
 		}
 
-		public String getCourseDiscount() {
+		public Double getCourseDiscount() {
 			return courseDiscount;
 		}
 
-		public void setCourseDiscount(String courseDiscount) {
+		public void setCourseDiscount(Double courseDiscount) {
 			this.courseDiscount = courseDiscount;
 		}
 

@@ -19,6 +19,7 @@ import com.icookBackstage.product.dao.IProductDAO;
  *	4.取商品總數 (上架or下架)
  *	5.刪除商品型別
  *	6.更新商品(測試中)
+ *	7.改變商品狀態
  */
 @Repository
 public class ProductDAOImpl implements IProductDAO {
@@ -140,5 +141,20 @@ public class ProductDAOImpl implements IProductDAO {
 		}
 		return true;
 	}
+	
+	//7.改變商品狀態
+	@Override
+	public Boolean changeProductStr(Integer id, Integer status) {
+		Session session = factory.getCurrentSession();
+		String sql = "UPDATE Products SET itemStatus=:status  WHERE productID = :id";
+		try {
+			session.createSQLQuery(sql).setParameter("status", status)
+					.setParameter("id", id).executeUpdate();
+		}catch(Exception e) {
+			e.getStackTrace();
+			return false;
+		}
 
+		return true;
+	}
 }

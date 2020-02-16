@@ -157,27 +157,36 @@ public class ProductRESTfulController {
 		if (image1 != null) {
 			try {
 				for (MultipartFile image : image1) {
-					++count;
 					System.out.println("=== image.isEmpty()" + count + "= " + image.isEmpty() + " ===");
 					if (image.isEmpty() == false) {
 						RequestBody request = RequestBody.create(MediaType.parse("image/*"), image.getBytes());
 						Call<ImageResponse> call = imgurApi.postImage(request);
 						Response<ImageResponse> res = call.execute();
 
-						imgLink = res.body().data.link;
+						System.out.println("imgur上傳是否成功: " + res.isSuccessful());
 
-						if (count == 1) {
+						// 判斷與imgur的連線是否有異常
+						if (res.isSuccessful()) {
+							imgLink = res.body().data.link;
+						} else {
+							// 塞找不到圖片的的圖檔
+							imgLink = "https://imgur.com/sdxRXxl";
+						}
+
+						if (count == 0) {
 							allImg += imgLink;
 						} else {
 							allImg += "," + imgLink;
 						}
-					}else {
-						if (count == 1) {
-							allImg += oldProductImage1[(count-1)];
-						} else {
-							allImg += "," + oldProductImage1[(count-1)];
+					} else {
+						if (count == 0 && oldProductImage1.length >= count) {
+							allImg += oldProductImage1[count];
+						} else if (oldProductImage1.length >= count) {
+							allImg += "," + oldProductImage1[count];
 						}
 					}
+
+					++count;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -199,12 +208,37 @@ public class ProductRESTfulController {
 		}
 
 		// 呼叫DAO 刪除產品型別
-		service.deleteProductType(id);
+//		service.deleteProductType(id);
 
 		// 呼叫DAO更新DB的資料
 		System.out.println("===== prodBean: " + prodBean + " =====");
 		service.updateProduct(prodBean);
 
+		return json;
+	}
+
+	// 上下架商品
+	@GetMapping(value = "/changeStatus/{status}/{id}", produces = "application/json")
+	public Map<String, Object> changeStatusaty(@PathVariable String status, @PathVariable Integer id) {
+		System.out.println("==== changeStatus/{id} start====");
+
+		// 建立必要參數
+		Map<String, Object> json = new HashMap<>();
+		Integer changeStatus = 1;
+		Boolean result;
+
+		if (status.equals("true")) {
+			changeStatus = 0;
+		}
+
+		result = service.changeProductStr(id, changeStatus);
+
+		// 確認更新結果
+		if (result) {
+			json.put("status", "OK");
+		} else {
+			json.put("status", "false");
+		}
 		return json;
 	}
 

@@ -45,7 +45,7 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
-
+	
 	<!-- Custom styles for this template-->
 	<link href="${pageContext.request.contextPath}/css/sb-admin-2.min.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -80,7 +80,8 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
+				<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+				<div class='ui-tabs-panel ui-corner-bottom ui-widget-content'>	
 					<!-- 標頭 -->
 					<div class="services-breadcrumb">
 						<div class="container">
@@ -92,7 +93,24 @@
 						</div>
 					</div>
 					<!-- 標頭 End -->
-
+<!-- 					搜尋列 -->
+					<div id="tabs-1">
+						<form method="POST">
+							<div style="margin-left: 500px;"
+								class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+								<div class="input-group">
+										<input type="text" class="form-control bg-light border-0 small searchInput"
+											placeholder="請輸入課程名稱" aria-label="Search" name="courseName"
+											aria-describedby="basic-addon2" id='searchIn1'>
+										<div class="input-group-append">
+											<button class="btn btn-primary search" type="submit">
+												<i class="fas fa-search fa-sm"></i>
+											</button>
+									</div>
+								</div>
+							</div>
+						</form>
+<!-- 						搜尋列 -->
 					<!-- 課程列表 -->
 					<div class="bs-docs-example div-height" align='center'>
 						<table id='table1' class="table table-hover">
@@ -137,6 +155,8 @@
 					<!-- 課程列表 --End -->
 				</div>
 				<!-- Begin Page Content --End -->
+			</div>
+			</div>
 			</div>
 			<!-- Main Content --End-->
 		</div>

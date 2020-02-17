@@ -241,8 +241,7 @@ function keyIn2() {
 	$("#coursePrice").val("10000");
 	$("#courseDiscount").val("1");
 	$("#hostName").val("李嚴");
-	$("#courseIntrod").val("蝦的挑選、烹煮與保存蝦去殼的完整手法； " +
-			"				製作濃郁的蝦濃湯、醬汁與乾燥義大利麵的烹煮");
+	$("#courseIntrod").val("蝦的挑選、烹煮與保存蝦去殼的完整手法: \n製作濃郁的蝦濃湯、醬汁與乾燥義大利麵的烹煮");
 }
 
 

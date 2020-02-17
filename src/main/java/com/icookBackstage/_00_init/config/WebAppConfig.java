@@ -32,6 +32,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/AdminLTE-3.0.2/**").addResourceLocations("/WEB-INF/views/AdminLTE-3.0.2/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/views/css/");
 		registry.addResourceHandler("/image/**").addResourceLocations("/WEB-INF/views/images/");
 		registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/views/images/");

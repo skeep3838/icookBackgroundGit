@@ -25,10 +25,11 @@
 			max-width: 150px;
 			max-height: 150px;
 		}
+
 		.fc-day-grid-event .fc-time {
-    /* font-weight: 700; */
-    font-size: 0;
-}
+			/* font-weight: 700; */
+			font-size: 0;
+		}
 	</style>
 
 	<title>Demo_MyProduct</title>
@@ -100,18 +101,19 @@
 
 					<div class='container'>
 						<div class="row">
-							<div class="col-sm-5">
+							<div class="col-sm-4">
 								<form method="post" action="${pageContext.request.contextPath}/course/courseAdd1"
 									enctype="multipart/form-data">
 									<!-- 					輸入課程名稱 -->
 									<table>
 										<tr>
-											<td><input type='text' name='courseName' id='courseName'
+											<td><input class="form-control" type="text" name='courseName' id='courseName'
 													placeholder="請輸入課程名稱" required="required"
-													style="height: 35px; width: 400px;">
+													style="height: 35px; width: 300px;">
 										<tr>
-											<td><select class="custom-select" style="height: 35px; width: 400px;"
-													name="roomNo" id="roomNo" onchange="roomJson123()" required="required">
+											<td><select class="form-control" style="height: 35px; width: 300px;"
+													name="roomNo" id="roomNo" onchange="roomJson123()"
+													required="required">
 													<option value="" disabled selected hidden>上課教室</option>
 													<c:forEach var='bean' items='${roomBean}'>
 														<option value='${bean.roomNo}'> ${bean.roomNo} 容納人數:
@@ -121,46 +123,51 @@
 												<!-- 					取得教室資訊 -->
 												<input type="hidden" id=courJson>${courseDate.get(bean.roomNo)}
 												<div>
-													<p id="showStartDate">上課日期: </p>
-													<input type="hidden" id="courseStartDate" name="courseStartDate">
-<!-- 													<p id="showEndDate">課程結束日期: </p> -->
-													<input type="hidden" id="courseEndDate" name="courseEndDate">
+													<div class="courseDate" id="courseDate">
+														<span id="showStartDate">課程日期: </span>
+													</div>
 													<div>
-													<select class="custom-select2" style="height: 35px; width: 50px;display:inline-block"
-														name="courseH" id="courseH" required="required">
-														<option value="" disabled selected hidden>時</option>
-														<c:forEach var="i" begin="9" end="16">
-															<option value='${i}'>${i}</option>
-														</c:forEach>
-													</select>
-													<span> :　</span>
-													<select class="custom-select2" style="height: 35px; width: 50px;display:inline-block"
-														name="courseM" id="courseM" required>
-														<option value="" disabled selected hidden>分</option>					
+														<span> 　上課時間: </span>
+														<select class="form-control"
+															style="height: 35px; width: 70px;display:inline-block"
+															name="courseH" id="courseH" required="required">
+															<option value="" disabled selected hidden>時</option>
+															<c:forEach var="i" begin="9" end="16">
+																<option value='${i}'>${i}</option>
+															</c:forEach>
+														</select>
+														<span> :　</span>
+														<select class="form-control"
+															style="height: 35px; width: 70px;display:inline-block"
+															name="courseM" id="courseM" required>
+															<option value="" disabled selected hidden>分</option>
 															<option value='00'>00</option>
 															<option value='30'>30</option>
-													</select>
-													<span> -　上課時數:</span>
-													<select class="custom-select2" style="height: 35px; width: 100px;display:inline-block"
-														name="courseHour" id="courseHour" required >
-														<option value="" disabled selected hidden>Hour</option>					
-															<c:forEach var="i" begin="1" end="6" step="1" >
-															<option value='${i}'>${i}</option>
-														</c:forEach>
-													</select>
-												</div>
-													
-<!-- 													<input type="button" onclick="roomJson123()" value="課程時間"> -->
-													<input type=button value="一鍵輸入" onclick="keyIn1()">
-													<input type=submit value="下一步" onclick="checkDate(event)">
-													<input type="button" onclick="clearAll()" value="重新設定">
+														</select>
+													</div>
+													<div>
+														<span> 　上課時數: </span>
+														<select class="form-control"
+															style="height: 35px; width: 55px;display:inline-block"
+															name="courseHour" id="courseHour" required>
+															<c:forEach var="i" begin="1" end="6" step="1">
+																<option value='${i}'>${i}</option>
+															</c:forEach>
+														</select>
+														<span>小時</span>
+													</div>
+
+													<input type="hidden" id="courseStartDate" name="courseStartDate" class="btn btn-secondary">
+													<input type=button value="一鍵輸入" onclick="keyIn1()" class="btn btn-secondary">
+													<input type=submit value="下一步" onclick="checkDate()" class="btn btn-secondary">
+													<input type="button" onclick="clearAll()" value="重新設定" class="btn btn-secondary">
 												</div>
 
 
 									</table>
 								</form>
 							</div>
-							<div class="col-sm-7">
+							<div class="col-sm-8">
 								<!-- 				<div id="dialog_div" title="新增課程時間"></div></div> -->
 								<div id="calendar" style="width:100%;"></div>
 								<!-- 					包到行事曆之前 -->

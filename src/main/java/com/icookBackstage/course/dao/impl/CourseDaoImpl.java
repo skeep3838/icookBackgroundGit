@@ -22,6 +22,7 @@ public class CourseDaoImpl implements CourseDao{
 	}
 
 //	列出所有課程清單
+//	依照更新時間排序
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CourseBean> queryAllCourse() {
@@ -29,7 +30,7 @@ public class CourseDaoImpl implements CourseDao{
 		
 		List<CourseBean> courses = new ArrayList<>();
 		Session session = factory.getCurrentSession();
-		String hql = "FROM CourseBean order by courseId desc";
+		String hql = "FROM CourseBean order by updateTime desc";
 		courses = session.createQuery(hql).getResultList();
 		return courses;
 	}
@@ -85,7 +86,7 @@ public class CourseDaoImpl implements CourseDao{
 	@Override
 	public void insertCourse(CourseBean bean) {
 		Session session = factory.getCurrentSession();
-		session.persist(bean);
+		session.save(bean);
 		
 	}
 

@@ -29,6 +29,9 @@ let viewImg="";
 let searchMod = false;
 let searchInt;
 
+let typeNumber;
+let pirtureNumber;
+
 
 //載入完成先觸發一次"上架商品"頁籤
 $(document).ready(function(){
@@ -204,6 +207,29 @@ $("body").on("change",".images",function(){
 	readURL(this);
 });
 
+//刪除type按鈕
+function deleteType(index){
+	let typeGroup = "#typeGroup" + index;
+	$(typeGroup).remove();	
+}
+
+//最下面新增type按鈕
+function addType(){
+	let contant1 =	"<div id='typeGroup" + typeNumber + "'><hr><table>"
+		+	"<tr><td>類型名稱:<td><input type='text' name='typeTitle'></input>"
+		+	"<td><input type='button' value='移除' onclick='deleteType("+ typeNumber +")'>"
+		+	"<tr><td>售價:<td><input type='text' id='unitPrice" + typeNumber + "' index='"
+			+ typeNumber + "' name='unitPrice' class='unitPrice'>"
+			+ "</input><span id='calculator" + typeNumber + "'></span>"
+		+	"<tr><td>折扣:<td><input type='text' id='discount" + typeNumber + "' index ='"
+			+ typeNumber + "' name='discount' class='discount'></input>"
+		+	"<tr><td>庫存:<td><input type='text' name='unitStock'></input>"
+		+	"<tr><td>已訂貨:<td><input type='text' name='unitOrder'></input>"
+		+	"<tr><td>&nbsp</tr></table></div>";
+	
+	$("#addButton").before(contant1);
+}
+
 function getRootPath(){
 	//獲取當前網址，如：/icookBackstage02035/demoMyProduct.page
 	pathName = window.document.location.pathname;
@@ -313,6 +339,7 @@ function buildTable(){
 
 //顯示產品Detail的資訊(Dialog內)
 function detailUpdate(number){
+		
 	//紀錄detailId
 	detailId = productPageJson[number].productID;
 
@@ -329,26 +356,36 @@ function detailUpdate(number){
 						+ productPageJson[number].category + "'></input>"
 					+	"<tr><td>產品資訊:<td><textarea style='width: 700px; height: 240px;' id='productInfo'" 
 						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea></tr></table>"
-					+	"<table id='datailTable2'><tbody style='width:100%;'><tr><td colspan='3'>更新圖片" 
-					+	"<tr><td><input type='file' name='image1' index='1' id='img1' class='images'> <td><input type='file' name='image1' index='2' id='img2' class='images'>" 
-					+	"<td><input type='file' name='image1' index='3' id='img3' class='images'><tr>";
+					+	"<div><span>更新圖片</span></div>"; //test
+//					+	"<table id='datailTable2'><tbody style='width:100%;'><tr><td colspan='3'>更新圖片"
+//					+	"<tr><td><input type='file' name='image1' index='1' id='img1' class='images'> <td><input type='file' name='image1' index='2' id='img2' class='images'>" 
+//					+	"<td><input type='file' name='image1' index='3' id='img3' class='images'><tr>";
 					
 	//產生預覽圖片
-	for(let i = 1 ; i <= 3 ; ++i){
-		detailContant 	+= 	"<td class='viewImgTd'><label for='img"+ i +"'>" 
-						+	"<img class='viewImgClass' id='viewImg" + i + "' src='" 
-						+ 	((splitPictureStr.length>=i)? splitPictureStr[i-1] : "#") + "'>"
-						+	"</label>"
+//	for(let i = 1 ; i <= 3 ; ++i){
+//		detailContant 	+= 	"<td class='viewImgTd'><label for='img"+ i +"'>" 
+//						+	"<img class='viewImgClass' id='viewImg" + i + "' src='" 
+//						+ 	((splitPictureStr.length>=i)? splitPictureStr[i-1] : "#") + "'>"
+//						+	"</label>"
+//	}
+	
+	for(let i = 1 ; i <= splitPictureStr.length ; ++i){
+		detailContant 	+=	"<div class='imgDiv'>"
+						+	"<input type='file' name='image1' index='"+ i +"' id='img"+ i +"' class='images'>"
+						+	"<img class='viewImgClass' id='viewImg" + i + "' src='"
+							+ splitPictureStr[i-1] + "'></label></div>";
 	}
 	
-	detailContant 	+=	"<tr><td>&nbsp</tr></table>"
-					+	"<table id='detailTable3'>";
+	detailContant 	+=	"<br>";
+//					+	"<table id='detailTable3'>";
 	//建立類型迴圈
 	let type = productPageJson[number].type;
-	for(let i=0 ; i < type.length ; ++i ){
-		detailContant	+=	"<tr style='border-top: 1px solid #ddd;'><td>類型ID:<td>" + type[i].typeID
+	typeNumber = type.length;
+	for(let i=0 ; i < typeNumber ; ++i ){
+		detailContant	+=	"<div id='typeGroup" + i + "'><hr><table>"
 						+	"<tr><td>類型名稱:<td><input type='text' name='typeTitle' value='" 
 							+ type[i].typeTitle + "'></input>"
+							+ "<td><input type='button' value='移除' onclick='deleteType("+ i +")'>"
 						+	"<tr><td>售價:<td><input type='text' id='unitPrice" + i + "' index='"
 							+ i + "' name='unitPrice' class='unitPrice' value='" 
 							+ type[i].unitPrice + "'></input><span id='calculator" + i + "'>"
@@ -361,10 +398,10 @@ function detailUpdate(number){
 							+ type[i].unitStock + "'></input>"
 						+	"<tr><td>已訂貨:<td><input type='text' name='unitOrder' value='" 
 							+ type[i].unitOrder + "'></input>"
-						+	"<tr><td>&nbsp</tr>";
+						+	"<tr><td>&nbsp</tr></table></div>";
 	}
 	
-	detailContant		+=	"</table></form>" 
+	detailContant		+=	"<input type='button' value='新增Type' id='addButton' onclick='addType()'></form>" 
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);

@@ -1,5 +1,11 @@
 //設定參數名稱
 let roomJsonMap = {};
+var roomJsonObj="";
+//用在行事曆
+var newroomJsonObj=[];
+//用在課程時間判斷
+var classTimeJson=[];
+
 //var roomJson = "";
 //
 var roomNo = "";
@@ -14,13 +20,7 @@ var courseEvent =
 		title: '龍蝦蝦',
 		start: '2020-02-17',
 	}];
-//var courseEvent2 = 
-//	[{
-//		id: '202',
-//		title:'龍蝦蝦',
-//		start: '2020-02-17',
-//		end: '2020-02-28',
-//	}];
+
 
 $(function () {
 	$("#dialog_div").dialog({
@@ -72,21 +72,47 @@ function dateCalendar() {
 
 function roomJson123(){
 	roomNos = document.getElementById("roomNo").value;
+	newroomJsonObj=[];
+	classTimeJson=[];
 	var roomJson = null;
 	$.ajax({
 		type: "GET",
 		url: ("roomJsonMap"),
-//		async:false,
 		success: function (data) {
 			roomJsonMap = data;
-			//					重整不可選擇今天以前的日期
+//			重整不可選擇今天以前的日期
 			roomJson = roomJsonMap[roomNos];
-//			roomJson = JSON.parse(roomJsonMap[roomNo]);
-			console.log("roomJson 1: "+typeof(roomJson)+roomJson);
 //		    roomJson轉成物件roomJsonObj
-		    var roomJsonObj=JSON.parse(roomJson);
-//		    console.log("roomJsonObj: "+typeof(roomJsonObj)+roomJsonObj);
-			roomInfo(roomJsonObj);
+		    roomJsonObj=JSON.parse(roomJson); //object
+
+//		     處理回傳的時間字串做分類
+		    roomJsonObj.forEach(function(item,i){
+		    	var t = item.cTime.substr(0,5);
+		    	_startTime = t.split(":");
+//		    	將時間資訊格式化
+		    	var startDate = new Date(moment(item.start).format('YYYY'), 
+		    							moment(item.start).format('MM'), 
+		    							moment(item.start).format('DD'), 
+		    							_startTime[0], _startTime[1], 0);
+//		    	用在行事曆，顯示使用時間
+		    	newroomJsonObj.push({
+		    		title:moment(startDate).format('HH:mm')+""+moment(startDate).format('HH:mm'),
+		    		start:moment(startDate).format('YYYY-MM-DD'),
+		    		className:item.className
+		    	});
+		    	console:newroomJsonObj.title;
+//		    	用在時間判斷
+		    	classTimeJson.push({
+		    		start:item.start,
+		    		cTime:item.cTime,
+		    		cHour:item.cHour	    		
+		    	});
+		    	console.log(newroomJsonObj);
+		    	console.log(classTimeJson);
+		    	
+		    });
+		    
+			roomInfo(newroomJsonObj);
 		}
 	});
 }
@@ -97,8 +123,7 @@ function roomInfo(roomJson) {
     if (calendarInnerTex != "") {
         document.getElementById("calendar").innerHTML = "";
     }
-    console.log("roomNos: "+roomNos);
-    console.log("roomJson 2: "+typeof(roomJson)+roomJson);
+
     var startDate = document.getElementById("courseStartDate").value;
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -118,8 +143,10 @@ function roomInfo(roomJson) {
 			start: moment()._d,
 			end: moment().add(1, 'years').d
 		},
+//		設為整天模式
+		allDayDefault:true,
 		//可不可以拖拉，拖拉結果會改變送出結果
-		editable: true,
+		editable: false,
 		//一天太多event，會在下面集合成"more.."
 		eventLimit: true,
 
@@ -131,27 +158,24 @@ function roomInfo(roomJson) {
 			//查看上個月與下個月按鈕
 			right: 'prev,next'
 		},
-		//日曆下部，可以塞自訂按鈕，我在下面塞了一個submit的按鈕，處理Events中的值並送至Servlet
-//		footer: {
-//			right: 'DEMOButton submitButton',
-//		},
-		//				events:courseEvent,
-		//顏色
-		//		            backgroundColor: 'white',
-		//		            borderColor: 'black',
-		//		            textColor: 'red',
-
+		
 		// your event source
 		events:roomJson,
 		eventBackgroundColor:"white",
 		eventTextColor:"red",
+		
 		dateClick: function (date, event, view) {
 			console.log('add event');
 			console.log(date);
 			var startDate = document.getElementById("courseStartDate").value;
 			var seleDate = moment(date.dateStr).format('YYYYMMDD');
 
-			//				    console.log("seleDate: "+seleDate);
+//			判斷選擇的時間是否已被使用
+//	    	用在時間判斷
+	    	if(moment(date.dateStr).format('YYYYMMDD')==
+	    		moment(classTimeJson.start).format('YYYYMMDD')){
+	    		
+	    	}
 
 			if (document.getElementById("roomNo").value == "") {
 				alert("請選擇上課教室。");
@@ -168,22 +192,6 @@ function roomInfo(roomJson) {
 					txt = "課程日期: ";
 				}
 				document.getElementById("showStartDate").innerHTML = txt;
-//			} else {
-//				startDate = moment(startDate).format('YYYYMMDD');
-//				console.log(parseInt(seleDate) > parseInt(startDate));
-//
-//				if (parseInt(seleDate) <= parseInt(startDate)) {
-//					alert("結束時間不可在開始時間之前，請重新選擇日期。");
-//				} else {
-//					var r = confirm("是否設為課程結束日期?");
-//					if (r == true) {
-//						txt = "課程結束日期: " + moment(date.dateStr).format('YYYY-MM-DD');
-//						document.getElementById("courseEndDate").value = date.dateStr;
-//					} else {
-//						txt = "課程結束日期: ";
-//					}
-//					document.getElementById("showEndDate").innerHTML = txt;
-//				}
 			}
 			console.log(document.getElementById("courseStartDate").value);
 
@@ -206,20 +214,6 @@ function clearAll() {
 	$("#roomNo").val("上課教室");
 }
 
-//function roomInfo() {
-//	$.ajax({
-//		type: "GET",
-//		url: ("roomJsonMap"),
-//		success: function (data) {
-//			roomJsonMap = data;
-//			//					重整不可選擇今天以前的日期
-//			var roomNo = document.getElementById("roomNo").value;
-//			roomJson = roomJsonMap[roomNo];
-////			roomJson = JSON.parse(roomJsonMap[roomNo]);
-//			alert(courseEvent);
-//		}
-//	});
-//}
 
 function checkDate(event) {
 	var startDate = document.getElementById("courseStartDate").value;
@@ -241,9 +235,10 @@ function keyIn2(){
 	$("#coursePrice").val("10000");
 	$("#courseDiscount").val("1");
 	$("#hostName").val("李嚴");
-	$("#courseIntrod").val("蝦的挑選、烹煮與保存蝦去殼的完整手法； 製作濃郁的蝦濃湯、醬汁與乾燥義大利麵的烹煮");
-	
+	$("#courseIntrod").val("蝦的挑選、烹煮與保存蝦去殼的完整手法； 製作濃郁的蝦濃湯、醬汁與乾燥義大利麵的烹煮");	
 }
+
+
 
 
 

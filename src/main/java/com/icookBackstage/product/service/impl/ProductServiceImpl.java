@@ -93,13 +93,27 @@ public class ProductServiceImpl implements IProductService {
 		dao.deleteProductType(productId);
 	}
 	
-	//6.更新商品(測試中)
+	//6.更新商品, 因為oneToMany關係 要先移除舊的ProductType
 	@Override
 	@Transactional
 	public Boolean updateProduct(ProductBean prodocut) {
+		dao.deleteProductType(prodocut.getProductID());
 		return dao.updateProduct(prodocut);
 	}
 	
+	//7.改變商品狀態
+	@Override
+	@Transactional
+	public Boolean changeProductStr(Integer id, Integer status) {
+		return dao.changeProductStr(id, status);
+	}
+	
+	// 8.取出單一商品資訊
+	@Override
+	@Transactional
+	public ProductBean getOneProduct(int BeanPk) {
+		return dao.getOneProduct(BeanPk);
+	}
 	
 }
 

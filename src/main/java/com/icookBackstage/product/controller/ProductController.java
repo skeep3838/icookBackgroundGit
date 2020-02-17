@@ -78,21 +78,30 @@ public class ProductController {
 		if (image1 != null) {
 			try {
 				for (MultipartFile image : image1) {
-					++count;
+					
 					System.out.println("=== image.isEmpty()" + count + "= " + image.isEmpty() + " ===");
 					if (image.isEmpty() == false) {
 						RequestBody request = RequestBody.create(MediaType.parse("image/*"), image.getBytes());
 						Call<ImageResponse> call = imgurApi.postImage(request);
 						Response<ImageResponse> res = call.execute();
 
-						imgLink = res.body().data.link;
+						System.out.println("imgur上傳是否成功: " + res.isSuccessful());
 
-						if (count == 1) {
+						// 判斷與imgur的連線是否有異常
+						if (res.isSuccessful()) {
+							imgLink = res.body().data.link;
+						} else {
+							// 塞找不到圖片的的圖檔
+							imgLink = "https://imgur.com/sdxRXxl";
+						}
+
+						if (count == 0) {
 							allImg += imgLink;
 						} else {
 							allImg += "," + imgLink;
 						}
 					}
+					++count;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

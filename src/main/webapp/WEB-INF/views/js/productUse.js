@@ -9,6 +9,7 @@ let pageArea="#pageArea1";
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>商品ID"
 	+ "	<th>商品名稱<th>總類<th>折扣<th>庫存狀態<th>更新時間<th><th>";
+let noDataContant = "<tr><td colspan=8 >not any date"
 let productPageJson;
 let tableContant = "";
 let paginationContant = "";
@@ -25,6 +26,8 @@ let projectName = "";
 let strTest = "";
 let index="";
 let viewImg="";
+let searchMod = false;
+let searchInt;
 
 
 //載入完成先觸發一次"上架商品"頁籤
@@ -37,9 +40,10 @@ $(document).ready(function(){
 $("#tabsTag1").click(function(){ 
 	nowPage = 1;
 	productStatus ="true";
-//	let page = 1;	//好像沒用到
+	searchMod=false;
 	tableId="#test1";
 	pageArea="#pageArea1";
+	$("#searchIn1").val("")
 	buildTable();
 });
 
@@ -47,22 +51,54 @@ $("#tabsTag1").click(function(){
 $("#tabsTag2").click(function(){ 
 	nowPage = 1;
 	productStatus ="false";
-//	let page = 1;	//好像沒用到
+	searchMod=false;
 	tableId="#test2";
 	pageArea="#pageArea2";
+	$("#searchIn2").val("")
 	buildTable();
 });
 
-//測試用
-function ajaxGet(){
-	$.ajax({ 
-		type:"GET",
-		url:("products/"+productStatus+"/"+nowPage),
-		success:function(data){
-			json = data;
-		}
-	})
-}
+//在搜尋欄按Enter也會進行搜尋
+//$(".searchInput").keyup(function(event){
+//	//判斷是不是按Enter
+//	if(event.keyCode === 13 || event.which === 13){
+//		$(".search").click();
+//	}
+//});
+
+//動態搜尋
+$(".searchInput").on("input",function(event){
+	$(".search").click();
+});
+
+//點擊搜尋
+$(".search").click(function(){
+	
+	//判斷抓哪個搜尋欄位
+	if(productStatus === "true"){
+		searchInt = $("#searchIn1").val();
+	}else if(productStatus === "false"){
+		searchInt = $("#searchIn2").val();
+	}else{
+		console.log("[sys]:productStatus is falded")
+	}
+	
+	//設定搜尋初始值
+	nowPage = 1;
+	if(searchInt != ""){
+		searchMod = true;
+	}else{
+		searchMod = false;
+	}
+	
+	//如果serchInt內不是數字就不搜尋
+	if( !isNaN(searchInt)){
+		searchInt = parseInt(searchInt , 10);
+		buildTable();
+	}else{
+		console.log("[sys]:searchInt is not Integer!")
+	}
+});
 
 //是否特價確認方法
 function discountChick(array){
@@ -200,67 +236,77 @@ $("#tabs").on("click",".paginate_button",function(){
 });
 
 
-function productDetail(productID){
-
-}
-
-
 //顯示每一頁產品table的資訊
 function buildTable(){
+	let goUrl = "";
+	
+	//確認是否為搜尋模式
+	if(searchMod){
+		goUrl = "produSearch/" + productStatus + "/" + searchInt + "/" + nowPage;
+	}else{
+		goUrl = "products/" + productStatus + "/" + nowPage;
+	}
+	
 	$.ajax({ 
-		type:"GET",
-		url:("products/"+productStatus+"/"+nowPage),
+		type: "GET",
+		url: goUrl,
 		success:function(data){
 			json = data;
-			productPageJson = JSON.parse(json.productPageJson);
 			tableContant = "";
 			paginationContant = "";
 			firstDataNumber = (json.page-1)*onePageNunber + 1
-			//table內容
-			for(let i=0 ; i<productPageJson.length ; ++i){
-				tableContant	+= 	"<tr><td>" + productPageJson[i].productID
-								+	"<td>" + productPageJson[i].productName
-								+	"<td>" + productPageJson[i].category
-								+	"<td>" + discountChick(productPageJson[i].type)
-								+	"<td>" + stockChick(productPageJson[i].type)
-								+	"<td>" + productPageJson[i].updateTime
-								+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='詳細修改' onclick='detailUpdate("+ i +")'>"
-								+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='下架商品' onclick='#'>";
-			}
-			//分頁左側內容, 顯示畫面上的資料數
-			paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
-								+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + productPageJson.length - 1)
-								+	" of "+ json.allProductNumber +" entries"
-								+	"</div></div>";
-			
-			//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
-			paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
-								+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
-			
-			//計算最後頁
-			maxPage = ((json.allProductNumber)>onePageNunber) ? parseInt((json.allProductNumber)/onePageNunber)+1 : 1 ;
-			console.log("==== maxPage:" + maxPage + " ====")
-			//產生頁數的迴圈
-			for(let i=1 ; i<= maxPage ; ++i){
-				//如果是當前頁, 就加上class='active'
-				if(i == nowPage){
-					paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
-				}else{
-					paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
+			//判斷是否有值
+			if(json.productPageJson != null){
+				productPageJson = JSON.parse(json.productPageJson);
+				//table內容
+				for(let i=0 ; i<productPageJson.length ; ++i){
+					tableContant	+= 	"<tr><td>" + productPageJson[i].productID
+									+	"<td>" + productPageJson[i].productName
+									+	"<td>" + productPageJson[i].category
+									+	"<td>" + discountChick(productPageJson[i].type)
+									+	"<td>" + stockChick(productPageJson[i].type)
+									+	"<td>" + productPageJson[i].updateTime
+									+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+										+ "value='詳細修改' onclick='detailUpdate("+ i +")'>"
+										+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+										+ "value='"+ ((productStatus === "true")?"下架商品":"上架商品") + "' onclick='changeStatus("+ i +")'>";
 				}
+				//分頁左側內容, 顯示畫面上的資料數
+				paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
+									+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + productPageJson.length - 1)
+									+	" of "+ json.allProductNumber +" entries"
+									+	"</div></div>";
+			
+				//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
+				paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
+									+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
+			
+				//計算最後頁
+				maxPage = ((json.allProductNumber)>onePageNunber) ? parseInt((json.allProductNumber)/onePageNunber)+1 : 1 ;
+				console.log("==== maxPage:" + maxPage + " ====")
+				//產生頁數的迴圈
+				for(let i=1 ; i<= maxPage ; ++i){
+					//如果是當前頁, 就加上class='active'
+					if(i == nowPage){
+						paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}else{
+						paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}
+				}
+			
+				//補上下一頁按鈕
+				paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
+			
+				//將整頁資訊寫入div
+				$(tableId).html(topColumn + tableContant);
+				$(pageArea).html(paginationContant);
+			}else{
+				//寫入沒有資料的訊息
+				$(tableId).html(topColumn + noDataContant);
+				$(pageArea).html("");
 			}
-			
-			//補上下一頁按鈕
-			paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
-			
-			//將整頁資訊寫入div
-			$(tableId).html(topColumn + tableContant);
-			$(pageArea).html(paginationContant);
-			
 		}
 	})
 }
@@ -319,7 +365,6 @@ function detailUpdate(number){
 	}
 	
 	detailContant		+=	"</table></form>" 
-//						+	"<input type='button' onclick='updateDetailData()' value='test'>"
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);
@@ -356,6 +401,7 @@ function updateDetailData(){
 		},
 		
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			$("#dialog_div_update").dialog("close");
 			buildTable();
@@ -363,10 +409,43 @@ function updateDetailData(){
 		
 		error:function(data){
 			$("#dialog_div_wait").dialog("close");
-			$("#dialog_div_error").html("<span class='errorFont'>創立帳戶失敗!</span>");
+			$("#dialog_div_error").html("<span class='errorFont'>產品更新失敗!</span>");
 			$("#dialog_div_error").dialog("open");
 		},
 	});
+}
+
+//上下架商品功能
+function changeStatus(number){
+	detailId = productPageJson[number].productID;
+	
+	$.ajax({ 
+		type:"GET",
+		cache:true,
+		
+		//header不傳contexntType
+		contentType:false,
+		url:("changeStatus/"+ productStatus +"/"+ detailId),
+
+		//ajax會自動將data改成字串型態, 這裡使用processData:false來阻止資料被轉成字串, 不然multipart資料接收會錯誤
+		processData:false,
+		
+		//ajax傳送更新資料前 先出現upload畫面
+		beforeSend:function(){
+
+		},
+		
+		success:function(data){
+			if(number === 0 && maxPage!= 1){nowPage = nowPage-1}
+			buildTable();
+		},
+		
+		error:function(data){
+			$("#dialog_div_error").html("<span class='errorFont'>狀態改變失敗!</span>");
+			$("#dialog_div_error").dialog("open");
+		},
+	});
+	
 }
 
 //測試用Dialog
@@ -467,4 +546,40 @@ $(function() {
         $("#dialog_div_error").dialog("open");
     });
 });
+
+$(function() {
+    $("#dialog_div_ok").dialog({
+    	//固定視窗
+    	maxHeight:	250,
+    	maxWidth:	250,
+    	minHeight:	250,
+    	minWidth:	250,
+    	
+    	//拖移設定
+    	draggable: false,
+    	
+    	//dialog建立自動開啟設定
+        autoOpen: false,
+        
+        //視窗外無法操作設定
+        modal : true,
+        
+        //不能Esc關閉
+        closeOnEscape: true,
+
+        //open事件發生時, 將dialog樣式右上的x顯示
+        open:function(event,ui){$(".ui-dialog-titlebar-close").show();}
+  
+    });
+    
+    $("#error_butt").click(function(productId) {
+		$("#dialog_div_error").html("<span class='errorFont'>改變狀態OK!</span>");
+        $("#dialog_div_error").dialog("open");
+    });
+});
+
+
+
+
+
 

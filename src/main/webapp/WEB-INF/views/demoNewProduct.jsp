@@ -21,10 +21,10 @@ table, tr, td {
 	
 }
 
-textarea {
-	width: 300px;
-	height: 100px;
-}
+/* textarea { */
+/* 	width: 300px; */
+/* 	height: 100px; */
+/* } */
 
 .testImgx {
 	max-width: 150px;
@@ -45,6 +45,11 @@ textarea {
 	color : red;
 	font-weight : bold;
 }
+
+/* #cke_1_contents{ */
+/* 	width: 100%;   */
+/*  	height: 1200px;   */
+/* } */
 </style>
 
 <title>Demo_NewProduct</title>
@@ -68,6 +73,7 @@ textarea {
 	
 <!-- 	加入文字編輯器ckEditor -->
 <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+<!-- <script src="ckeditor/ckeditor.js"></script> -->
 </head>
 
 <body id="page-top">
@@ -152,8 +158,9 @@ textarea {
 
 							<tr>
 								<td colspan="2">商品描述
-								<td colspan="6"><textarea id='test1' name="productInfo"
-										style="width: 500px; height: 180px;"></textarea>
+								<td colspan="6">
+								<textarea id='test1' name="productInfo" ></textarea>
+<!-- 								<textarea id='test1' name="productInfo" style="width: 500px; height: 180px;"></textarea> -->
 							</tr>
 
 							<tr>
@@ -234,7 +241,11 @@ textarea {
 							readURL300(this);
 						});
 						
-						CKEDITOR.replace('test1');
+						
+						CKEDITOR.replace('test1', {
+							width: 1000,
+							height: 500
+						});
 					</script>
 
 					<!-- Bootstrap core JavaScript-->

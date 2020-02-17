@@ -3,6 +3,7 @@ let paginationContant;
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>管理員ID"
 	+ "	<th>管理員帳號<th>管理員密碼<th>帳號管理權限<th>產品管理權限<th>訂單管理權限<th>網站維護權限<th><th>";
+let noDataContant = "<tr><td colspan=9 >not any date"
 let managerialPageJson;
 let onePageNunber = 10;
 let nowPage = 1;
@@ -16,6 +17,8 @@ let authName = ["accrountAuth","productAuth","orderAuth","webMaintainAuth"];
 let test1 = null;
 let passwordCount =1;
 
+let searchMod = false;
+let searchInt;
 
 //認證密碼
 $("body").on("keyup",".passwordOne, .passwordTwo",function(event){
@@ -60,6 +63,43 @@ $(document).ready(function(){
 	buildTable();
 });
 
+//在搜尋欄按Enter也會進行搜尋
+//$(".searchInput").keyup(function(event){
+//	//判斷是不是按Enter
+//	if(event.keyCode === 13 || event.which === 13){
+//		$(".search").click();
+//	}
+//});
+
+//動態搜尋
+$(".searchInput").on("input",function(event){
+	$(".search").click();
+});
+
+//點擊搜尋
+$(".search").click(function(){
+	
+	//取使用者輸入id
+	searchInt = $("#searchIn").val();
+	
+	//設定搜尋初始值
+	nowPage = 1;
+	if(searchInt != ""){
+		searchMod = true;
+	}else{
+		searchMod = false;
+	}
+	
+	//如果serchInt內不是數字就不搜尋
+	if( !isNaN(searchInt)){
+		searchInt = parseInt(searchInt , 10);
+		buildTable();
+	}else{
+		console.log("[sys]:searchInt is not Integer!")
+	}
+});
+
+
 //換頁數並刷新畫面
 $("body").on("click",".paginate_button",function(){
 	//建立必要參數
@@ -86,111 +126,127 @@ $("body").on("click",".paginate_button",function(){
 
 //顯示每一頁產品table的資訊
 function buildTable(){
+	
+	let goUrl = "";
+	
+	//確認是否為搜尋模式
+	if(searchMod){
+		goUrl = "managerialSearch/"+searchInt;
+	}else{
+		goUrl = "managerial/"+nowPage;
+	}
+	
 	$.ajax({ 
 		type:"GET",
-		url:("managerial/"+nowPage),
+		url:goUrl,
 		success:function(data){
 			json = data;
-			managerialPageJson = JSON.parse(json.managerialPageJson);
 			tableContant = "";
 			paginationContant = "";
 			firstDataNumber = (json.page-1)*onePageNunber + 1
-			
-			//table內容	
-			//新增用欄位
-			tableContant	+= 	"<tr id='inSertTr' class='hideTr'><td><span>新增資料:</span>"
-							+"<td><input size='12' type='text' id='accrountIn' name='accrount'>"
-							+"<br><span id='inAccountMeg'></span>"
-							+"<td><input size='12' type='password' index='In' id='passwordOneIn' class='passwordOne' placeholder='輸入密碼'>" 
-							+"<input size='12' type='password' index='In' id='passwordTwoIn' class='passwordTwo' placeholder='再次輸入密碼'>"
-							+"<br class='hideBr'><span id='passwordMegIn' class='errorMeg'></span>";
-			//authName內每個權限輪尋一遍
-			for(let j=0 ; j < authName.length ; ++j){
-				tableContant	+=	"<td><select id='"+ "in" + (authName[j]) +"'>";
-				//判斷true 或是false
-				for(let k=0 ; k < authArray.length ; ++k){
-					tableContant 	+=	"<option value='"+ authArray[k] +"' "
-					+ (k===1?"selected":"") +">"+ (authArray[k].toString());
-				}
-			}
-
-			tableContant	+=	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-					+ "value='新增資料' onclick='insertSubmit()'><br>"
-//					+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
-//					+ "value='取消新增' onclick='insertHide()'>";
-			
+			//判斷是否有值
+			if(json.managerialPageJson != null){
+				managerialPageJson = JSON.parse(json.managerialPageJson);
 				
-			
-			for(let i=0 ; i<managerialPageJson.length ; ++i){
-				//顯示用資訊
-				tableContant	+= 	"<tr id='showTr"+ i +"'><td>" + managerialPageJson[i].maId
-								+	"<td>" + managerialPageJson[i].accrount
-								+	"<td>***" 
-								+	"<td>" + managerialPageJson[i].accrountAuth
-								+	"<td>" + managerialPageJson[i].productAuth
-								+	"<td>" + managerialPageJson[i].orderAuth
-								+	"<td>" + managerialPageJson[i].webMaintainAuth
-								+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='開啟修改' onclick='updateOpen("+ i +")'>";
-				//更新用欄位
-				tableContant	+= 	"<tr id='updateTr"+ i +"' class='hideTr'><td><span>更新資料:</span>"
-								+	"<input type='hidden' id='maId" + i + "' name='maId' value='"
-									+	managerialPageJson[i].maId + "'>"
-								+	"<td><input size='12' type='text' id='accrount" + i + "' name='accrount' value='"
-									+	managerialPageJson[i].accrount + "'><br><span id='accountMeg'></span>"
-								+	"<td><input size='12' type='password' index='" + i + "' id='passwordOne" + i + "' class='passwordOne' placeholder='輸入密碼'>" 
-									+	"<input size='12' type='password' index='" + i + "' id='passwordTwo" + i + "' class='passwordTwo' placeholder='再次輸入密碼'>"
-									+	"<br class='hideBr'><span id='passwordMeg" + i + "' class='errorMeg'></span>";
-				
-				//抓權限填預設值
+				//table內容	
+				//新增用欄位
+				tableContant	+= 	"<tr id='inSertTr' class='hideTr'><td><span>新增資料:</span>"
+								+"<td><input size='12' type='text' id='accrountIn' name='accrount'>"
+								+"<br><span id='inAccountMeg'></span>"
+								+"<td><input size='12' type='password' index='In' id='passwordOneIn' class='passwordOne' placeholder='輸入密碼'>" 
+								+"<input size='12' type='password' index='In' id='passwordTwoIn' class='passwordTwo' placeholder='再次輸入密碼'>"
+								+"<br class='hideBr'><span id='passwordMegIn' class='errorMeg'></span>";
 				//authName內每個權限輪尋一遍
 				for(let j=0 ; j < authName.length ; ++j){
-					tableContant	+=	"<td><select id='"+ (authName[j] + i)
-									+	"' name='"+ authName[j] +"'>";
+					tableContant	+=	"<td><select id='"+ "in" + (authName[j]) +"'>";
 					//判斷true 或是false
 					for(let k=0 ; k < authArray.length ; ++k){
-						tableContant 	+=	"<option value='"+ authArray[k] +"'"
-										+ 	((managerialPageJson[i][authName[j]] === authArray[k])?(" selected"):("")) 
-										+	">" + (authArray[k].toString());
+						tableContant 	+=	"<option value='"+ authArray[k] +"' "
+						+ (k===1?"selected":"") +">"+ (authArray[k].toString());
 					}
 				}
-	
+
 				tableContant	+=	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='資料修改' onclick='updateSubmit("+ i +")'><br>"
-//									+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
-//									+ "value='取消修改' onclick='updateHide("+ i +")'>";
-			}
-			//分頁左側內容, 顯示畫面上的資料數
-			paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
-								+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + managerialPageJson.length - 1)
-								+	" of "+ json.allAccountNumber +" entries"
-								+	"</div></div>";
-			
-			//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
-			paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
-								+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
-			
-			//計算最後頁
-			maxPage = ((json.allAccountNumber)>onePageNunber) ? parseInt((json.allAccountNumber)/onePageNunber)+1 : 1 ;
-			console.log("==== maxPage:" + maxPage + " ====")
-			//產生頁數的迴圈
-			for(let i=1 ; i<= maxPage ; ++i){
-				//如果是當前頁, 就加上class='active'
-				if(i == nowPage){
-					paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
-				}else{
-					paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
+						+ "value='新增資料' onclick='insertSubmit()'><br>"
+//						+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
+//						+ "value='取消新增' onclick='insertHide()'>";
+				
+					
+				
+				for(let i=0 ; i<managerialPageJson.length ; ++i){
+					//顯示用資訊
+					tableContant	+= 	"<tr id='showTr"+ i +"'><td>" + managerialPageJson[i].maId
+									+	"<td>" + managerialPageJson[i].accrount
+									+	"<td>***" 
+									+	"<td>" + managerialPageJson[i].accrountAuth
+									+	"<td>" + managerialPageJson[i].productAuth
+									+	"<td>" + managerialPageJson[i].orderAuth
+									+	"<td>" + managerialPageJson[i].webMaintainAuth
+									+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+										+ "value='開啟修改' onclick='updateOpen("+ i +")'>";
+					//更新用欄位
+					tableContant	+= 	"<tr id='updateTr"+ i +"' class='hideTr'><td><span>更新資料:</span>"
+									+	"<input type='hidden' id='maId" + i + "' name='maId' value='"
+										+	managerialPageJson[i].maId + "'>"
+									+	"<td><input size='12' type='text' id='accrount" + i + "' name='accrount' value='"
+										+	managerialPageJson[i].accrount + "'><br><span id='accountMeg'></span>"
+									+	"<td><input size='12' type='password' index='" + i + "' id='passwordOne" + i + "' class='passwordOne' placeholder='輸入密碼'>" 
+										+	"<input size='12' type='password' index='" + i + "' id='passwordTwo" + i + "' class='passwordTwo' placeholder='再次輸入密碼'>"
+										+	"<br class='hideBr'><span id='passwordMeg" + i + "' class='errorMeg'></span>";
+					
+					//抓權限填預設值
+					//authName內每個權限輪尋一遍
+					for(let j=0 ; j < authName.length ; ++j){
+						tableContant	+=	"<td><select id='"+ (authName[j] + i)
+										+	"' name='"+ authName[j] +"'>";
+						//判斷true 或是false
+						for(let k=0 ; k < authArray.length ; ++k){
+							tableContant 	+=	"<option value='"+ authArray[k] +"'"
+											+ 	((managerialPageJson[i][authName[j]] === authArray[k])?(" selected"):("")) 
+											+	">" + (authArray[k].toString());
+						}
+					}
+		
+					tableContant	+=	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+										+ "value='資料修改' onclick='updateSubmit("+ i +")'><br>"
+//										+ "<input type='button' class='btn btn-default btn-secondary btn-sm'"
+//										+ "value='取消修改' onclick='updateHide("+ i +")'>";
 				}
+				//分頁左側內容, 顯示畫面上的資料數
+				paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
+									+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + managerialPageJson.length - 1)
+									+	" of "+ json.allAccountNumber +" entries"
+									+	"</div></div>";
+				
+				//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
+				paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
+									+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
+				
+				//計算最後頁
+				maxPage = ((json.allAccountNumber)>onePageNunber) ? parseInt((json.allAccountNumber)/onePageNunber)+1 : 1 ;
+				console.log("==== maxPage:" + maxPage + " ====")
+				//產生頁數的迴圈
+				for(let i=1 ; i<= maxPage ; ++i){
+					//如果是當前頁, 就加上class='active'
+					if(i == nowPage){
+						paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}else{
+						paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}
+				}
+				//補上下一頁按鈕
+				paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
+				
+				//將整頁資訊寫入div
+				$("#test1").html(topColumn + tableContant);
+				$("#pageArea1").html(paginationContant);
+			}else{
+				//寫入沒有資料的訊息
+				$("#test1").html(topColumn + noDataContant);
+				$("#pageArea1").html("");
 			}
-			//補上下一頁按鈕
-			paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
-			
-			//將整頁資訊寫入div
-			$("#test1").html(topColumn + tableContant);
-			$("#pageArea1").html(paginationContant);
-			
 		}
 	})
 }
@@ -264,6 +320,7 @@ function updateSubmit(number){
 		
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			buildTable();
 		},
@@ -342,6 +399,7 @@ function insertSubmit(){
 		
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			buildTable();
 		},

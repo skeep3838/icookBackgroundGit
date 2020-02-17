@@ -3,6 +3,7 @@ let paginationContant;
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>使用者ID"
 	+ "	<th>信箱<th>姓氏<th>名稱<th>暱稱<th>性別<th>生日<th>認證<th>";
+let noDataContant = "<tr><td colspan=9 >not any date"
 let userAccountPageJson;
 let onePageNunber = 10;
 let nowPage = 1;
@@ -15,6 +16,9 @@ let detailContant = "";
 let createNoError = 1;
 let emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
 let birthdayRule = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+let searchMod = false;
+let searchInt;
 
 //輸入判斷區
 
@@ -63,6 +67,43 @@ $("body").on("change","#birthday2",function(){
 	}
 });
 
+//在搜尋欄按Enter也會進行搜尋
+//$(".searchInput").keyup(function(event){
+//	//判斷是不是按Enter
+//	if(event.keyCode === 13 || event.which === 13){
+//		$(".search").click();
+//	}
+//});
+
+//動態搜尋
+$(".searchInput").on("input",function(event){
+	$(".search").click();
+});
+
+//點擊搜尋
+$(".search").click(function(){
+	
+	//取使用者輸入id
+	searchInt = $("#searchIn").val();
+	
+	//設定搜尋初始值
+	nowPage = 1;
+	if(searchInt != ""){
+		searchMod = true;
+	}else{
+		searchMod = false;
+	}
+	
+	//如果serchInt內不是數字就不搜尋
+	if( !isNaN(searchInt)){
+		searchInt = parseInt(searchInt , 10);
+		buildTable();
+	}else{
+		console.log("[sys]:searchInt is not Integer!")
+	}
+});
+
+
 //載入完成後匯入使用者帳戶資訊
 $(document).ready(function(){
 	console.log("start_first_select")
@@ -96,59 +137,76 @@ $("body").on("click",".paginate_button",function(){
 
 //顯示每一頁產品table的資訊
 function buildTable(){
+
+	let goUrl = "";
+	
+	//確認是否為搜尋模式
+	if(searchMod){
+		goUrl = "userAccountSearch/"+searchInt;
+	}else{
+		goUrl = "userAccount/"+nowPage;
+	}
+	
 	$.ajax({ 
 		type:"GET",
-		url:("userAccount/"+nowPage),
+		url:goUrl,
 		success:function(data){
 			json = data;
-			userAccountPageJson = JSON.parse(json.userAccountPageJson);
+			
 			tableContant = "";
 			paginationContant = "";
 			firstDataNumber = (json.page-1)*onePageNunber + 1
-			//table內容
-			for(let i=0 ; i<userAccountPageJson.length ; ++i){
-				tableContant	+= 	"<tr><td>" + userAccountPageJson[i].userId
-								+	"<td>" + userAccountPageJson[i].account
-								+	"<td>" + userAccountPageJson[i].lastname
-								+	"<td>" + userAccountPageJson[i].firstname
-								+	"<td>" + userAccountPageJson[i].nickname
-								+	"<td>" + userAccountPageJson[i].gender
-								+	"<td>" + userAccountPageJson[i].birthday
-								+	"<td>" + userAccountPageJson[i].checkstatus
-								+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
-									+ "value='詳細修改' onclick='detailUpdate("+ i +")'>";
-			}
-			//分頁左側內容, 顯示畫面上的資料數
-			paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
-								+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + userAccountPageJson.length - 1)
-								+	" of "+ json.allAccountNumber +" entries"
-								+	"</div></div>";
-			
-			//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
-			paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
-								+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
-			
-			//計算最後頁
-			maxPage = ((json.allAccountNumber)>onePageNunber) ? parseInt((json.allAccountNumber)/onePageNunber)+1 : 1 ;
-			console.log("==== maxPage:" + maxPage + " ====")
-			//產生頁數的迴圈
-			for(let i=1 ; i<= maxPage ; ++i){
-				//如果是當前頁, 就加上class='active'
-				if(i == nowPage){
-					paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
-				}else{
-					paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
-										+	i + "</a></li>";
+			//判斷是否有值
+			if(json.userAccountPageJson != null){
+				userAccountPageJson = JSON.parse(json.userAccountPageJson);
+				//table內容
+				for(let i=0 ; i<userAccountPageJson.length ; ++i){
+					tableContant	+= 	"<tr><td>" + userAccountPageJson[i].userId
+									+	"<td>" + userAccountPageJson[i].account
+									+	"<td>" + userAccountPageJson[i].lastname
+									+	"<td>" + userAccountPageJson[i].firstname
+									+	"<td>" + userAccountPageJson[i].nickname
+									+	"<td>" + userAccountPageJson[i].gender
+									+	"<td>" + userAccountPageJson[i].birthday
+									+	"<td>" + userAccountPageJson[i].checkstatus
+									+	"<td><input type='button' class='btn btn-default btn-secondary btn-sm'"
+										+ "value='詳細修改' onclick='detailUpdate("+ i +")'>";
 				}
+				//分頁左側內容, 顯示畫面上的資料數
+				paginationContant 	+=	"<div class='col-sm-12 col-md-5'><div>"
+									+	"Showing "+ firstDataNumber +" to "+ (firstDataNumber + userAccountPageJson.length - 1)
+									+	" of "+ json.allAccountNumber +" entries"
+									+	"</div></div>";
+				
+				//分頁右側內容, 顯示分頁按鈕, 先顯示上一頁按鈕				
+				paginationContant	+=	"<div class='col-sm-12 col-md-7'> <div class='dataTables_paginate' id='dataTables_paginate'>"
+									+	"<ul class='pagination'> <li class='Previous'> <a class='paginate_button' href='javascript:void(0);'>Previous</a></li>";
+				
+				//計算最後頁
+				maxPage = ((json.allAccountNumber)>onePageNunber) ? parseInt((json.allAccountNumber)/onePageNunber)+1 : 1 ;
+				console.log("==== maxPage:" + maxPage + " ====")
+				//產生頁數的迴圈
+				for(let i=1 ; i<= maxPage ; ++i){
+					//如果是當前頁, 就加上class='active'
+					if(i == nowPage){
+						paginationContant 	+=	"<li> <a class='paginate_button active' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}else{
+						paginationContant 	+=	"<li> <a class='paginate_button' href='javascript:void(0);'>" +
+											+	i + "</a></li>";
+					}
+				}
+				//補上下一頁按鈕
+				paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
+				
+				//將整頁資訊寫入div
+				$("#test1").html(topColumn + tableContant);
+				$("#pageArea1").html(paginationContant);
+			}else{
+				//寫入沒有資料的訊息
+				$("#test1").html(topColumn + noDataContant);
+				$("#pageArea1").html("");
 			}
-			//補上下一頁按鈕
-			paginationContant 	+=	"<li class='Next'> <a class='paginate_button' href='javascript:void(0);'>Next</a></li></div></div>";
-			
-			//將整頁資訊寫入div
-			$("#test1").html(topColumn + tableContant);
-			$("#pageArea1").html(paginationContant);
-			
 		}
 	})
 }
@@ -227,6 +285,7 @@ function updateDetailData(){
 		
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			$("#dialog_div_update").dialog("close");
 			buildTable();
@@ -308,6 +367,7 @@ function insertDetailData(){
 		
 		//更新成功先關閉upload畫面, 再刷新當前畫面
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			$("#dialog_div_insert").dialog("close");
 			buildTable();

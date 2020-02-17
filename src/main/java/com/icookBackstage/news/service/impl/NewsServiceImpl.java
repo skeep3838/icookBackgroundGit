@@ -12,7 +12,7 @@ import com.icookBackstage.news.dao.INewsDAO;
 import com.icookBackstage.news.service.INewsService;
 
 @Service
-public class NewsServiceImpl implements INewsService{
+public class NewsServiceImpl implements INewsService {
 	INewsDAO dao;
 
 	// 注入INewsDAO
@@ -75,5 +75,12 @@ public class NewsServiceImpl implements INewsService{
 	@Transactional
 	public Boolean insertOneNews(NewsBean bean) {
 		return dao.insertOneNews(bean);
+	}
+
+	// 6.刪除一個公告
+	@Override
+	@Transactional
+	public Boolean deleteOneNews(Integer id) {
+		return dao.deleteOneNews(id);
 	}
 }

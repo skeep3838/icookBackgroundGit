@@ -111,19 +111,22 @@ div.center {
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
-
+	
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
 		<!-- Sidebar -->
 		<jsp:include page="/WEB-INF/views/fragment/SideBar.jsp" />
 		<!-- End of Sidebar -->
-
+		
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 
@@ -133,10 +136,12 @@ div.center {
 				<!-- Topbar -->
 				<jsp:include page="/WEB-INF/views/fragment/TopBar.jsp" />
 				<!-- End of Topbar -->
-
+				
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
+				
+				<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+					<div class='ui-tabs-panel ui-corner-bottom ui-widget-content'>
 					<!-- 	----------------------------------------	 -->
 					<c:if test="${stat == false}">
 						<script>alert('沒有訂單資訊')</script>
@@ -225,6 +230,8 @@ div.center {
 				<!-- Begin Page Content -->
 			</div>
 			<!-- Main Content -->
+			</div>
+			</div>
 		</div>
 		<!-- Content Wrapper -->
 	</div>

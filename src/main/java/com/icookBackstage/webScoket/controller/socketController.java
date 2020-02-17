@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.icookBackstage.model.chatMember;
 import com.icookBackstage.model.socketBean;
 import com.icookBackstage.webScoket.service.socketServiceDao;
 
@@ -29,6 +30,7 @@ public class socketController {
 	}
 	@RequestMapping(value = "/GoWebSocket")
 	public String GoWebSocket(HttpServletRequest request,HttpServletResponse response, Model model) throws IOException {
+		
 		return "webSocket/webSocket";
 	}
 	@RequestMapping(value = "/WebSocket")
@@ -52,5 +54,13 @@ public class socketController {
 		else {
 			return "error";
 		}
+	}
+	
+	@RequestMapping(value = "/searchChatMember")
+	@ResponseBody
+	public String[] searchChatMember(@RequestParam("Message") String message,@RequestParam("maid") int maId,HttpServletRequest request,HttpServletResponse response, Model model) throws IOException {
+		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		String date = sdFormat.format(new Date());
+		return null;
 	}
 }

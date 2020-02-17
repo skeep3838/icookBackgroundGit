@@ -110,7 +110,8 @@
 							<tr>
 								<td colspan="2">上課教室
 								<td colspan="2">
-									<select class="custom-select" style="height: 35px; width: 200px;" name="roomNo">
+									<select class="custom-select" style="height: 35px; width: 200px;" 
+									name="roomNo" onchange="roomJson123()" >
 										<option value="${courseBean.roomNo}">${courseBean.roomNo}</option>
 										<option value='201'>201</option>
 										<option value='202'>202</option>
@@ -170,6 +171,9 @@
 
 
 							<tr>
+								<td><input type="hidden" name="courseTime" value='${courseBean.courseTime}'>
+								<td><input type="hidden" name="courseHour" value='${courseBean.courseHour}'>
+								<td><input type="hidden" name="courseStartDate" value='${courseBean.courseStartDate}'>
 								<td><input type="hidden" name="id" value="${courseBean.courseId}">
 								<td><input type="submit" value="送出">
 								<td><input type="reset" value="重置">

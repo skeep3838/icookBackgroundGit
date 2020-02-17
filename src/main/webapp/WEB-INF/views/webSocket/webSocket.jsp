@@ -447,6 +447,24 @@ div.center {
 							<div class="mesgs" style="padding: 30px 13px 0 25px;">
 								<div class="msg_history" id="messageContent">
 
+<<<<<<< HEAD
+<!-- 								訊息出現區 -->
+<!-- 									<div class="direct-chat-msg right"> -->
+<!-- 										<div class="direct-chat-infos clearfix"> -->
+<!-- 											<span class="direct-chat-name float-right">Sarah -->
+<!-- 												Bullock</span> <span class="direct-chat-timestamp float-left">23 -->
+<!-- 												Jan 2:05 pm</span> -->
+<!-- 										</div> -->
+<!-- 										<div class="direct-chat-text">You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										You better believe it! -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+=======
 									<!-- 								訊息出現區 -->
 									<!-- 									<div class="direct-chat-msg right"> -->
 									<!-- 										<div class="direct-chat-infos clearfix"> -->
@@ -463,6 +481,7 @@ div.center {
 									<!-- 										You better believe it! -->
 									<!-- 										</div> -->
 									<!-- 									</div> -->
+>>>>>>> master
 
 								</div>
 								<div class="type_msg">

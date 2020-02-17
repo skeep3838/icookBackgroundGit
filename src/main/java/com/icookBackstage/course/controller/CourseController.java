@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,11 @@ public class CourseController {
 		System.out.println("進入controller: searchCoursesForm");
 		String courseName = null;
 		List<CourseBean> list = service.queryAllCourse();
+//		Service似乎有問題
+//		Map<Integer, Integer> courseStock = service.courseStock();
 		model.addAttribute("courseName", courseName);
 		model.addAttribute("courses", list);
+//		model.addAttribute("courseStock", courseStock);	
 		return "course/courseList";
 	}
 
@@ -69,12 +74,14 @@ public class CourseController {
 	public String searchCoursesList(@RequestParam("courseName") String courseName, Model model) {
 		System.out.println("進入controller: searchCoursesList");
 		List<CourseBean> list = null;
+//		Map<Integer, Integer> courseStock = service.courseStock();
 		if (courseName == null) {
 			list = service.queryAllCourse();
 		} else {
 			list = service.queryCourse(courseName);
 		}
 		model.addAttribute("courses", list);
+//		model.addAttribute("courseStock", courseStock);
 		return "course/courseList";
 	}
 
@@ -85,19 +92,6 @@ public class CourseController {
 		return "course/courseUpdate";
 	}
 
-//	@PostMapping("/course/courseUpdate")
-//	public String updateCourse(Model model, 
-//			@RequestParam("id") Integer id,
-//			@RequestParam("courseName") String courseName, @RequestParam("courseCategory") String courseCategory,
-////			@RequestParam("courseImage")String courseImage,
-//			@RequestParam("coursePrice") String coursePrice, @RequestParam("courseDiscount") String courseDiscount,
-//			@RequestParam("hostName") String hostName, @RequestParam("courseStartDate") String courseStartDate,
-//			@RequestParam("courseEndDate") String courseEndDate, @RequestParam("roomNo") String roomNo,
-//			@RequestParam("courseIntrod") String courseIntrod) {
-//		CourseBean courseBean = service.getCourseById(id);
-//		model.addAttribute("courseBean", courseBean);
-//		return "course/courseUpdate";
-//	}
 //	取得照片
 	@GetMapping(value = "/getPic/{courseId}")
 	public ResponseEntity<byte[]> getPicture(HttpServletResponse response, @PathVariable Integer courseId) {
@@ -239,6 +233,7 @@ public class CourseController {
 		if (currentSesMan == null) {
 			return "managementLogin";
 		}
+//		System.out.println("courseStartDate1: "+courseStartDate);
 //		處理回傳的時間
 		String courseTime = courseH +":"+ courseM;
 //		String StartDate = (String)courseStartDate;
@@ -268,6 +263,11 @@ public class CourseController {
 //		Integer hostId = currentSesMan.getMaId();
 		String coursePhone = "";
 		String courseMail= "";
+		System.out.println("courseStartDate2: "+courseStartDate);
+		
+		String dateString = courseStartDate.substring(1,courseStartDate.length()-1);
+		ArrayList<String> dataArray = new ArrayList<>(Arrays.asList(dateString.split(",")));
+				
 		// 設定寫入圖片參數
 		MultipartFile coverImg = courseImage;
 		Blob imageBlob = null;
@@ -287,10 +287,19 @@ public class CourseController {
 		}
 
 		CourseBean courseBean = new CourseBean(null, null, courseName, courseCategory, imageBlob, hostName,
-				courseStartDate, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
+				null, roomNo, courseIntrod, coursePrice, coursePhone, courseMail, courseDiscount,
 				(new Date()), courseTime, courseHour);
-
-		service.insertCourse(courseBean);
+		
+//		List<CourseBean> cbl =null;
+		for(String cDate:dataArray) {
+//			回傳的時間格式多了一對""
+			CourseBean cbli = courseBean;
+			cbli.setCourseStartDate(cDate.substring(1,cDate.length()-1));
+			service.insertCourse(cbli);
+//			cbl.add(cbli);
+			cbli = courseBean;
+		}
+		
 
 		return "redirect:/course/courseList";
 	}

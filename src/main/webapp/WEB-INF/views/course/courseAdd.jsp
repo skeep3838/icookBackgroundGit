@@ -106,12 +106,13 @@
 							</tr>
 							<tr>
 								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="courseImage" id="image100" required="required">
+								<td colspan="4"><input type="file" name="courseImage" id="image100" >
 								<td colspan="2"><img id="testImg1" class="testImgx" src="">
 							</tr>
 							<tr>
 								<td colspan="2">課程價格
-								<td colspan="2"><input type="text" id="coursePrice" name="coursePrice" required="required">
+								<td colspan="2"><input type="text" id="coursePrice" name="coursePrice" 
+												required="required" class="form-control" style="height: 35px; width: 200px;">
 							</tr>
 							<tr>
 								<td colspan="2">課程優惠
@@ -131,13 +132,14 @@
 							</tr>
 							<tr>
 								<td colspan="2">講師名稱
-								<td colspan="2"><input type="text" name="hostName" id="hostName">
+								<td colspan="2"><input type="text" name="hostName" id="hostName" 
+												class="form-control" style="height: 35px; width: 200px;">
 
 							</tr>
 							<tr>
 								<td colspan="2">課程描述
 								<td colspan="6"><textarea name="courseIntrod" id="courseIntrod"
-										style="width: 500px; height: 180px;"></textarea>
+										style="width: 500px; height: 180px;" class="form-control"></textarea>
 							</tr>
 							<tr>
 								<td><input type="hidden" name="courseName" id="courseName" value='${courseName}'>

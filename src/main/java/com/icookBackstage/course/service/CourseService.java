@@ -1,6 +1,7 @@
 package com.icookBackstage.course.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +15,7 @@ public interface CourseService {
 	List<CourseBean> queryCourse(String courseName);
 	
 	public CourseBean getCourseById(int courseId);
-	Integer courseStock(int courseId);
+	public Map<Integer, Integer> courseStock();
 	
 	Map<Integer, CourseBean> courseODMap(Set<Integer> cartSet);
 	public void insertCourse(CourseBean bean);

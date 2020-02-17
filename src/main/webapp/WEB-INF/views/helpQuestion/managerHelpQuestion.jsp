@@ -168,7 +168,8 @@ div.center {
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
+				<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+					<div class='ui-tabs-panel ui-corner-bottom ui-widget-content'>
 					<!-- 	----------------------------------------	 -->
 					<c:if test="${stat == false}">
 						<script>alert('沒有客戶問題')</script>
@@ -247,6 +248,8 @@ div.center {
 				<!-- Begin Page Content -->
 			</div>
 			<!-- Main Content -->
+			</div>
+			</div>
 		</div>
 		<!-- Content Wrapper -->
 	</div>

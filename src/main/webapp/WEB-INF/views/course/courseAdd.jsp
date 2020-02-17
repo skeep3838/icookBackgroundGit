@@ -106,7 +106,7 @@
 							</tr>
 							<tr>
 								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="courseImage" id="image100" required="required">
+								<td colspan="4"><input type="file" name="courseImage" id="image100" >
 								<td colspan="2"><img id="testImg1" class="testImgx" src="">
 							</tr>
 							<tr>

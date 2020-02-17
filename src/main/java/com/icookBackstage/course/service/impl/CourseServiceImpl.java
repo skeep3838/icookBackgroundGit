@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 import com.icookBackstage.course.dao.CourseDao;
 import com.icookBackstage.course.service.CourseService;
 import com.icookBackstage.model.ClassRoomBean;
@@ -19,14 +18,15 @@ import com.icookBackstage.model.CourseBean;
 
 @Transactional
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
 
 	CourseDao dao;
+
 	@Autowired
 	public void setDao(CourseDao dao) {
 		this.dao = dao;
 	}
-	
+
 	@Transactional
 	@Override
 	public List<CourseBean> queryCourse(String courseName) {
@@ -45,27 +45,34 @@ public class CourseServiceImpl implements CourseService{
 		return dao.getCourseById(courseId);
 	}
 
+	@SuppressWarnings("null")
 	@Transactional
 	@Override
-	public Integer courseStock(int courseId) {
-		int courseCapacity = dao.courseCapacity(courseId);
-		List<Integer> courseOrderQty = dao.courseOrderQty(courseId);
-		
-		int sum = 0;
-		for(int i:courseOrderQty) {
-			sum += i;
+	public Map<Integer, Integer> courseStock() {
+//		int courseCapacity = dao.courseCapacity(courseId);
+		Map<Integer, Integer> courStock = null;
+		List<CourseBean> cbl = dao.queryAllCourse();
+
+		for (CourseBean cb : cbl) {
+			List<Integer> courseOrderQty = dao.courseOrderQty(cb.getCourseId());
+			int sum = 0;
+			for (int i : courseOrderQty) {
+				sum += i;
+			}
+			Integer courseStock = dao.courseCapacity(cb.getCourseId())-sum;
+			System.out.println("courseStock: "+courseStock());
+			System.out.println("cb.getCourseId: "+cb.getCourseId());
+			courStock.put(cb.getCourseId(), courseStock);
 		}
-		Integer courseStock = courseCapacity-sum;
-		
-		return courseStock;
+		return courStock;
 	}
-	
+
 	@SuppressWarnings("null")
 	@Transactional
 	@Override
 	public Map<Integer, CourseBean> courseODMap(Set<Integer> cartSet) {
 		Map<Integer, CourseBean> courseMap = null;
-		for(Integer c:cartSet) {
+		for (Integer c : cartSet) {
 			System.out.println("c: " + c);
 			courseMap.put(c, dao.getCourseById(c));
 		}
@@ -76,7 +83,6 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public void insertCourse(CourseBean bean) {
 		dao.insertCourse(bean);
-		
 	}
 
 	@Transactional
@@ -93,21 +99,20 @@ public class CourseServiceImpl implements CourseService{
 		List<CourseBean> rooms = dao.queryAllCourse();
 //		測試新的方法 ==> OK
 		GsonBuilder builder = new GsonBuilder();
-		builder.excludeFieldsWithoutExposeAnnotation();  
+		builder.excludeFieldsWithoutExposeAnnotation();
 		Gson gson1 = builder.create();
-		Gson gson2 = builder.create();
-		for(CourseBean room:rooms) {
+		for (CourseBean room : rooms) {
 			String json = null;
 //			取得List-教室使用資訊
 			List<CourseBean> courList = dao.queryClassRoom(room.getRoomNo());
 //			將List的內容轉為Json
 			json = gson1.toJson(courList);
 			mapRoom.put(room.getRoomNo(), json);
-			System.out.println("courList: "+courList);
-			System.out.println("json: "+mapRoom.get(room.getRoomNo()));
+//			System.out.println("courList: "+courList);
+//			System.out.println("json: "+mapRoom.get(room.getRoomNo()));
 		}
 //		String jsonMap = gson2.toJson(mapRoom);	
-		
+
 		return mapRoom;
 	}
 
@@ -121,8 +126,6 @@ public class CourseServiceImpl implements CourseService{
 	public Boolean updateCourse(CourseBean bean) {
 		return dao.updateCourse(bean);
 	}
-	
-	
 
 //	@Transactional
 //	@Override

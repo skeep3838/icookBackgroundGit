@@ -104,6 +104,11 @@ div.dataTables_paginate {
 	color : red;
 	font-weight : bold;
 }
+
+.imgDiv{
+	margin-right:10px;
+	float:left;
+}
 </style>
 
 <title>Demo_MyProduct</title>

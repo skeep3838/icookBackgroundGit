@@ -74,14 +74,14 @@ public class CourseController {
 	public String searchCoursesList(@RequestParam("courseName") String courseName, Model model) {
 		System.out.println("進入controller: searchCoursesList");
 		List<CourseBean> list = null;
-		Map<Integer, Integer> courseStock = service.courseStock();
+//		Map<Integer, Integer> courseStock = service.courseStock();
 		if (courseName == null) {
 			list = service.queryAllCourse();
 		} else {
 			list = service.queryCourse(courseName);
 		}
 		model.addAttribute("courses", list);
-		model.addAttribute("courseStock", courseStock);
+//		model.addAttribute("courseStock", courseStock);
 		return "course/courseList";
 	}
 

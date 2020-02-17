@@ -76,7 +76,9 @@ ul
 
 
 
+
  
+
 
 
 
@@ -84,7 +86,9 @@ ul
 
 
 
+
  
+
 
 
 
@@ -92,11 +96,15 @@ li
 
 
 
+
  
 
 
 
+
 a
+
+
 
 
 
@@ -110,11 +118,15 @@ a
 
 
 
+
+
 :not
 
 
 
+
  
+
 
 
 
@@ -123,7 +135,9 @@ a
 
 
 
+
  
+
 
 
 
@@ -136,7 +150,10 @@ background-color
 
 
 
+
+
 :
+
 
 
 
@@ -144,7 +161,10 @@ background-color
 
 
 
+
 #ddd
+
+
 
 
 
@@ -181,9 +201,9 @@ div.center {
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
 	type="text/css" rel="stylesheet">
-	
+
 <style type="text/css">
-		.direct-chat-msg, .direct-chat-text {
+.direct-chat-msg, .direct-chat-text {
 	display: block;
 }
 
@@ -196,22 +216,27 @@ div.center {
 	clear: both;
 	content: "";
 }
+
 .direct-chat-infos {
 	display: block;
 	font-size: 0.875rem;
 	margin-bottom: 2px;
 }
+
 .clearfix::after {
 	display: block;
 	clear: both;
 	content: "";
 }
+
 .direct-chat-name {
 	font-weight: 600;
 }
+
 .float-left {
 	float: left !important;
 }
+
 .direct-chat.timestamp-light .direct-chat-timestamp {
 	color: #30465f;
 }
@@ -227,15 +252,18 @@ div.center {
 .float-right {
 	float: right !important;
 }
+
 .nav2-sidebar>.nav2-item .float-right {
 	margin-top: 3px;
 }
+
 .nav2-sidebar .nav2-item>.nav2-link>.float-right {
 	margin-top: -7px;
 	position: absolute;
 	right: 10px;
 	top: 50%;
 }
+
 .direct-chat-msg, .direct-chat-text {
 	display: block;
 }
@@ -358,7 +386,7 @@ div.center {
 .direct-chat-contacts-light .contacts-list-msg {
 	color: #545b62;
 }
-	</style>
+</style>
 </head>
 
 <body id="page-top">
@@ -414,28 +442,12 @@ div.center {
 											</div>
 										</div>
 									</div>
-
-									<div class="chat_list" id='messageChatBox'>
-										<div class="chat_people">
-											<div class="chat_img">
-												<img src="https://ptetutorials.com/images/user-profile.png"
-													alt="sunil">
-											</div>
-											<div class="chat_ib">
-												<h5>
-													Sunil Rajput <span class="chat_date">Dec 25</span>
-												</h5>
-												<p>Test, which is a new approach to have all solutions
-													astrology under one roof.</p>
-											</div>
-										</div>
-									</div>
-
 								</div>
 							</div>
 							<div class="mesgs" style="padding: 30px 13px 0 25px;">
 								<div class="msg_history" id="messageContent">
 
+<<<<<<< HEAD
 <!-- 								訊息出現區 -->
 <!-- 									<div class="direct-chat-msg right"> -->
 <!-- 										<div class="direct-chat-infos clearfix"> -->
@@ -452,13 +464,32 @@ div.center {
 <!-- 										You better believe it! -->
 <!-- 										</div> -->
 <!-- 									</div> -->
+=======
+									<!-- 								訊息出現區 -->
+									<!-- 									<div class="direct-chat-msg right"> -->
+									<!-- 										<div class="direct-chat-infos clearfix"> -->
+									<!-- 											<span class="direct-chat-name float-right">Sarah -->
+									<!-- 												Bullock</span> <span class="direct-chat-timestamp float-left">23 -->
+									<!-- 												Jan 2:05 pm</span> -->
+									<!-- 										</div> -->
+									<!-- 										<div class="direct-chat-text">You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										You better believe it! -->
+									<!-- 										</div> -->
+									<!-- 									</div> -->
+>>>>>>> master
 
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
 										<input type="text" class="write_msg" id="text"
 											placeholder="Type a message" />
-										<button class="msg_send_btn" type="button" onclick="saveMessage(1,'客服人員')">
+										<button class="msg_send_btn" type="button"
+											onclick="saveMessage(1,'客服人員')">
 											<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
 										</button>
 									</div>
@@ -515,41 +546,41 @@ div.center {
 		var websocket = null;
 		function sendMessage() {
 			//判断当前浏览器是否支持WebSocket
+			//記住 是ws開關  ws://IP:埠/項目名/Server.java中的@ServerEndpoint的value
 			if ('WebSocket' in window) {
-				websocket = new WebSocket(
-						"ws://localhost:8080/icookBackstage02035/websocket");
+				startConnect();
 			} else {
-				alert('当前浏览器 Not support websocket')
+				alert('目前瀏覽器 不支持 websocket')
 			}
-
-			//连接发生错误的回调方法
-			websocket.onerror = function() {
-				setMessageInnerHTML("WebSocket连接发生错误");
-			};
-
-			//连接成功建立的回调方法
-			websocket.onopen = function() {
-			}
-
-			//接收到消息的回调方法
-			websocket.onmessage = function(event) {
-				var message = JSON.parse(event.data);
-				if(message.type === "客戶") {
-					setMessageInnerHTML(message.text, message.name,message.type,message.Date);
+			function startConnect() {
+				//连接发生错误的回调方法
+				websocket = new WebSocket("ws://localhost:8080/icookBackstage02035/websocket/10007");
+				websocket.onerror = function() {
+					setMessageInnerHTML("WebSocket连接发生错误");
+				};
+				//连接成功建立的回调方法
+				websocket.onopen = function() {
 				}
-				else {
-					setMessageInnerHTML(message.text, message.name,message.type,message.Date);
+				//接收到消息的回调方法
+				websocket.onmessage = function(event) {
+					var message = JSON.parse(event.data);
+					if (message.type === "客戶") {
+						setMessageInnerHTML(message.text, message.name,
+								message.type, message.Date);
+					} else {
+						setMessageInnerHTML(message.text, message.name,
+								message.type, message.Date);
+					}
 				}
-			}
-
-			//连接关闭的回调方法
-			websocket.onclose = function() {
-//	 			alert("close");
-			}
-
-			//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-			window.onbeforeunload = function() {
-				closeWebSocket();
+				//连接关闭的回调方法
+				websocket.onclose = function() {
+					//	 			alert("close");
+				}
+				//监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+				window.onbeforeunload = function() {
+					closeWebSocket();
+				}
+				
 			}
 		}
 		//关闭WebSocket连接
@@ -558,27 +589,30 @@ div.center {
 		}
 
 		//发送消息
-		function send(maId,nickname,message,date) {
+		function send(maId, nickname, message, date) {
 			var msg = {
-				    text: message,
-				    id: maId,
-				    name: nickname,
-				    type: "客服人員",
-				    Date: date
-				  };
+				text : message,
+				id : maId,
+				name : nickname,
+				type : "客服人員",
+				Date : date
+			};
 			websocket.send(JSON.stringify(msg));
 		}
-		function saveMessage(maId,nickname) {
+		function saveMessage(maId, nickname) {
 			var message = document.getElementById('text').value;
 			var packageName = getRealPath();
 			$.ajax({
 				type : "GET",
 				url : "/" + packageName + "/WebSocket",
-				data:{ Message: message , maid : maId },
+				data : {
+					Message : message,
+					maid : maId
+				},
 				dataType : "text",
 				success : function(data) {
 					//傳回來儲存日期的資料
-					send(maId,nickname,message,data);
+					send(maId, nickname, message, data);
 				},
 				error : function(error) {
 				},
@@ -587,20 +621,35 @@ div.center {
 		//将消息显示在网页上
 		function setMessageInnerHTML(innerHTML, nickname, type, date) {
 			// 	        document.getElementById('message').innerHTML += nickname + "<br><div class='messagetemp'><div id='messagetemp'>" + innerHTML + "</div></div><br/><br>";
-			if(type === "客服人員") {
-				$("#messageContent").append("<div class='direct-chat-msg' style='margin-left: 5px;'><div class='direct-chat-infos clearfix'>" + 
-						"<span class='direct-chat-name float-left'>"+ nickname +"</span>" +  
-						"<span class='direct-chat-timestamp float-left' style='margin-left: 10px;'>"+ date +"</span></div>" + 
-						"<div class='direct-chat-text' style='margin: 5px 50px 0 0; float: left; width: 60%;'>"+ innerHTML +"</div></div>");
+			if (type === "客服人員") {
+				$("#messageContent")
+						.append(
+								"<div class='direct-chat-msg' style='margin-left: 5px;'><div class='direct-chat-infos clearfix'>"
+										+ "<span class='direct-chat-name float-left'>"
+										+ nickname
+										+ "</span>"
+										+ "<span class='direct-chat-timestamp float-left' style='margin-left: 10px;'>"
+										+ date
+										+ "</span></div>"
+										+ "<div class='direct-chat-text' style='margin: 5px 50px 0 0; float: left; width: 60%;'>"
+										+ innerHTML + "</div></div>");
 				//讓訊息框保持至底
-				$('#messageContent').scrollTop( $('#messageContent')[0].scrollHeight );
-			}
-			else {
-				$("#messageContent").append("<div class='direct-chat-msg right' style='width: 590px;'><div class='direct-chat-infos clearfix'>" + 
-				"<span class='direct-chat-name float-right'>"+ nickname +"</span>" + 
-				"<span class='direct-chat-timestamp float-right' style='margin-right: 10px;'>"+ date +"</span></div>" +
-				"<div class='direct-chat-text' style='float:right; margin-right:0px; width: 60%;'><div style='float:right;'>"+ innerHTML +"</div></div></div>");
-				$('#messageContent').scrollTop( $('#messageContent')[0].scrollHeight );
+				$('#messageContent').scrollTop(
+						$('#messageContent')[0].scrollHeight);
+			} else {
+				$("#messageContent")
+						.append(
+								"<div class='direct-chat-msg right' style='width: 590px;'><div class='direct-chat-infos clearfix'>"
+										+ "<span class='direct-chat-name float-right'>"
+										+ nickname
+										+ "</span>"
+										+ "<span class='direct-chat-timestamp float-right' style='margin-right: 10px;'>"
+										+ date
+										+ "</span></div>"
+										+ "<div class='direct-chat-text' style='float:right; margin-right:0px; width: 60%;'><div style='float:right;'>"
+										+ innerHTML + "</div></div></div>");
+				$('#messageContent').scrollTop(
+						$('#messageContent')[0].scrollHeight);
 			}
 		}
 	</script>

@@ -184,11 +184,11 @@ div.dataTables_paginate {
 
 						</ul>
 						<div id="tabs-1">
-							<form style="margin-left: 500px;"
+							<div style="margin-left: 500px;"
 								class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 								<div class="input-group">
-									<input type="text" class="form-control bg-light border-0 small "
-										placeholder="Search for..." aria-label="Search"
+									<input type="text" class="form-control bg-light border-0 small searchInput"
+										placeholder="請輸入商品ID" aria-label="Search"
 										aria-describedby="basic-addon2" id='searchIn1'>
 									<div class="input-group-append">
 										<button class="btn btn-primary search" type="button">
@@ -196,7 +196,7 @@ div.dataTables_paginate {
 										</button>
 									</div>
 								</div>
-							</form>
+							</div>
 							<!-- tabs-1資料顯示區 -->
 							<div>
 								<div id="test1"></div>
@@ -206,11 +206,12 @@ div.dataTables_paginate {
 
 						</div>
 						<div id="tabs-2">
-							<form style="margin-left: 500px;"
+							<!-- 搜尋欄 -->
+							<div style="margin-left: 500px;"
 								class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 								<div class="input-group">
-									<input type="text" class="form-control bg-light border-0 small "
-										placeholder="Search for..." aria-label="Search"
+									<input type="text" class="form-control bg-light border-0 small searchInput"
+										placeholder="請輸入商品ID" aria-label="Search"
 										aria-describedby="basic-addon2" id='searchIn2' >
 									<div class="input-group-append">
 										<button class="btn btn-primary search" type="button" >
@@ -218,7 +219,7 @@ div.dataTables_paginate {
 										</button>
 									</div>
 								</div>
-							</form>
+							</div>
 							<!-- tabs-2資料顯示區 -->
 							<div>
 								<div id="test2"></div>

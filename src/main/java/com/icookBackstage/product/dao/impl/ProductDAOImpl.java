@@ -20,30 +20,30 @@ import com.icookBackstage.product.dao.IProductDAO;
  *	5.刪除商品型別
  *	6.更新商品(測試中)
  *	7.改變商品狀態
+ *	8.取出單一商品資訊
  */
 @Repository
 public class ProductDAOImpl implements IProductDAO {
-	//公用的SessionFactory
+	// 公用的SessionFactory
 	SessionFactory factory;
-	
-	//注入factory
+
+	// 注入factory
 	@Override
 	@Autowired
 	public void getFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
 
-	//保留無輸入參數的建構式
+	// 保留無輸入參數的建構式
 	public ProductDAOImpl() {
 	}
-	
-	
+
 	// 1.新建一項商品
 	@Override
 	public void insertProduct(ProductBean bean) {
 
 		Session session = factory.getCurrentSession();
-			session.persist(bean);
+		session.persist(bean);
 	}
 
 	// 2.讀取全部商品
@@ -53,41 +53,41 @@ public class ProductDAOImpl implements IProductDAO {
 
 		Session session = factory.getCurrentSession();
 		List<ProductBean> products = null;
-			String hql = "FROM ProductBean";
-			products = session.createQuery(hql).getResultList();
-			System.out.println(products);
+		String hql = "FROM ProductBean";
+		products = session.createQuery(hql).getResultList();
+		System.out.println(products);
 		return products;
 	}
-	
+
 	// 3.取頁數的商品資料(上架or下架)
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ProductBean> getProductOfPage(Integer first, Integer onePageNunber, Boolean status){
-		//設定必要參數
+	public List<ProductBean> getProductOfPage(Integer first, Integer onePageNunber, Boolean status) {
+		// 設定必要參數
 		Session session = factory.getCurrentSession();
 		List<ProductBean> productOfPage = null;
 		String hql = "FROM ProductBean p WHERE p.itemStatus = :status";
-		
-		//hql取得範圍內資料
+
+		// hql取得範圍內資料
 		productOfPage = session.createQuery(hql).setParameter("status", status).setFirstResult(first)
-												.setMaxResults(onePageNunber).getResultList();
+				.setMaxResults(onePageNunber).getResultList();
 		return productOfPage;
 	}
-	
-	//4.取商品總數 (上架or下架)
+
+	// 4.取商品總數 (上架or下架)
 	@Override
 	public Integer getAllProductNumber(Boolean status) {
-		//設定必要參數
+		// 設定必要參數
 		Session session = factory.getCurrentSession();
 		String hql = "SELECT COUNT(*) FROM ProductBean p WHERE p.itemStatus = :status";
 		Integer number = null;
-		
-		//取得產品總數(count(*)預設取回Long型態物件, 使用intValue轉成int型別)
-		number = ((Long)session.createQuery(hql).setParameter("status", status).getSingleResult()).intValue();
+
+		// 取得產品總數(count(*)預設取回Long型態物件, 使用intValue轉成int型別)
+		number = ((Long) session.createQuery(hql).setParameter("status", status).getSingleResult()).intValue();
 		return number;
 	}
-	
-	//test
+
+	// test
 	@Override
 	public ProductBean queryProduct() {
 
@@ -95,7 +95,7 @@ public class ProductDAOImpl implements IProductDAO {
 		Transaction tx = session.beginTransaction();
 		ProductBean proBean = null;
 		try {
-			proBean = session.get(ProductBean.class ,1);
+			proBean = session.get(ProductBean.class, 1);
 			System.out.println(proBean);
 			tx.commit();
 			System.out.println("=========Commit done!!=========");
@@ -109,52 +109,60 @@ public class ProductDAOImpl implements IProductDAO {
 
 		return proBean;
 	}
-	//test2
+
+	// test2
 	public ProductBean getProduct(int BeanPk) {
 		Session session = factory.getCurrentSession();
 		System.out.println("=====do getProduct=====");
-		ProductBean bean = session.get(ProductBean.class,BeanPk);
+		ProductBean bean = session.get(ProductBean.class, BeanPk);
 		System.out.println("=====done getProduct=====");
 		return bean;
 	}
-	
-	//5.刪除商品型別
+
+	// 5.刪除商品型別
 	@Override
 	public void deleteProductType(Integer productId) {
 		Session session = factory.getCurrentSession();
 		String hqlStr = "DELETE FROM ProductTypeBean WHERE productID = :productId";
 		int result = session.createQuery(hqlStr).setParameter("productId", productId).executeUpdate();
-		
+
 	}
-	
-	
-	//6.更新商品(測試中)
+
+	// 6.更新商品(測試中)
 	@Override
 	public Boolean updateProduct(ProductBean prodocut) {
 		Session session = factory.getCurrentSession();
-		
+
 		try {
 			session.update(prodocut);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.getStackTrace();
 			return false;
 		}
 		return true;
 	}
-	
-	//7.改變商品狀態
+
+	// 7.改變商品狀態
 	@Override
 	public Boolean changeProductStr(Integer id, Integer status) {
 		Session session = factory.getCurrentSession();
 		String sql = "UPDATE Products SET itemStatus=:status  WHERE productID = :id";
 		try {
-			session.createSQLQuery(sql).setParameter("status", status)
-					.setParameter("id", id).executeUpdate();
-		}catch(Exception e) {
+			session.createSQLQuery(sql).setParameter("status", status).setParameter("id", id).executeUpdate();
+		} catch (Exception e) {
 			e.getStackTrace();
 			return false;
 		}
-
 		return true;
+	}
+
+	// 8.取出單一商品資訊
+	@Override
+	public ProductBean getOneProduct(int BeanPk) {
+		Session session = factory.getCurrentSession();
+		System.out.println("=====do getProduct=====");
+		ProductBean bean = session.get(ProductBean.class, BeanPk);
+		System.out.println("=====done getProduct=====");
+		return bean;
 	}
 }

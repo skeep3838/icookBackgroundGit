@@ -108,6 +108,12 @@ public class ProductServiceImpl implements IProductService {
 		return dao.changeProductStr(id, status);
 	}
 	
+	// 8.取出單一商品資訊
+	@Override
+	@Transactional
+	public ProductBean getOneProduct(int BeanPk) {
+		return dao.getOneProduct(BeanPk);
+	}
 	
 }
 

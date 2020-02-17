@@ -43,6 +43,7 @@ $("#tabsTag1").click(function(){
 	searchMod=false;
 	tableId="#test1";
 	pageArea="#pageArea1";
+	$("#searchIn1").val("")
 	buildTable();
 });
 
@@ -53,7 +54,21 @@ $("#tabsTag2").click(function(){
 	searchMod=false;
 	tableId="#test2";
 	pageArea="#pageArea2";
+	$("#searchIn2").val("")
 	buildTable();
+});
+
+//在搜尋欄按Enter也會進行搜尋
+//$(".searchInput").keyup(function(event){
+//	//判斷是不是按Enter
+//	if(event.keyCode === 13 || event.which === 13){
+//		$(".search").click();
+//	}
+//});
+
+//動態搜尋
+$(".searchInput").on("input",function(event){
+	$(".search").click();
 });
 
 //點擊搜尋
@@ -77,7 +92,7 @@ $(".search").click(function(){
 	}
 	
 	//如果serchInt內不是數字就不搜尋
-	if( !isNaN(serchInt)){
+	if( !isNaN(searchInt)){
 		searchInt = parseInt(searchInt , 10);
 		buildTable();
 	}else{
@@ -221,16 +236,13 @@ $("#tabs").on("click",".paginate_button",function(){
 });
 
 
-function productDetail(productID){
-
-}
-
-
 //顯示每一頁產品table的資訊
 function buildTable(){
 	let goUrl = "";
+	
+	//確認是否為搜尋模式
 	if(searchMod){
-		goUrl = "produSearch/" + searchInt + "/" + nowPage;
+		goUrl = "produSearch/" + productStatus + "/" + searchInt + "/" + nowPage;
 	}else{
 		goUrl = "products/" + productStatus + "/" + nowPage;
 	}
@@ -353,7 +365,6 @@ function detailUpdate(number){
 	}
 	
 	detailContant		+=	"</table></form>" 
-//						+	"<input type='button' onclick='updateDetailData()' value='test'>"
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);
@@ -390,6 +401,7 @@ function updateDetailData(){
 		},
 		
 		success:function(data){
+			console.log(data);
 			$("#dialog_div_wait").dialog("close");
 			$("#dialog_div_update").dialog("close");
 			buildTable();

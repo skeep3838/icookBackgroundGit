@@ -1,10 +1,7 @@
 package com.icookBackstage.product.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -179,9 +176,9 @@ public class ProductRESTfulController {
 							allImg += "," + imgLink;
 						}
 					} else {
-						if (count == 0 && oldProductImage1.length >= count) {
+						if (count == 0 && oldProductImage1.length > count) {
 							allImg += oldProductImage1[count];
-						} else if (oldProductImage1.length >= count) {
+						} else if (oldProductImage1.length > count) {
 							allImg += "," + oldProductImage1[count];
 						}
 					}
@@ -240,6 +237,81 @@ public class ProductRESTfulController {
 			json.put("status", "false");
 		}
 		return json;
+	}
+
+	// 用RESTful回傳上下架{status}和搜尋id{searchInt}和頁數{page}對應的Json資料(Map型態)
+	@GetMapping(value = "/produSearch/{status}/{searchInt}/{page}", produces = "application/json")
+	public Map<String, Object> getProduSearchForPage(@PathVariable String status, @PathVariable Integer searchInt,
+			@PathVariable Integer page) {
+		System.out.println("==== getProduSearchForPage start====");
+		
+		// 建立必要變數:
+		Boolean productStatus = null;
+		Map<String, Object> json = new HashMap<>();
+		List<ProductBean> productPage = null;
+		String productPageJson = null;
+		Integer allProductNumber = 0;
+
+		// 將status轉乘Boolean值(status = "true"時 productStatus = true, 否則為false)
+		productStatus = Boolean.valueOf(status);
+
+		// 搜尋的資料撈出來
+		ProductBean searchProduct = service.getOneProduct(searchInt);
+		
+		//判斷是否有搜尋到該id, 沒搜尋到就給null
+		if(searchProduct != null) {
+			//判斷上下架狀態
+			System.out.println("=== 判斷上下架狀態:"+productStatus == searchProduct.getItemStatus()+" ===");
+			if(productStatus == searchProduct.getItemStatus()) {
+				productPage = new ArrayList<>();
+				productPage.add(searchProduct);
+			}
+			// 商品總數
+			allProductNumber = 1;
+		}
+
+		System.out.println("==== productPage= " + productPage + " ====");
+
+		// 該頁諾有資料, 將資料轉利用Gson套件換成Json格式
+		if (productPage != null) {
+			// 改寫Gson對@Expose的判斷, 並加入時間的格式:
+			Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
+				@Override
+				public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+					final Expose expose = fieldAttributes.getAnnotation(Expose.class);
+					return expose != null && !expose.serialize();
+				}
+
+				@Override
+				public boolean shouldSkipClass(Class<?> aClass) {
+					return false;
+				}
+			}).addDeserializationExclusionStrategy(new ExclusionStrategy() {
+				@Override
+				public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+					final Expose expose = fieldAttributes.getAnnotation(Expose.class);
+					return expose != null && !expose.deserialize();
+				}
+
+				@Override
+				public boolean shouldSkipClass(Class<?> aClass) {
+					return false;
+				}
+			}).setDateFormat("yyyy-MM-dd").create();
+
+			// 將productPage轉成Json格式的String字串
+			productPageJson = gson.toJson(productPage);
+			System.out.println("gson.toJson(productPage)= " + productPageJson);
+		}
+
+		// 建立Json內容(Map型態)
+		json.put("productPageJson", productPageJson);
+		json.put("page", page);
+		json.put("status", status);
+		json.put("allProductNumber", allProductNumber);
+
+		return json;
+
 	}
 
 	// 建立對ImgurAPI的request方法

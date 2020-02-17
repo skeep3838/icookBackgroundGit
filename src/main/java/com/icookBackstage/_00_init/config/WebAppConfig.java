@@ -40,7 +40,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/vendor/**").addResourceLocations("/WEB-INF/views/vendor/");
 		registry.addResourceHandler("/ImgTest/**").addResourceLocations("/WEB-INF/views/ImgTest/");
 		registry.addResourceHandler("/scss/**").addResourceLocations("/WEB-INF/views/scss/");
-
+		registry.addResourceHandler("/ckeditor/**").addResourceLocations("/WEB-INF/views/ckeditor/");
 	}
 	
 	@Bean

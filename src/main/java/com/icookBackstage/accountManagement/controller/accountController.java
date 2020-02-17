@@ -1,5 +1,6 @@
 package com.icookBackstage.accountManagement.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,8 +175,8 @@ public class accountController {
 	// 更新管理員資訊
 	@ResponseBody
 	@PostMapping(value = "/updateUserManagerial", produces = "application/json")
-	public Map<String, Object> updateUserManagerial(@ModelAttribute Manageral member,
-			Model model, HttpServletRequest req) {
+	public Map<String, Object> updateUserManagerial(@ModelAttribute Manageral member, Model model,
+			HttpServletRequest req) {
 		System.out.println("=== member:" + member + " ===");
 		// 建立必要參數
 		Boolean result = null;
@@ -200,27 +201,108 @@ public class accountController {
 		}
 		return json;
 	}
-	
-	// 新增使用者帳戶資訊
-		@ResponseBody
-		@PostMapping(value = "/insertManagerial", produces = "application/json")
-		public Map<String, Object> insertManagerial(@ModelAttribute Manageral member, Model model,
-				HttpServletRequest req) {
 
-			System.out.println("=== insertMem:" + member + " ===");
-			// 建立必要參數
-			Boolean result = null;
-			Map<String, Object> json = new HashMap<>();
+	// 新增管理員帳戶資訊
+	@ResponseBody
+	@PostMapping(value = "/insertManagerial", produces = "application/json")
+	public Map<String, Object> insertManagerial(@ModelAttribute Manageral member, Model model, HttpServletRequest req) {
 
-			result = service.insertOneManagerial(member);
+		System.out.println("=== insertMem:" + member + " ===");
+		// 建立必要參數
+		Boolean result = null;
+		Map<String, Object> json = new HashMap<>();
 
-			// 確認更新結果
-			if (result) {
-				json.put("status", "OK");
-			} else {
-				json.put("status", "false");
-			}
-			return json;
+		result = service.insertOneManagerial(member);
+
+		// 確認更新結果
+		if (result) {
+			json.put("status", "OK");
+		} else {
+			json.put("status", "false");
 		}
+		return json;
+	}
+
+	// 用RESTful回傳id{searchInt}對應的使用者帳戶資料(Json資料)
+	@ResponseBody
+	@GetMapping(value = "/userAccountSearch/{searchInt}", produces = "application/json")
+	public Map<String, Object> getUserAccSearchForPage(@PathVariable Integer searchInt) {
+
+		System.out.println("==== getUserAccSearchForPage start====");
+		// 建立必要變數:
+		Map<String, Object> json = new HashMap<>();
+		String userAccountPageJson = null;
+		Integer allAccountNumber = 0;
+		List<MemberBean> accountPage = null;
+
+		// 搜尋的資料撈出來
+		MemberBean searchMember = service.getOneUserAccount(searchInt);
+
+		// 判斷是否有搜尋到該id, 沒搜尋到就給null
+		if (searchMember != null) {
+			accountPage = new ArrayList<>();
+			accountPage.add(searchMember);
+			// 取得商品總數
+			allAccountNumber = 1;
+		}
+
+		// 該頁諾有資料, 將資料轉利用Gson套件換成Json格式
+		if (accountPage != null) {
+			// 建立Gson
+			Gson gson = new Gson();
+
+			// 將productPage轉成Json格式的String字串
+			userAccountPageJson = gson.toJson(accountPage);
+			System.out.println("gson.toJson(productPage)= " + userAccountPageJson);
+		}
+
+		// 建立Json內容(Map型態)
+		json.put("userAccountPageJson", userAccountPageJson);
+		json.put("page", 1);
+		json.put("allAccountNumber", allAccountNumber);
+
+		return json;
+	}
+
+	// 用RESTful回傳頁數{page}對應的管理員帳戶資料(Json資料)
+	@ResponseBody
+	@GetMapping(value = "/managerialSearch/{searchInt}", produces = "application/json")
+	public Map<String, Object> getManagSearchForPage(@PathVariable Integer searchInt) {
+
+		System.out.println("==== getManagSearchForPage start====");
+		// 建立必要變數:
+		Map<String, Object> json = new HashMap<>();
+		String managerialPageJson = null;
+		Integer allAccountNumber = 0;
+		List<Manageral> accountPage = null;
+
+		// 將該頁的資料撈出來
+		Manageral searchManag = service.getOneManagerial(searchInt);
+
+		// 判斷是否有搜尋到該id, 沒搜尋到就給null
+		if (searchManag != null) {
+			accountPage = new ArrayList<>();
+			accountPage.add(searchManag);
+			// 取得商品總數
+			allAccountNumber = 1;
+		}
+
+		// 該頁諾有資料, 將資料轉利用Gson套件換成Json格式
+		if (accountPage != null) {
+			// 建立Gson
+			Gson gson = new Gson();
+
+			// 將productPage轉成Json格式的String字串
+			managerialPageJson = gson.toJson(accountPage);
+			System.out.println("gson.toJson(productPage)= " + managerialPageJson);
+		}
+
+		// 建立Json內容(Map型態)
+		json.put("managerialPageJson", managerialPageJson);
+		json.put("page", 1);
+		json.put("allAccountNumber", allAccountNumber);
+
+		return json;
+	}
 
 }

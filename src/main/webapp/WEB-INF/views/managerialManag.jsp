@@ -184,12 +184,35 @@ div.dataTables_paginate {
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 以下改寫 -->
-					<input type='button' class='btn btn-default btn-secondary btn-sm' onclick='insertShow()' value='新增使用者'>
-					<div>
-						<div id="test1"></div>
-						<div class="row" id="pageArea1"></div>
+					<!-- 外框div -->
+					<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+						<!-- 抬頭div -->
+						<div class='ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header' style='padding: 4px;'>
+							<input type='button' class='btn btn-default btn-secondary btn-sm' onclick='insertShow()' value='新增使用者'>
+						</div>
+						<!-- 框內容div -->
+						<div class='ui-tabs-panel ui-corner-bottom ui-widget-content'>
+							<!-- 搜尋欄 -->
+							<div style="margin-left: 500px;"
+								class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+								<div class="input-group">
+									<input type="text" class="form-control bg-light border-0 small searchInput"
+										placeholder="請輸入管理員ID" aria-label="Search"
+										aria-describedby="basic-addon2" id='searchIn' >
+									<div class="input-group-append">
+										<button class="btn btn-primary search" type="button" >
+											<i class="fas fa-search fa-sm"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+							<!-- 表單 -->
+							<div>
+								<div id="test1"></div>
+								<div class="row" id="pageArea1"></div>
+							</div>
+						</div>
 					</div>
-
 
 
 

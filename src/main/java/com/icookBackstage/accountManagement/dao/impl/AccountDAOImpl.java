@@ -87,9 +87,6 @@ public class AccountDAOImpl implements IAccountDAO {
 	public MemberBean getOneUserAccount(int BeanPk) {
 		Session session = factory.getCurrentSession();
 		MemberBean bean = session.get(MemberBean.class, BeanPk);
-
-		System.out.println("===== bean= " + bean + " =====");
-		System.out.println("===== bean.getClass()= " + bean.getClass() + " =====");
 		return bean;
 	}
 
@@ -153,9 +150,6 @@ public class AccountDAOImpl implements IAccountDAO {
 	public Manageral getOneManagerial(int BeanPk) {
 		Session session = factory.getCurrentSession();
 		Manageral bean = session.get(Manageral.class, BeanPk);
-
-		System.out.println("===== bean= " + bean + " =====");
-		System.out.println("===== bean.getClass()= " + bean.getClass() + " =====");
 		return bean;
 	}
 

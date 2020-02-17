@@ -19,5 +19,7 @@ public interface INewsDAO {
 	NewsBean getOneNews(int BeanPk);
 	// 5.新建一個公告
 	Boolean insertOneNews(NewsBean bean);
+	// 6.刪除一個公告
+	Boolean deleteOneNews(Integer id);
 
 }

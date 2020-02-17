@@ -370,13 +370,13 @@ function detailUpdate(number){
 //	}
 	
 	for(let i = 1 ; i <= splitPictureStr.length ; ++i){
-		detailContant 	+=	"<div class='imgDiv'>"
+		detailContant 	+=	"<div class='imgDiv'><label for='img"+ i +"'>"
 						+	"<input type='file' name='image1' index='"+ i +"' id='img"+ i +"' class='images'>"
 						+	"<img class='viewImgClass' id='viewImg" + i + "' src='"
 							+ splitPictureStr[i-1] + "'></label></div>";
 	}
 	
-	detailContant 	+=	"<br>";
+	detailContant 	+=	"<div style='clear:both;'></div><br>";
 //					+	"<table id='detailTable3'>";
 	//建立類型迴圈
 	let type = productPageJson[number].type;

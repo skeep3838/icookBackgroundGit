@@ -7,7 +7,7 @@
 
 
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-		<a class="sidebar-brand d-flex align-items-center justify-content-center" href=<c:url value='backstage.page'/>>
+		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/backstage.page'/>">
 
 				<div class="sidebar-brand-icon rotate-n-15">
 					<!--           <i class="fas fa-laugh-wink"></i> -->
@@ -22,7 +22,7 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item active"><a class="nav-link"
-				href="<c:url value='backstage.page' />"> <!--           <i class="fas fa-fw fa-tachometer-alt"></i> -->
+				href="<c:url value='/backstage.page' />"> <!--           <i class="fas fa-fw fa-tachometer-alt"></i> -->
 					<span style="margin-left: 18px">代辦事項</span></a></li>
 
 			<!-- Divider -->

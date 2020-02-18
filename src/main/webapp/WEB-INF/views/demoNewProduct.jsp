@@ -46,6 +46,35 @@ table, tr, td {
 	font-weight : bold;
 }
 
+.card {
+    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    margin-bottom: 1rem;
+}
+
+.images {
+	display: none;
+}
+
+.viewImgClass {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	margin-right: 10px;
+}
+
+.viewImgTd {
+	width: 33%;
+}
+.errorFont{
+	line-height : 150px;
+	color : red;
+	font-weight : bold;
+}
+
+.imgDiv{
+	margin-right:10px;
+	float:left;
+}
 /* #cke_1_contents{ */
 /* 	width: 100%;   */
 /*  	height: 1200px;   */
@@ -97,7 +126,100 @@ table, tr, td {
 			<!-- Topbar -->
 			<jsp:include page="/WEB-INF/views/fragment/TopBar.jsp" />
 			<!-- End of Topbar -->
+			<!-- 以下改寫 -->
+			
+			<div class="container-fluid">
+				<div class="col-sm-10">
+					<div class='card card-success'>
+						<div class="card-header">
+							<h3 class="card-title">新增商品</h3>
+						</div>
+						<div class="card-body">
+							<form role="form">
+								<table>
+									<tr>
+										<td style='width: 500px;'>
+											<div class='form-group'>
+												<label>商品名稱</label>
+												<input type='text' class='form-control'>
+											</div>
+										</td>
+										<td style=" width: 100px; padding-left: 20px;">
+											<div class='form-group'>
+												<label>商品總類</label>
+												<select class='form-control'>
+													<option>test</option>
+													<option>test</option>
+												</select>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<hr>
+								<div id='typeGroup0'>
+									<table>
+										<tr>
+											<td style='width: 500px; padding-right: 50px;'>
+												<div class='form-group'>
+													<label>商品類型</label>
+													<input type='text' class='form-control'>
+												</div>
+											</td>
+											<td style='width: 200px; padding-right: 50px;'>
+												<div class='form-group'>
+													<label>售價</label>
+													<input type='text' class='form-control'>
+												</div>
+											</td>
+											<td style='width: 200px;  padding-right: 50px;'>
+												<div class='form-group'>
+													<label>庫存</label>
+													<input type='text' class='form-control'>
+												</div>
+											</td>
+											<td style='width: 100px;' align='center' valign="middle">
+												<div class='form-group'>
+													<input type='button' value='移除類型'>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div style='width: 100%;' align='center' valign="middle">
+									<input  style='padding:0px' type='button' class='btn btn-primary  btn-lg btn-block' value='新增商品類型'>
+								</div>
+								<hr>
+								<div>
+									<span>新增圖片</span>
+								</div>
+								<div class='imgDiv' id='imgDiv1'>
+									<label for='img1'>
+										<input type='file' name='image1' index='1' id='img1' class='images'>
+										<img class='viewImgClass' id='viewImg1' src="images/addPicture.png">
+									</label>
+								</div>
+								<div style='clear:both;'>
+								</div>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 
+
+
+
+
+
+
+
+
+
+
+
+<!-- ************************************************************ -->
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
@@ -192,54 +314,54 @@ table, tr, td {
 					
 					<script>
 					<!-- 預覽圖片功能 -->
-						function readURL100(input) {
-							if (input.files && input.files[0]) {
-								var reader = new FileReader();
+// 						function readURL100(input) {
+// 							if (input.files && input.files[0]) {
+// 								var reader = new FileReader();
 
-								reader.onload = function(e) {
-									$('#testImg1').attr('src', e.target.result);
-								}
+// 								reader.onload = function(e) {
+// 									$('#testImg1').attr('src', e.target.result);
+// 								}
 
-								reader.readAsDataURL(input.files[0]);
-							}
-						}
+// 								reader.readAsDataURL(input.files[0]);
+// 							}
+// 						}
 
-						$("#image100").change(function() {
-							readURL100(this);
-						});
+// 						$("#image100").change(function() {
+// 							readURL100(this);
+// 						});
 
-						/*土法煉鋼一下*/
-						function readURL200(input) {
-							if (input.files && input.files[0]) {
-								var reader = new FileReader();
+// 						/*土法煉鋼一下*/
+// 						function readURL200(input) {
+// 							if (input.files && input.files[0]) {
+// 								var reader = new FileReader();
 
-								reader.onload = function(e) {
-									$('#testImg2').attr('src', e.target.result);
-								}
+// 								reader.onload = function(e) {
+// 									$('#testImg2').attr('src', e.target.result);
+// 								}
 
-								reader.readAsDataURL(input.files[0]);
-							}
-						}
+// 								reader.readAsDataURL(input.files[0]);
+// 							}
+// 						}
 
-						$("#image200").change(function() {
-							readURL200(this);
-						});
+// 						$("#image200").change(function() {
+// 							readURL200(this);
+// 						});
 
-						function readURL300(input) {
-							if (input.files && input.files[0]) {
-								var reader = new FileReader();
+// 						function readURL300(input) {
+// 							if (input.files && input.files[0]) {
+// 								var reader = new FileReader();
 
-								reader.onload = function(e) {
-									$('#testImg3').attr('src', e.target.result);
-								}
+// 								reader.onload = function(e) {
+// 									$('#testImg3').attr('src', e.target.result);
+// 								}
 
-								reader.readAsDataURL(input.files[0]);
-							}
-						}
+// 								reader.readAsDataURL(input.files[0]);
+// 							}
+// 						}
 
-						$("#image300").change(function() {
-							readURL300(this);
-						});
+// 						$("#image300").change(function() {
+// 							readURL300(this);
+// 						});
 						
 						
 						CKEDITOR.replace('test1', {

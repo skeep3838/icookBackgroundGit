@@ -32,6 +32,7 @@ let searchInt;
 let typeNumber;
 let pirtureNumber;
 
+let imgLength;
 
 //載入完成先觸發一次"上架商品"頁籤
 $(document).ready(function(){
@@ -205,6 +206,19 @@ function readURL(input) {
 $("body").on("change",".images",function(){
 	console.log("change done")
 	readURL(this);
+	//載入圖片完成後, 判斷是否需要給新增按鈕(為最後一個按鈕? and 不超過5個)
+	console.log("if:"+ (($(this).attr("index") === imgLength.toString()) && (imgLength < 5)) )
+	if( ($(this).attr("index") === imgLength.toString()) && (imgLength < 5) ){
+		let divId = "#imgDiv"+ imgLength;
+		
+		imgLength = imgLength + 1;
+		console.log("divId:" + divId);
+		let context =	"<div class='imgDiv' id='imgDiv"+ imgLength +"'><label for='img"+ imgLength +"'>"
+					+	"<input type='file' name='image1' index='"+ imgLength +"' id='img"+ imgLength +"' class='images'>"
+					+	"<img class='viewImgClass' id='viewImg" + imgLength + "' src='images/addPicture.png'></label></div>";
+		console.log("context:" + context);
+		$(divId).after(context);
+	}
 });
 
 //刪除type按鈕
@@ -228,6 +242,7 @@ function addType(){
 		+	"<tr><td>&nbsp</tr></table></div>";
 	
 	$("#addButton").before(contant1);
+	typeNumber = typeNumber + 1;
 }
 
 function getRootPath(){
@@ -369,11 +384,18 @@ function detailUpdate(number){
 //						+	"</label>"
 //	}
 	
-	for(let i = 1 ; i <= splitPictureStr.length ; ++i){
-		detailContant 	+=	"<div class='imgDiv'><label for='img"+ i +"'>"
-						+	"<input type='file' name='image1' index='"+ i +"' id='img"+ i +"' class='images'>"
-						+	"<img class='viewImgClass' id='viewImg" + i + "' src='"
-							+ splitPictureStr[i-1] + "'></label></div>";
+	for(imgLength = 1 ; imgLength <= splitPictureStr.length ; ++imgLength){
+		detailContant 	+=	"<div class='imgDiv' id='imgDiv"+ imgLength +"'><label for='img"+ imgLength +"'>"
+						+	"<input type='file' name='image1' index='"+ imgLength +"' id='img"+ imgLength +"' class='images'>"
+						+	"<img class='viewImgClass' id='viewImg" + imgLength + "' src='"
+							+ splitPictureStr[imgLength-1] + "'></label></div>";
+	}
+	
+	//如果還沒滿五張圖, 就顯示新增圖片按鈕
+	if(splitPictureStr.length < 5){
+		detailContant	+=	"<div class='imgDiv' id='imgDiv"+ imgLength +"'><label for='img"+ imgLength +"'>"
+						+	"<input type='file' name='image1' index='"+ imgLength +"' id='img"+ imgLength +"' class='images'>"
+						+	"<img class='viewImgClass' id='viewImg" + imgLength + "' src='images/addPicture.png'></label></div>";
 	}
 	
 	detailContant 	+=	"<div style='clear:both;'></div><br>";

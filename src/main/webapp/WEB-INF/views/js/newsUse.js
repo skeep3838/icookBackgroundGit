@@ -3,7 +3,7 @@ let paginationContant;
 let json;
 let topColumn = "<table id='newTable' class='table table-hover'><tr><th>公告ID"
 	+ "	<th>公告標題<th class='contentTop'>公告內容<th>創建時間<th>修改時間<th><th>";
-let noDataContant = "<tr><td colspan=7 >not any date"
+let noDataContant = "<tr><td colspan=7 align='center' valign='middle'><h2>Not any Data...</h2>"
 let newsPageJson;
 let onePageNunber = 10;
 let nowPage = 1;
@@ -179,21 +179,30 @@ function updateNews(number){
 	detailId = newsPageJson[number].newsId;
 
 	//Detail資訊內容建立
-	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
-					+	"<table id='detailTable1'>"
-					+	"<tr><td>公告ID:<td>" + detailId
-					+	"<tr><td>公告標題:<td><input type='text' id='title' name='title' value='" 
-						+ newsPageJson[number].title + "'></input>"
-					+	"<tr><td>公告內容:<td><textarea id='newsContent' name='newsContent' style='width:1000px; height: 300px;'>"
-						+ newsPageJson[number].newsContent + "</textarea>"
-//					+	"<tr><td><input type='hidden' name='createTime' value='"
-//						+ newsPageJson[number].createTime +"'>"
-					+	"</td></tr></table></from>";
+	detailContant 	= 		"<form id='detailForm' method='post' enctype='multipart/form-data'>"
+						+	"<table id='detailTable1'>"
+						+	"<tr><td>公告ID:<td>" + detailId + "</td></tr></table>"
+						+	`<td style='width: 500px;padding-right: 50px;'>
+								<div class='form-group'>
+									<label>公告標題</label>
+									<input type='text' class='form-control' id='title' name='title' value='`+ newsPageJson[number].title +`'>
+								</div>
+							</td>
+							</table>
+							<div style='width: 90%;'>
+								<div class='form-group'>
+								<label>公告內容</label>
+								<textarea id='newsContent' name="newsContent" style='padding-left:10px'>`+ newsPageJson[number].newsContent +`</textarea>
+							</div>
+							</div></from>`;
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);
 	$("#dialog_div_update").dialog("open");
-	CKEDITOR.replace('newsContent');
+	CKEDITOR.replace('newsContent', {
+		width: "100%",
+		height: 500
+	});
 }
 
 
@@ -248,16 +257,27 @@ function insertNews(number){
 	//Detail資訊內容建立
 	detailContant 	= 	"<form id='detailFormIn' method='post' enctype='multipart/form-data'>"
 					+	"<table id='detailTable1'>"
-					+	"<tr><td>公告ID:<td>"
-					+	"<tr><td>公告標題:<td><input type='text' id='titleIn' name='title'></input>"
-					+	"<tr><td>公告內容:<td><textarea id='newsContentIn' name='newsContent'" 
-						+ " style='width:1000px; height: 300px;'></textarea>"
-					+	"</td></tr></table></from>";
+					+	`<td style='width: 500px;padding-right: 50px;'>
+							<div class='form-group'>
+								<label>公告標題</label>
+								<input type='text' class='form-control' id='titleIn' name='title'>
+							</div>
+						</td>
+						</table>
+						<div style='width: 90%;'>
+							<div class='form-group'>
+								<label>公告內容</label>
+								<textarea id='newsContentIn' name="newsContent" style='padding-left:10px' ></textarea>
+							</div>
+						</div></from>`;
 					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_insert").html(detailContant);
 	$("#dialog_div_insert").dialog("open");
-	CKEDITOR.replace('newsContentIn');
+	CKEDITOR.replace('newsContentIn', {
+		width: "100%",
+		height: 500
+	});
 }
 
 
@@ -352,10 +372,10 @@ function deleteNews(number){
 $(function() {
     $("#dialog_div_insert").dialog({
     	//固定視窗
-    	maxHeight:	600,
-    	maxWidth:	800,
-    	minHeight:	600,
-    	minWidth:	800,
+    	maxHeight:	900,
+    	maxWidth:	1500,
+    	minHeight:	900,
+    	minWidth:	1500,
     	
     	//拖移設定
     	draggable: true,
@@ -389,10 +409,10 @@ $(function() {
 $(function() {
     $("#dialog_div_update").dialog({
     	//固定視窗
-    	maxHeight:	600,
-    	maxWidth:	800,
-    	minHeight:	600,
-    	minWidth:	800,
+    	maxHeight:	800,
+    	maxWidth:	1500,
+    	minHeight:	800,
+    	minWidth:	1500,
     	
     	//拖移設定
     	draggable: true,

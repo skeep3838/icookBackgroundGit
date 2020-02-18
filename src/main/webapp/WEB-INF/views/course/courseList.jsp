@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,19 +81,12 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+				<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">課程查詢</h1>
+				</div>
 				<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
 				<div class='ui-tabs-panel ui-corner-bottom ui-widget-content'>	
-					<!-- 標頭 -->
-					<div class="services-breadcrumb">
-						<div class="container">
-							<ul>
-								<li>
-									< 課程清單> 
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- 標頭 End -->
+					
 <!-- 					搜尋列 -->
 					<div id="tabs-1">
 						<form method="POST">

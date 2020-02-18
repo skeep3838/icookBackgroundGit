@@ -167,7 +167,7 @@ public class ProductRESTfulController {
 							imgLink = res.body().data.link;
 						} else {
 							// 塞找不到圖片的的圖檔
-							imgLink = "https://imgur.com/sdxRXxl.jpg";
+							imgLink = "https://imgur.com/fUNhU08.jpg";
 						}
 
 						if (count == 0) {

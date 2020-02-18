@@ -92,7 +92,7 @@ public class ProductController {
 							imgLink = res.body().data.link;
 						} else {
 							// 塞找不到圖片的的圖檔
-							imgLink = "https://imgur.com/sdxRXxl.jpg";
+							imgLink = "https://imgur.com/fUNhU08.jpg";
 							
 						}
 
@@ -116,15 +116,20 @@ public class ProductController {
 		// ProductTypeBean填入設定值
 		int typeNum = typeTitles.length;
 		for (int i = 0; i < typeNum; ++i) {
-			tempPTB = new ProductTypeBean(null, (i + 1), typeTitles[i], Integer.parseInt(typeUnitprices[i]),
-					Integer.parseInt(typeUnitStocks[i]), 0, 1.0f);
-			tempPTB.setProducts(prodBean);
-			typesLink.add(tempPTB);
+			System.out.println("typeUnitprices[i]:" + typeUnitprices[i]);
+			System.out.println("typeUnitStocks[i]:" + typeUnitStocks[i]);
+			System.out.println("typeTitles[i]:" + typeTitles[i]);
+			if((typeUnitprices[i].isEmpty() != true) && (typeUnitStocks[i].isEmpty() != true)) {
+				tempPTB = new ProductTypeBean(null, (i + 1), typeTitles[i], Integer.parseInt(typeUnitprices[i]),
+						Integer.parseInt(typeUnitStocks[i]), 0, 1.0f);
+				tempPTB.setProducts(prodBean);
+				typesLink.add(tempPTB);
+			}else {
+				System.out.println("=======[sys]:typeTitles has null!!!======");
+			}
 		}
 		// 呼叫DAO方法將資料寫入DB
-		System.out.println("--------InsertStart--------");
 		service.insertProduct(prodBean);
-		System.out.println("--------InsertEnd--------");
 
 		// 轉跳到販賣網站
 		return "redirect://demoMyProduct.page";

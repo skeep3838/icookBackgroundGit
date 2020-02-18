@@ -9,7 +9,7 @@ let pageArea="#pageArea1";
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>商品ID"
 	+ "	<th>商品名稱<th>總類<th>折扣<th>庫存狀態<th>更新時間<th><th>";
-let noDataContant = "<tr><td colspan=8 >not any date"
+let noDataContant = "<tr><td colspan=8 align='center' valign='middle'><h2>Not any Data...</h2>"
 let productPageJson;
 let tableContant = "";
 let paginationContant = "";
@@ -229,18 +229,52 @@ function deleteType(index){
 
 //最下面新增type按鈕
 function addType(){
-	let contant1 =	"<div id='typeGroup" + typeNumber + "'><hr><table>"
-		+	"<tr><td>類型名稱:<td><input type='text' name='typeTitle'></input>"
-		+	"<td><input type='button' value='移除' onclick='deleteType("+ typeNumber +")'>"
-		+	"<tr><td>售價:<td><input type='text' id='unitPrice" + typeNumber + "' index='"
-			+ typeNumber + "' name='unitPrice' class='unitPrice'>"
-			+ "</input><span id='calculator" + typeNumber + "'></span>"
-		+	"<tr><td>折扣:<td><input type='text' id='discount" + typeNumber + "' index ='"
-			+ typeNumber + "' name='discount' class='discount'></input>"
-		+	"<tr><td>庫存:<td><input type='text' name='unitStock'></input>"
-		+	"<tr><td>已訂貨:<td><input type='text' name='unitOrder'></input>"
-		+	"<tr><td>&nbsp</tr></table></div>";
-	
+	let contant1 =`<div id='typeGroup`+ typeNumber +`'>
+					<table>
+						<tr>
+						<td style='width: 500px; padding-right: 50px;'>
+					<div class='form-group'>
+						<label>商品規格</label>
+						<input type='text' class='form-control' name="typeTitle" >
+					</div>
+				</td>
+				<td style='width: 200px; padding-right: 50px;'>
+					<div class='form-group'>
+						<label>庫存</label>
+						<input type='text' class='form-control'  name="unitStock" >
+					</div>
+				</td>
+				<td style='width: 200px;  padding-right: 50px;' >
+					<div class='form-group'>
+						<label>已訂貨</label>
+						<input type='text' class='form-control' name='unitOrder'>
+					</div>
+				</td>
+				<td style='width: 100px;' align='center' valign="middle">
+					<div class='form-group'>
+						<input type='button' class="btn btn-secondary" onclick='deleteType(`+ typeNumber +`)' value='移除類型'>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<table >
+			<tr>
+				<td style='width: 200px; padding-right: 50px;'>
+					<div class='form-group'>
+						<label>售價</label>
+						<input type='text' id='unitPrice`+ typeNumber +`' index='`+ typeNumber +`' class='form-control'  name="unitPrice" >
+					</div>
+				</td>
+				<td style='width: 200px;  padding-right: 50px;' >
+					<div class='form-group'>
+						<label>折扣</label>
+						<input type='text' id='discount`+ typeNumber +`' index ='`+ typeNumber +`'  class='form-control' name='discount' >
+					</div>
+				</td>
+			</tr>
+		</table><hr>
+	</div>`;
+		
 	$("#addButton").before(contant1);
 	typeNumber = typeNumber + 1;
 }
@@ -352,6 +386,8 @@ function buildTable(){
 	})
 }
 
+//================== update區  ==================
+
 //顯示產品Detail的資訊(Dialog內)
 function detailUpdate(number){
 		
@@ -364,26 +400,94 @@ function detailUpdate(number){
 	//Detail資訊內容建立
 	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
 					+	"<table id='detailTable1'>"
-					+	"<tr><td>產品ID:<td>" + detailId
-					+	"<tr><td>產品名稱:<td><input type='text' id='productName' name='productName' value='" 
-						+ productPageJson[number].productName + "'></input>"
-					+	"<tr><td>產品種類:<td><input type='text' id='category' name='category' value='"
-						+ productPageJson[number].category + "'></input>"
-					+	"<tr><td>產品資訊:<td><textarea style='width: 700px; height: 240px;' id='productInfo'" 
-						+ "name='productInfo'>" + productPageJson[number].productInfo + "</textarea></tr></table>"
-					+	"<div><span>更新圖片</span></div>"; //test
-//					+	"<table id='datailTable2'><tbody style='width:100%;'><tr><td colspan='3'>更新圖片"
-//					+	"<tr><td><input type='file' name='image1' index='1' id='img1' class='images'> <td><input type='file' name='image1' index='2' id='img2' class='images'>" 
-//					+	"<td><input type='file' name='image1' index='3' id='img3' class='images'><tr>";
-					
-	//產生預覽圖片
-//	for(let i = 1 ; i <= 3 ; ++i){
-//		detailContant 	+= 	"<td class='viewImgTd'><label for='img"+ i +"'>" 
-//						+	"<img class='viewImgClass' id='viewImg" + i + "' src='" 
-//						+ 	((splitPictureStr.length>=i)? splitPictureStr[i-1] : "#") + "'>"
-//						+	"</label>"
-//	}
+					+	"<tr><td>產品ID:<td>" + detailId + "</td></tr></table>"
+					+`<table>
+					<tr>
+					<td style='width: 500px;padding-right: 50px;'>
+						<div class='form-group'>
+							<label>商品名稱</label>
+							<input type='text' class='form-control' name="productName" value='`+ productPageJson[number].productName +`'>
+						</div>
+					</td>
+					<td style=" width: 200px;padding-right: 50px;">
+						<div class='form-group'>
+							<label>商品總類</label>
+							<select class='form-control' name="category">
+								<option>肉類</option>
+								<option>鍋具</option>
+								<option>菜類</option>
+								<option>咖啡</option>
+								<option>家電</option>
+								<option>麵包</option>
+								<option>乾貨</option>
+								<option>餐廚</option>
+								
+							</select>
+						</div>
+					</td>
+				</tr>
+			</table>`;
 	
+	//建立類型迴圈
+	let type = productPageJson[number].type;
+	typeNumber = type.length;
+	for(let i=0 ; i < typeNumber ; ++i ){
+		detailContant	+=		`<div id='typeGroup`+ i +`'>
+									
+									<table>
+										<tr>
+											<td style='width: 500px; padding-right: 50px;'>
+												<div class='form-group'>
+													<label>商品規格</label>
+													<input type='text' class='form-control' name="typeTitle" value='`+ type[i].typeTitle +`'>
+												</div>
+											</td>
+											<td style='width: 200px; padding-right: 50px;'>
+												<div class='form-group'>
+													<label>庫存</label>
+													<input type='text' class='form-control'  name="unitStock" value='`+ type[i].unitStock +`'>
+												</div>
+											</td>
+											<td style='width: 200px;  padding-right: 50px;' >
+												<div class='form-group'>
+													<label>已訂貨</label>
+													<input type='text' class='form-control' name='unitOrder' value='`+ type[i].unitOrder +`'>
+												</div>
+											</td>
+											<td style='width: 100px;' align='center' valign="middle">
+												<div class='form-group'>
+													<input type='button' class="btn btn-secondary" onclick='deleteType(`+ i +`)' value='移除類型'>
+												</div>
+											</td>
+										</tr>
+									</table>
+									<table >
+										<tr>
+											<td style='width: 200px; padding-right: 50px;'>
+												<div class='form-group'>
+													<label>售價</label>
+													<input type='text' id='unitPrice`+ i +`' index='`+ i +`' class='form-control'  name="unitPrice" value='`+ type[i].unitPrice +`'>
+												</div>
+											</td>
+											<td style='width: 200px;  padding-right: 50px;' >
+												<div class='form-group'>
+													<label>折扣</label>
+													<input type='text' id='discount`+ i +`' index ='`+ i +`'  class='form-control' name='discount' value='`+ type[i].discount +`'>
+												</div>
+											</td>
+										</tr>
+									</table><hr>
+								</div>`;
+	}
+		detailContant	+=`	<div style='width: 100%;' align='center' valign="middle" id="addButton">
+									<input  style='padding:0px' type='button' class='btn btn-primary  btn-lg btn-block' 
+									onclick="addType()" value='新增商品類型'>
+							</div>
+							<br>
+							<div>
+								<span>新增圖片(最多五張)</span>
+							</div>`;
+	//產圖片
 	for(imgLength = 1 ; imgLength <= splitPictureStr.length ; ++imgLength){
 		detailContant 	+=	"<div class='imgDiv' id='imgDiv"+ imgLength +"'><label for='img"+ imgLength +"'>"
 						+	"<input type='file' name='image1' index='"+ imgLength +"' id='img"+ imgLength +"' class='images'>"
@@ -399,37 +503,22 @@ function detailUpdate(number){
 	}
 	
 	detailContant 	+=	"<div style='clear:both;'></div><br>";
-//					+	"<table id='detailTable3'>";
-	//建立類型迴圈
-	let type = productPageJson[number].type;
-	typeNumber = type.length;
-	for(let i=0 ; i < typeNumber ; ++i ){
-		detailContant	+=	"<div id='typeGroup" + i + "'><hr><table>"
-						+	"<tr><td>類型名稱:<td><input type='text' name='typeTitle' value='" 
-							+ type[i].typeTitle + "'></input>"
-							+ "<td><input type='button' value='移除' onclick='deleteType("+ i +")'>"
-						+	"<tr><td>售價:<td><input type='text' id='unitPrice" + i + "' index='"
-							+ i + "' name='unitPrice' class='unitPrice' value='" 
-							+ type[i].unitPrice + "'></input><span id='calculator" + i + "'>"
-							+ type[i].unitPrice + "×" + type[i].discount + "= " 
-							+ (type[i].unitPrice*type[i].discount)+ "</span>"
-						+	"<tr><td>折扣:<td><input type='text' id='discount" + i + "' index ='"
-							+ i + "' name='discount' class='discount' value='" 
-							+ type[i].discount + "'></input>"
-						+	"<tr><td>庫存:<td><input type='text' name='unitStock' value='" 
-							+ type[i].unitStock + "'></input>"
-						+	"<tr><td>已訂貨:<td><input type='text' name='unitOrder' value='" 
-							+ type[i].unitOrder + "'></input>"
-						+	"<tr><td>&nbsp</tr></table></div>";
-	}
+	detailContant 	+=	`<div style='width: 100%;'>
+							<div class='form-group'>
+								<label>商品資訊</label>
+								<textarea id='productInfo' name="productInfo" >`+ productPageJson[number].productInfo +`</textarea>
+							</div>
+						</div>`;
 	
-	detailContant		+=	"<input type='button' value='新增Type' id='addButton' onclick='addType()'></form>" 
-					
 	//將Detail資訊寫到Dialog, 並顯示Dialog
 	$("#dialog_div_update").html(detailContant);
 	$("#dialog_div_update").dialog("open");
+	
 	//把textarea改成ckEditor
-	CKEDITOR.replace('productInfo');
+	CKEDITOR.replace('productInfo', {
+			width: "90%",
+			height: 600
+	});
 }
 
 //update Detail資訊
@@ -512,9 +601,9 @@ $(function() {
     $("#dialog_div_update").dialog({
     	//固定視窗
     	maxHeight:	800,
-    	maxWidth:	800,
+    	maxWidth:	1500,
     	minHeight:	800,
-    	minWidth:	800,
+    	minWidth:	1500,
     	
     	//拖移設定
     	draggable: true,

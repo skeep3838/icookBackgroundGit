@@ -15,16 +15,16 @@ public class chatMember implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer seq;
-	private Integer id;
+	private Integer userId;
 	private String nickname;
 	private String updateTime;
 	
 	public chatMember() {}
 	
-	public chatMember(Integer seq, Integer id, String nickname, String updateTime) {
+	public chatMember(Integer seq, Integer userId, String nickname, String updateTime) {
 		super();
 		this.seq = seq;
-		this.id = id;
+		this.userId = userId;
 		this.nickname = nickname;
 		this.updateTime = updateTime;
 	}
@@ -37,12 +37,12 @@ public class chatMember implements Serializable{
 		this.seq = seq;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getNickname() {

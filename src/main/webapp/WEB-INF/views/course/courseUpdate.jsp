@@ -36,6 +36,10 @@
 			max-width: 150px;
 			max-height: 150px;
 		}
+		.form-control, .custom-select{
+		margin: 10px;
+		}
+		
 	</style>
 
 	<title>Demo_MyProduct</title>
@@ -77,49 +81,48 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
+				<div class="col-sm-10">
+					<div class='card card-success'>
+						<div class="card-header">
+							<h3 class="card-title">修改課程資訊</h3>
+						</div>
+						<div class="card-body">
 					<!-- 標頭 -->
-					<!-- Page Heading -->
-					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">修改課程資訊</h1>
-						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-					</div>
 					<!-- 標頭 End -->
 					<!-- 					新增商品表格 -->
 					<form method="post" action="${pageContext.request.contextPath}/course/courseUpdateFinal"
 						enctype="multipart/form-data">
 						<table>
 							<tr>
-								<td colspan="2">課程名稱
-								<td colspan="2"><input type="text" name="courseName" value='${courseBean.courseName}'>
+								<td colspan="2" style="width: 150px;">課程名稱
+								<td colspan="2"><input type="text" class="form-control" name="courseName" value='${courseBean.courseName}'>
+							<tr>	
 								<td colspan="2">課程類別
 								<td colspan="2">
 									<select class="custom-select" style="height: 35px; width: 200px;"
 										name="courseCategory">
 										<option value="${courseBean.courseCategory}">${courseBean.courseCategory}
 										</option>
-										<option value='中式'>中式</option>
-										<option value='義式'>義式</option>
-										<option value='法式'>法式</option>
-										<option value='日式'>日式</option>
-										<option value='創意'>創意</option>
-										<option value='證照班'>證照班</option>
-									</select>
-
-							</tr>
-							<tr>
-								<td colspan="2">上課教室
-								<td colspan="2">
-									<select class="custom-select" style="height: 35px; width: 200px;" 
-									name="roomNo" onchange="roomJson123()" >
-										<option value="${courseBean.roomNo}">${courseBean.roomNo}</option>
-										<option value='201'>201</option>
-										<option value='202'>202</option>
-										<option value='203'>203</option>
-										<option value='204'>204</option>
-										<option value='205'>205</option>
+										<option value='親子同樂'>親子同樂</option>
+										<option value='質感生活'>質感生活</option>
+										<option value='世界味蕾'>世界味蕾</option>
+										<option value='聰明料理'>聰明料理</option>
 									</select>
 							</tr>
+							</tr>
+<!-- 							<tr> -->
+<!-- 								<td colspan="2">上課教室 -->
+<!-- 								<td colspan="2"> -->
+<!-- 									<select class="custom-select" style="height: 35px; width: 200px;"  -->
+<!-- 									name="roomNo" id="roomNo" onchange="roomJson123()" > -->
+<%-- 										<option value="${courseBean.roomNo}">${courseBean.roomNo}</option> --%>
+<!-- 										<option value='201'>201</option> -->
+<!-- 										<option value='202'>202</option> -->
+<!-- 										<option value='203'>203</option> -->
+<!-- 										<option value='204'>204</option> -->
+<!-- 										<option value='205'>205</option> -->
+<!-- 									</select> -->
+<!-- 							</tr> -->
 							<tr>
 								<div class="form-group col-md-4">
 									<label class="btn btn-info">
@@ -135,7 +138,9 @@
 							
 							<tr>
 								<td colspan="2">課程價格
-								<td colspan="2"><input type="text" name="coursePrice" value='${courseBean.coursePrice}'>
+								<td colspan="2"><p style="margin: 6px 0px 0 12px;"> ${courseBean.coursePrice}</p>
+							</tr>
+							</tr>
 								<td colspan="2">課程優惠
 								<td colspan="2">
 									<select class="custom-select" style="height: 35px; width: 200px;"
@@ -153,7 +158,7 @@
 							<tr>
 								<!-- 								拿掉課程負責人 -->
 								<td colspan="2">主辦單位名稱
-								<td colspan="2"><input type="text" name="hostName" value='${courseBean.hostName}'>
+								<td colspan="2"><input type="text" class="form-control" name="hostName" value='${courseBean.hostName}'>
 
 							</tr>
 <!-- 上課時間先屏掉 -->
@@ -166,24 +171,28 @@
 <!-- 							</tr> -->
 							<tr>
 								<td colspan="2">課程描述
-								<td colspan="6"><textarea name="courseIntrod" style="width: 500px; height: 180px;" value='${courseBean.courseIntrod}'>${courseBean.courseIntrod}</textarea>
+								<td colspan="6"><textarea name="courseIntrod"  class="form-control"
+													style="width: 500px; height: 180px;" value='${courseBean.courseIntrod}'>${courseBean.courseIntrod}</textarea>
 							</tr>
 
 
 							<tr>
+								<td><input type="hidden" name="roomNo" value='${courseBean.roomNo}'>
+								<td><input type="hidden" name="coursePrice" value='${courseBean.coursePrice}'>
 								<td><input type="hidden" name="courseTime" value='${courseBean.courseTime}'>
 								<td><input type="hidden" name="courseHour" value='${courseBean.courseHour}'>
 								<td><input type="hidden" name="courseStartDate" value='${courseBean.courseStartDate}'>
 								<td><input type="hidden" name="id" value="${courseBean.courseId}">
-								<td><input type="submit" value="送出">
-								<td><input type="reset" value="重置">
+								<td><input class="btn btn-secondary" type="submit" value="送出">
+								<td><input class="btn btn-secondary" type="reset" value="重置">
 							</tr>
 
 						</table>
 					</form>
 					<div id="calendar"></div>
 
-
+					</div>
+					</div>
 				</div>
 				<!-- Begin Page Content --End -->
 			</div>

@@ -214,6 +214,7 @@ function clearAll() {
 	$("#showStartDate").html("開始上課日期: ");
 	$("#courseStartDate").val("");
 	document.getElementById("courseDate").innerHTML="<p id='showStartDate'>課程日期: </p>";
+	document.getElementById("calendar").innerHTML = "";
 	$("#courseName").val("");
 	$("#roomNo").val("上課教室");
 }
@@ -222,7 +223,7 @@ function clearAll() {
 function checkDate() {
 //	var startDate = document.getElementById("courseStartDate").value;
 //	alert(dateJson);
-	if (dateJson === "") {
+	if (dateJson == "") {
 		alert("填寫資料不完全，請確認是否已選課程日期!");
 		event.preventDefault();
 	}else{

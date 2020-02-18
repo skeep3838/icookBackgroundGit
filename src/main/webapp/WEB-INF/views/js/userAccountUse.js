@@ -3,7 +3,7 @@ let paginationContant;
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>使用者ID"
 	+ "	<th>信箱<th>姓氏<th>名稱<th>暱稱<th>性別<th>生日<th>認證<th>";
-let noDataContant = "<tr><td colspan=9 >not any date"
+let noDataContant = "<tr><td colspan=9 align='center' valign='middle'><h2>Not any Data...</h2>"
 let userAccountPageJson;
 let onePageNunber = 10;
 let nowPage = 1;
@@ -221,17 +221,17 @@ function detailUpdate(number){
 	detailContant 	= 	"<form id='detailForm' method='post' enctype='multipart/form-data'>"
 					+	"<table id='detailTable1'>"
 					+	"<tr><td>使用者ID:<td>" + detailId
-					+	"<tr><td>信箱:<td><input type='text' id='account' name='account' value='" 
+					+	"<tr><td>信箱:<td><input type='text' id='account' name='account' class='form-control' value='" 
 						+ userAccountPageJson[number].account + "'></input>"
 					+	"<tr><td>密碼:<td><input type='password' id='password' name='password'" 
-						+ "placeholder='在此輸入變更的密碼'></input>"
-					+	"<tr><td>姓氏:<td><input type='text' id='lastname' name='lastname' value='" 
+						+ "placeholder='在此輸入變更的密碼' class='form-control' ></input>"
+					+	"<tr><td>姓氏:<td><input type='text' id='lastname' name='lastname' class='form-control' value='" 
 						+ userAccountPageJson[number].lastname + "'></input>"
-					+	"<tr><td>名稱:<td><input type='text' id='firstname' name='firstname' value='" 
+					+	"<tr><td>名稱:<td><input type='text' id='firstname' name='firstname' class='form-control' value='" 
 						+ userAccountPageJson[number].firstname + "'></input>"
-					+	"<tr><td>暱稱:<td><input type='text' id='nickname' name='nickname' value='" 
+					+	"<tr><td>暱稱:<td><input type='text' id='nickname' name='nickname' class='form-control' value='" 
 						+ userAccountPageJson[number].nickname + "'></input>"
-					+	"<tr><td>性別:<td><select id='gender' name='gender'>";
+					+	"<tr><td>性別:<td><select id='gender' class='form-control' name='gender'>";
 	//抓性別資料填預設值
 	for(let i=0 ; i < genderArray.length ; ++i){
 		detailContant 	+=	"<option value='"+ genderArray[i] +"'"
@@ -239,14 +239,14 @@ function detailUpdate(number){
 						+	">" + genderArray[i];
 	}
 	detailContant 	+=	"</select>"
-					+	"<tr><td>生日:<td><input type='text' id='birthday' name='birthday' value='" 
+					+	"<tr><td>生日:<td><input type='text' id='birthday' name='birthday' class='form-control' value='" 
 						+ userAccountPageJson[number].birthday 
 						+ "' placeholder='yyyy-MM-DD'></input>"
-					+	"<tr><td>電話:<td><input type='text' id='phone' name='phone' value='" 
+					+	"<tr><td>電話:<td><input type='text' id='phone' name='phone' class='form-control' value='" 
 						+ userAccountPageJson[number].phone + "'></input>"
-					+	"<tr><td>住址:<td><input type='text' id='address' name='address' value='" 
+					+	"<tr><td>住址:<td><input type='text' id='address' name='address' class='form-control' value='" 
 						+ userAccountPageJson[number].address + "'></input>"
-					+	"<tr><td>認證:<td><select id='checkstatus' name='checkstatus'>";
+					+	"<tr><td>認證:<td><select id='checkstatus' class='form-control' name='checkstatus'>";
 	//抓認證資料填預設值
 	for(let i=0 ; i < checkstatusArray.length ; ++i){
 		detailContant 	+=	"<option value='"+ checkstatusArray[i] +"'"
@@ -307,31 +307,31 @@ function detailInsert(){
 	//Detail資訊內容建立
 	detailContant 	= 	"<form id='detailForm2' method='post' enctype='multipart/form-data'>"
 					+	"<table id='detailTable2'>"
-					+	"<tr><td>信箱:<td><input type='text' id='account2' name='account' required='required'></input>"
+					+	"<tr><td>信箱:<td><input type='text' id='account2' name='account' class='form-control' required='required'></input>"
 						+ "<span id='account2Meg'></span>"	
-					+	"<tr><td>密碼:<td><input type='password' id='password2' name='password'" 
+					+	"<tr><td>密碼:<td><input type='password' id='password2' name='password' class='form-control' " 
 						+ "placeholder='在此輸入變更的密碼' ></input> <span id='password2Meg'></span>"
-					+	"<tr><td>密碼:<td><input type='password' id='password3'" 
+					+	"<tr><td>密碼:<td><input type='password' id='password3' class='form-control' " 
 						+ "placeholder='再次確認變更的密碼' ></input>"	
-					+	"<tr><td>姓氏:<td><input type='text' id='lastname2' name='lastname'></input>"
+					+	"<tr><td>姓氏:<td><input type='text' id='lastname2' name='lastname' class='form-control' ></input>"
 						+ "<span id='lastname2Meg'></span>"
-					+	"<tr><td>名稱:<td><input type='text' id='firstname2' name='firstname'></input>"
+					+	"<tr><td>名稱:<td><input type='text' id='firstname2' name='firstname' class='form-control' ></input>"
 						+ "<span id='firstname2Meg'></span>"
-					+	"<tr><td>暱稱:<td><input type='text' id='nickname2' name='nickname'></input>"
+					+	"<tr><td>暱稱:<td><input type='text' id='nickname2' name='nickname' class='form-control' ></input>"
 						+ "<span id='nickname2Meg'></span>"
-					+	"<tr><td>性別:<td><select id='gender2' name='gender'>";
+					+	"<tr><td>性別:<td><select id='gender2' class='form-control' name='gender'>";
 	//抓性別資料填預設值
 	for(let i=0 ; i < genderArray.length ; ++i){
 		detailContant 	+=	"<option value='"+ genderArray[i] +"'>" + genderArray[i];
 	}
 	detailContant 	+=	"</select>"
-					+	"<tr><td>生日:<td><input type='text' id='birthday2' name='birthday' "
+					+	"<tr><td>生日:<td><input type='text' id='birthday2' class='form-control' name='birthday' "
 						+ "placeholder='yyyy-MM-DD'></input> <span id='birthday2Meg'></span>"
-					+	"<tr><td>電話:<td><input type='text' id='phone2' name='phone'></input>"
+					+	"<tr><td>電話:<td><input type='text' id='phone2' name='phone' class='form-control' ></input>"
 						+ "<span id='phone2Meg'></span>"
-					+	"<tr><td>住址:<td><input type='text' id='address2' name='address'></input>"
+					+	"<tr><td>住址:<td><input type='text' id='address2' name='address' class='form-control' ></input>"
 						+ "<span id='address2Meg'></span>"
-					+	"<tr><td>認證:<td><select id='checkstatus2' name='checkstatus'>";
+					+	"<tr><td>認證:<td><select id='checkstatus2' class='form-control' name='checkstatus'>";
 	//抓認證資料填預設值
 	for(let i=0 ; i < checkstatusArray.length ; ++i){
 		detailContant 	+=	"<option value='"+ checkstatusArray[i] +"'>" + checkstatusArray[i];
@@ -387,9 +387,9 @@ function insertDetailData(){
 $(function() {
     $("#dialog_div_insert").dialog({
     	//固定視窗
-    	maxHeight:	550,
+    	maxHeight:	600,
     	maxWidth:	450,
-    	minHeight:	550,
+    	minHeight:	600,
     	minWidth:	450,
     	
     	//拖移設定
@@ -423,9 +423,9 @@ $(function() {
 $(function() {
     $("#dialog_div_update").dialog({
     	//固定視窗
-    	maxHeight:	550,
+    	maxHeight:	600,
     	maxWidth:	450,
-    	minHeight:	550,
+    	minHeight:	600,
     	minWidth:	450,
     	
     	//拖移設定

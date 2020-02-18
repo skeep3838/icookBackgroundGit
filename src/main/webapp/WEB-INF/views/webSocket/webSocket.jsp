@@ -407,7 +407,7 @@ div.center {
 				<jsp:include page="/WEB-INF/views/fragment/TopBar.jsp" />
 				<!-- 			---------------------------- -->
 
-				<div class="container">
+				<div class="container" style="float:left; max-width: 1540px;">
 					<div class="messaging">
 						<div class="inbox_msg">
 							<div class="inbox_people">
@@ -426,63 +426,44 @@ div.center {
 										</div>
 									</div>
 								</div>
-								<div class="inbox_chat">
-									<div class="chat_list" id='messageChatBox'>
-										<div class="chat_people">
-											<div class="chat_img">
-												<img src="https://ptetutorials.com/images/user-profile.png"
-													alt="sunil">
-											</div>
-											<div class="chat_ib">
-												<h5>
-													Sunil Rajput <span class="chat_date">Dec 25</span>
-												</h5>
-												<p>Test, which is a new approach to have all solutions
-													astrology under one roof.</p>
-											</div>
-										</div>
-									</div>
+								<div class="inbox_chat" id="inbox_chat" style="height: 800px;">
+<!-- 									<div class="chat_list" id='messageChatBox'> -->
+<!-- 										<div class="chat_people"> -->
+<!-- 											<div class="chat_img"> -->
+<!-- 												<img src="https://ptetutorials.com/images/user-profile.png" -->
+<!-- 													alt="sunil"> -->
+<!-- 											</div> -->
+<!-- 											<div class="chat_ib"> -->
+<!-- 												<h5> -->
+<!-- 													Sunil Rajput <span class="chat_date">Dec 25</span> -->
+<!-- 												</h5> -->
+<!-- 												<p>Test, which is a new approach to have all solutions -->
+<!-- 													astrology under one roof.</p> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
 								</div>
 							</div>
 							<div class="mesgs" style="padding: 30px 13px 0 25px;">
-								<div class="msg_history" id="messageContent">
-
-<<<<<<< HEAD
-<!-- 								訊息出現區 -->
-<!-- 									<div class="direct-chat-msg right"> -->
-<!-- 										<div class="direct-chat-infos clearfix"> -->
-<!-- 											<span class="direct-chat-name float-right">Sarah -->
-<!-- 												Bullock</span> <span class="direct-chat-timestamp float-left">23 -->
-<!-- 												Jan 2:05 pm</span> -->
-<!-- 										</div> -->
-<!-- 										<div class="direct-chat-text">You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										You better believe it! -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-=======
-									<!-- 								訊息出現區 -->
-									<!-- 									<div class="direct-chat-msg right"> -->
-									<!-- 										<div class="direct-chat-infos clearfix"> -->
-									<!-- 											<span class="direct-chat-name float-right">Sarah -->
-									<!-- 												Bullock</span> <span class="direct-chat-timestamp float-left">23 -->
-									<!-- 												Jan 2:05 pm</span> -->
-									<!-- 										</div> -->
-									<!-- 										<div class="direct-chat-text">You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										You better believe it! -->
-									<!-- 										</div> -->
-									<!-- 									</div> -->
->>>>>>> master
-
+								<div id='mesgs'>
+<!-- 								<div class="msg_history" id="messageContent" style="height: 765px;"> -->
+									<!-- 訊息出現區 -->
+									<!-- <div class="direct-chat-msg right"> -->
+									<!-- <div class="direct-chat-infos clearfix"> -->
+									<!-- <span class="direct-chat-name float-right">Sarah -->
+									<!-- 		Bullock</span> <span class="direct-chat-timestamp float-left">23 -->
+									<!-- 		Jan 2:05 pm</span> -->
+									<!-- </div> -->
+									<!-- <div class="direct-chat-text">You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- You better believe it! -->
+									<!-- </div> -->
+									<!-- </div> -->
+<!-- 								</div> -->
 								</div>
 								<div class="type_msg">
 									<div class="input_msg_write">
@@ -520,16 +501,24 @@ div.center {
 
 	<!-- 	----------------------------------------	 -->
 	<script>
-		$("#messageChatBox").mouseover(
-				function() {
-					document.getElementById("messageChatBox").classList
-							.add("active_chat");
-				});
-		$("#messageChatBox").mouseout(
-				function() {
-					document.getElementById("messageChatBox").classList
-							.remove("active_chat");
-				});
+		//test 目前正在回應的userId
+		var test;
+		$("body").on("mouseover",".messageChatBox",function() {
+			this.classList.add("active_chat");
+		});
+		$("body").on("mouseout",".messageChatBox",function() {
+			this.classList.remove("active_chat");
+		});
+		//切換訊息框
+		$("body").on("click",".messageChatBox",function() {
+			closeWebSocket();
+			$("#messageContent"+test).hide();
+			id = $(this).attr("id");
+			$("#messageContent"+id).show();
+			test = id;
+			sendMessage(test);
+		});
+		
 		function getRealPath() {
 			var curWwwPath = window.document.location.href;
 			var pathName = window.document.location.pathname;
@@ -539,12 +528,39 @@ div.center {
 		}
 
 		$(window).load(function() {
-			sendMessage();
+			var packageName = getRealPath();
+			$.ajax({
+				type : "GET",
+				url : "/" + packageName + "/getAllChatMember",
+				dataType : "text",
+				success : function(data) {
+					var list = JSON.parse(data);
+					chatBoxlength = list.length;
+					test = list[0].userId;
+					for(var i=0;i<list.length;i++) {
+						//插入每個人員 
+						temp = "<div class='chat_list messageChatBox' id='"+ list[i].userId +"'><div class='chat_people'><div class='chat_img'>" +
+						"<img src='https://ptetutorials.com/images/user-profile.png' alt='sunil'></div>" + 
+						"<div class='chat_ib'><h5>"+ list[i].nickname +"<span class='chat_date'>"+ list[i].updateTime +"</span></h5>" + 
+						"<p></p></div></div></div>";
+						$("#inbox_chat").append(temp);
+						//插入每個人員的對話框
+						messageBox="<div class='msg_history' id='messageContent"+ list[i].userId +"' style='height: 765px; display:none;'>";
+						$("#mesgs").append(messageBox);
+					}
+					//讓第一個人的對話框顯示
+					test = list[0].userId;
+					sendMessage(test);	
+					$("#messageContent"+test).show();
+				},
+				error : function(error) {
+				},
+			});
 		});
 		// 		------------------------------------------
 		var packageName = getRealPath();
 		var websocket = null;
-		function sendMessage() {
+		function sendMessage(userId) {
 			//判断当前浏览器是否支持WebSocket
 			//記住 是ws開關  ws://IP:埠/項目名/Server.java中的@ServerEndpoint的value
 			if ('WebSocket' in window) {
@@ -554,21 +570,22 @@ div.center {
 			}
 			function startConnect() {
 				//连接发生错误的回调方法
-				websocket = new WebSocket("ws://localhost:8080/icookBackstage02035/websocket/10007");
+				websocket = new WebSocket("ws://localhost:8080/icookBackstage02035/websocket/"+userId);
 				websocket.onerror = function() {
 					setMessageInnerHTML("WebSocket连接发生错误");
 				};
 				//连接成功建立的回调方法
 				websocket.onopen = function() {
+					console.log("WebSocket連結成功" + userId);
 				}
 				//接收到消息的回调方法
 				websocket.onmessage = function(event) {
 					var message = JSON.parse(event.data);
 					if (message.type === "客戶") {
-						setMessageInnerHTML(message.text, message.name,
+						setMessageInnerHTML(message.id,message.text, message.name,
 								message.type, message.Date);
 					} else {
-						setMessageInnerHTML(message.text, message.name,
+						setMessageInnerHTML(test,message.text, message.name,
 								message.type, message.Date);
 					}
 				}
@@ -619,10 +636,10 @@ div.center {
 			});
 		}
 		//将消息显示在网页上
-		function setMessageInnerHTML(innerHTML, nickname, type, date) {
+		function setMessageInnerHTML(id, innerHTML, nickname, type, date) {
 			// 	        document.getElementById('message').innerHTML += nickname + "<br><div class='messagetemp'><div id='messagetemp'>" + innerHTML + "</div></div><br/><br>";
 			if (type === "客服人員") {
-				$("#messageContent")
+				$("#messageContent"+test)
 						.append(
 								"<div class='direct-chat-msg' style='margin-left: 5px;'><div class='direct-chat-infos clearfix'>"
 										+ "<span class='direct-chat-name float-left'>"
@@ -635,11 +652,11 @@ div.center {
 										+ innerHTML + "</div></div>");
 				//讓訊息框保持至底
 				$('#messageContent').scrollTop(
-						$('#messageContent')[0].scrollHeight);
+				$('#messageContent')[0].scrollHeight);
 			} else {
-				$("#messageContent")
+				$("#messageContent"+id)
 						.append(
-								"<div class='direct-chat-msg right' style='width: 590px;'><div class='direct-chat-infos clearfix'>"
+								"<div class='direct-chat-msg right' style='width: 835px;'><div class='direct-chat-infos clearfix'>"
 										+ "<span class='direct-chat-name float-right'>"
 										+ nickname
 										+ "</span>"
@@ -648,8 +665,8 @@ div.center {
 										+ "</span></div>"
 										+ "<div class='direct-chat-text' style='float:right; margin-right:0px; width: 60%;'><div style='float:right;'>"
 										+ innerHTML + "</div></div></div>");
-				$('#messageContent').scrollTop(
-						$('#messageContent')[0].scrollHeight);
+				$('#messageContent'+id).scrollTop(
+				$('#messageContent'+id)[0].scrollHeight);
 			}
 		}
 	</script>

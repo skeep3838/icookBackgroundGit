@@ -135,62 +135,70 @@ table, tr, td {
 							<h3 class="card-title">新增商品</h3>
 						</div>
 						<div class="card-body">
-							<form role="form">
+							<form role="form" id='formProduct' action="createNewProduct" method="post" enctype="multipart/form-data">
 								<table>
 									<tr>
-										<td style='width: 500px;'>
+										<td style='width: 500px;padding-right: 50px;'>
 											<div class='form-group'>
 												<label>商品名稱</label>
-												<input type='text' class='form-control'>
+												<input type='text' class='form-control' name="productName">
 											</div>
 										</td>
-										<td style=" width: 100px; padding-left: 20px;">
+										<td style=" width: 200px;padding-right: 50px;">
 											<div class='form-group'>
 												<label>商品總類</label>
-												<select class='form-control'>
-													<option>test</option>
-													<option>test</option>
+												<select class='form-control' name="category">
+													<option>肉類</option>
+													<option>鍋具</option>
+													<option>菜類</option>
+													<option>咖啡</option>
+													<option>家電</option>
+													<option>麵包</option>
+													<option>乾貨</option>
+													<option>餐廚</option>
+													
 												</select>
 											</div>
 										</td>
 									</tr>
 								</table>
-								<hr>
+							
 								<div id='typeGroup0'>
 									<table>
 										<tr>
 											<td style='width: 500px; padding-right: 50px;'>
 												<div class='form-group'>
-													<label>商品類型</label>
-													<input type='text' class='form-control'>
+													<label>商品規格</label>
+													<input type='text' class='form-control' name="typeTitle">
 												</div>
 											</td>
 											<td style='width: 200px; padding-right: 50px;'>
 												<div class='form-group'>
 													<label>售價</label>
-													<input type='text' class='form-control'>
+													<input type='text' class='form-control'  name="unitPrice">
 												</div>
 											</td>
-											<td style='width: 200px;  padding-right: 50px;'>
+											<td style='width: 200px;  padding-right: 50px;' >
 												<div class='form-group'>
 													<label>庫存</label>
-													<input type='text' class='form-control'>
+													<input type='text' class='form-control' name='unitStock'>
 												</div>
 											</td>
 											<td style='width: 100px;' align='center' valign="middle">
 												<div class='form-group'>
-													<input type='button' value='移除類型'>
+													<input type='button' class="btn btn-secondary" onclick='deleteType(0)' value='移除類型'>
 												</div>
 											</td>
 										</tr>
 									</table>
 								</div>
-								<div style='width: 100%;' align='center' valign="middle">
-									<input  style='padding:0px' type='button' class='btn btn-primary  btn-lg btn-block' value='新增商品類型'>
+								<div style='width: 100%;' align='center' valign="middle" id="addButton">
+									<input  style='padding:0px' type='button' class='btn btn-primary  btn-lg btn-block' 
+									onclick="addType()" value='新增商品類型'>
 								</div>
-								<hr>
+								<br>
 								<div>
-									<span>新增圖片</span>
+									<span>新增圖片(最多五張)</span>
 								</div>
 								<div class='imgDiv' id='imgDiv1'>
 									<label for='img1'>
@@ -200,175 +208,21 @@ table, tr, td {
 								</div>
 								<div style='clear:both;'>
 								</div>
-								
+								<div style='width: 100%;'>
+									<div class='form-group'>
+										<label>商品資訊</label>
+										<textarea id='test1' name="productInfo" ></textarea>
+									</div>
+								</div>
+								<div style='text-align:right'>
+								<input type="button" class="btn btn-primary" onclick='speetIn()' value='一鍵輸入'></input>
+								<input type="button" class="btn btn-primary" onclick='waitSubmit()' value='新增商品'></input>
+								</div>
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- ************************************************************ -->
-				<!-- Begin Page Content -->
-				<div class="container-fluid">
-
-					<!-- Page Heading -->
-					<div
-						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">新增商品</h1>
-						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-					</div>
-					<!-- 以下改寫 -->
-
-<!-- 					<form method="post" action="createNewProduct"> -->
-					<form id='insertForm' method="post" action="createNewProduct"
-						enctype="multipart/form-data">
-						<table>
-							<tr>
-								<td colspan="2">商品名稱
-								<td colspan="2"><input type="text" name="productName">
-									<!-- 							</tr> --> <!-- 							<tr> --> <%--商品種類以寫死為主 --%>
-								<td colspan="2">商品分類
-								<td colspan="2"><select id="test" name="category">
-										<option>肉類</option>
-										<option>菜類</option>
-										<option>鍋具</option>
-										<option>調味料</option>
-										<option>貓貓happy</option>
-										<option>旺旺happy</option>
-								</select>
-							</tr>
-
-							<tr>
-								<td colspan="2">商品規格
-								<td colspan="2"><input type="text" name="typeTitle"><input
-									type="button" value="新增">
-								<td>售價
-								<td><input type="text" size="4" name="unitPrice">
-								<td>庫存
-								<td><input type="text" size="4" name="unitStock">
-							</tr>
-
-							<tr>
-								<td colspan="2">商品規格
-								<td colspan="2"><input type="text" name="typeTitle">
-								<td>售價
-								<td><input type="text" size="4" name="unitPrice">
-								<td>庫存
-								<td><input type="text" size="4" name="unitStock">
-							</tr>
-
-							<tr>
-								<td colspan="2">商品規格
-								<td colspan="2"><input type="text" name="typeTitle">
-								<td>售價
-								<td><input type="text" size="4" name="unitPrice">
-								<td>庫存
-								<td><input type="text" size="4" name="unitStock">
-							</tr>
-
-							<tr>
-								<td colspan="2">商品描述
-								<td colspan="6">
-								<textarea id='test1' name="productInfo" ></textarea>
-<!-- 								<textarea id='test1' name="productInfo" style="width: 500px; height: 180px;"></textarea> -->
-							</tr>
-
-							<tr>
-								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="image1"
-									id="image100">
-								<td colspan="2"><img id="testImg1" class="testImgx" src="">
-							</tr>
-							<tr>
-								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="image1"
-									id="image200">
-								<td colspan="2"><img id="testImg2" class="testImgx" src="">
-							</tr>
-							<tr>
-								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="image1"
-									id="image300">
-								<td colspan="2"><img id="testImg3" class="testImgx" src="">
-							</tr>
-							<tr>
-								<td colspan="2"><input type="submit" onclick='openWait()' value="送出">
-<!-- 								<td colspan="2"><input type="button" onclick='openWait()' value="送出"> -->
-								<td colspan="6"><input type="reset" value="重置">
-							</tr>
-
-						</table>
-					</form>
-					
-					<script>
-					<!-- 預覽圖片功能 -->
-// 						function readURL100(input) {
-// 							if (input.files && input.files[0]) {
-// 								var reader = new FileReader();
-
-// 								reader.onload = function(e) {
-// 									$('#testImg1').attr('src', e.target.result);
-// 								}
-
-// 								reader.readAsDataURL(input.files[0]);
-// 							}
-// 						}
-
-// 						$("#image100").change(function() {
-// 							readURL100(this);
-// 						});
-
-// 						/*土法煉鋼一下*/
-// 						function readURL200(input) {
-// 							if (input.files && input.files[0]) {
-// 								var reader = new FileReader();
-
-// 								reader.onload = function(e) {
-// 									$('#testImg2').attr('src', e.target.result);
-// 								}
-
-// 								reader.readAsDataURL(input.files[0]);
-// 							}
-// 						}
-
-// 						$("#image200").change(function() {
-// 							readURL200(this);
-// 						});
-
-// 						function readURL300(input) {
-// 							if (input.files && input.files[0]) {
-// 								var reader = new FileReader();
-
-// 								reader.onload = function(e) {
-// 									$('#testImg3').attr('src', e.target.result);
-// 								}
-
-// 								reader.readAsDataURL(input.files[0]);
-// 							}
-// 						}
-
-// 						$("#image300").change(function() {
-// 							readURL300(this);
-// 						});
-						
-						
-						CKEDITOR.replace('test1', {
-							width: 1000,
-							height: 500
-						});
-					</script>
 
 					<!-- Bootstrap core JavaScript-->
 					<script src="vendor/jquery/jquery.min.js"></script>

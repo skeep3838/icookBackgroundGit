@@ -4,6 +4,7 @@ package com.icookBackstage.webScoket.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.icookBackstage.model.chatMember;
 import com.icookBackstage.model.socketBean;
 import com.icookBackstage.webScoket.service.socketServiceDao;
@@ -56,11 +58,15 @@ public class socketController {
 		}
 	}
 	
-	@RequestMapping(value = "/searchChatMember")
+	@RequestMapping(value = "/getAllChatMember", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String[] searchChatMember(@RequestParam("Message") String message,@RequestParam("maid") int maId,HttpServletRequest request,HttpServletResponse response, Model model) throws IOException {
-		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-		String date = sdFormat.format(new Date());
-		return null;
+	public String getAllChatMember(HttpServletRequest request,HttpServletResponse response, Model model) throws IOException {
+		Gson gson = new Gson();
+		List<chatMember> list = service.getAllChatMember();
+		for(int i=0;i<list.size();i++) {
+			list.get(i).setUpdateTime((list.get(i).getUpdateTime()).substring(0,16));
+		}
+		String json = gson.toJson(list);
+		return json;
 	}
 }

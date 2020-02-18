@@ -3,7 +3,7 @@ let paginationContant;
 let json;
 let topColumn = "<table class='table table-hover'><tr><th>管理員ID"
 	+ "	<th>管理員帳號<th>管理員密碼<th>帳號管理權限<th>產品管理權限<th>訂單管理權限<th>網站維護權限<th><th>";
-let noDataContant = "<tr><td colspan=9 >not any date"
+let noDataContant = "<tr><td colspan=9 align='center' valign='middle'><h2>Not any Data...</h2>"
 let managerialPageJson;
 let onePageNunber = 10;
 let nowPage = 1;

@@ -1,8 +1,10 @@
 package com.icookBackstage._00_init.config;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.OnClose;
@@ -23,10 +25,10 @@ public class WebSocket {
     private static int onlineCount = 0;
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
-    private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<WebSocket>();
-    private static Map<Integer, CopyOnWriteArraySet<WebSocket>> temp = new HashMap<>();
+    private static final Map<Integer, Set<Session>> rooms = new ConcurrentHashMap();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
+    
 
     /**
      * 连接建立成功调用的方法
@@ -34,40 +36,38 @@ public class WebSocket {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") int userId){
-        this.session = session;
-        webSocketSet.add(this);//加入set中
-        temp.put(userId,webSocketSet);
-        addOnlineCount();           //在线数加1
-        System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
+        if (!rooms.containsKey(userId)) {
+            // 建立房間不存在時，建立房間
+            Set<Session> room = new HashSet<>();
+            // 新增使用者
+            room.add(session);
+            rooms.put(userId, room);
+            System.out.println(userId + " has connected!");
+        } else {
+            // 房間已存在，直接新增使用者到相應的房間
+            rooms.get(userId).add(session);
+            System.out.println(userId + " has connected!");
+        }
     }
 
     /**
      * 连接关闭调用的方法
      */
-    @OnClose
-    public void onClose(){
-        webSocketSet.remove(this);  //从set中删除
-        subOnlineCount();           //在线数减1
-        System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
+	@OnClose
+    public void onClose(@PathParam("userId") int userId,Session session) throws Exception{
+    	rooms.get(userId).remove(session);
+        System.out.println(userId + " has disconnected!");
     }
 
     /**
      * 收到客户端消息后调用的方法
      * @param message 客户端发送过来的消息
      * @param session 可选的参数
+     * @throws Exception 
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("来自客户端的消息:" + message);
-        //群发消息
-        for(WebSocket item: webSocketSet){
-            try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-                continue;
-            }
-        }
+    public void onMessage(String message, Session session,@PathParam("userId")int userId) throws Exception{
+        broadcast(userId,message);
     }
 
     /**
@@ -86,6 +86,13 @@ public class WebSocket {
      * @param message
      * @throws IOException
      */
+    public static void broadcast(int userId, String msg) throws Exception {
+    	System.out.println(userId);
+    	System.out.println(rooms);
+        for (Session session : rooms.get(userId)) {
+                session.getBasicRemote().sendText(msg);
+        }
+    }
     public void sendMessage(String message) throws IOException{
         this.session.getBasicRemote().sendText(message);
         //this.session.getAsyncRemote().sendText(message);

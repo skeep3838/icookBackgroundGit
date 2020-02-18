@@ -81,7 +81,7 @@
 					<!-- 標頭 -->
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">新增課程</h1>
+						<h1 class="h3 mb-0 text-gray-800">新增課程-確認詳細資訊</h1>
 						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
 					</div>
 					<!-- 標頭 End -->
@@ -95,41 +95,46 @@
 									<select class="custom-select" style="height: 35px; width: 200px;" 
 										id="courseCategory" name="courseCategory" required="required" >
 										<option value="" disabled selected hidden>課程類別</option>	
-										<option value='中式'>中式</option>
-										<option value='義式'>義式</option>
-										<option value='法式'>法式</option>
-										<option value='日式'>日式</option>
-										<option value='創意'>創意</option>
-										<option value='證照班'>證照班</option>
+										<option value='親子同樂'>親子同樂</option>
+										<option value='質感生活'>質感生活</option>
+										<option value='世界味蕾'>世界味蕾</option>
+										<option value='聰明料理'>聰明料理</option>
 									</select>
 
 							</tr>
 							<tr>
-								<td colspan="2">上傳圖片
-								<td colspan="4"><input type="file" name="courseImage" id="image100" >
-								<td colspan="2"><img id="testImg1" class="testImgx" src="">
+								<div class="form-group col-md-4">
+									<label class="btn btn-info">
+										<input name="courseImage" onchange="readURL(this)" style="display: none;"
+											type="file" accept="image/jpg" /> <i class="fa fa-photo"></i> 上傳封面圖片
+									</label>
+									<div id="upload_img">
+										<img src="" alt=""
+											class="img-responsive" style="width:70%;"/>
+									</div>
+								</div>
 							</tr>
 							<tr>
 								<td colspan="2">課程價格
 								<td colspan="2"><input type="text" id="coursePrice" name="coursePrice" 
 												required="required" class="form-control" style="height: 35px; width: 200px;">
 							</tr>
-							<tr>
-								<td colspan="2">課程優惠
-								<td colspan="2">
-									<select class="custom-select" required="required" id="courseDiscount"
-										style="height: 35px; width: 200px;" name="courseDiscount">
-										<option value="" disabled selected hidden>課程優惠</option>	
-										<option value='1'>無折扣</option>
-										<option value='0.95'>95折</option>
-										<option value='0.9'>9折</option>
-										<option value='0.85'>85折</option>
-										<option value='0.8'>8折</option>
-										<option value='0.75'>75折</option>
-										<option value='0.7'>7折</option>
-									</select>
+<!-- 							<tr> -->
+<!-- 								<td colspan="2">課程優惠 -->
+<!-- 								<td colspan="2"> -->
+<!-- 									<select class="custom-select" required="required" id="courseDiscount" -->
+<!-- 										style="height: 35px; width: 200px;" name="courseDiscount"> -->
+<!-- 										<option value="" disabled selected hidden>課程優惠</option>	 -->
+<!-- 										<option value='1'>無折扣</option> -->
+<!-- 										<option value='0.95'>95折</option> -->
+<!-- 										<option value='0.9'>9折</option> -->
+<!-- 										<option value='0.85'>85折</option> -->
+<!-- 										<option value='0.8'>8折</option> -->
+<!-- 										<option value='0.75'>75折</option> -->
+<!-- 										<option value='0.7'>7折</option> -->
+<!-- 									</select> -->
 
-							</tr>
+<!-- 							</tr> -->
 							<tr>
 								<td colspan="2">講師名稱
 								<td colspan="2"><input type="text" name="hostName" id="hostName" 
@@ -142,6 +147,7 @@
 										style="width: 500px; height: 180px;" class="form-control"></textarea>
 							</tr>
 							<tr>
+								<td><input type="hidden" name="courseDiscount" id="courseDiscount" value='1'>
 								<td><input type="hidden" name="courseName" id="courseName" value='${courseName}'>
 								<td><input type="hidden" name="roomNo" id="roomNo" value='${roomNo}'>
 								<td><input type="hidden" name="courseStartDate" id="courseStartDate" value='${courseStartDate}'>
@@ -149,9 +155,9 @@
 								<td><input type="hidden" name="courseHour" id="courseHour" value='${courseHour}'>	
 							</tr>
 							<tr>
-								<td><input type=button value="一鍵輸入" onclick="keyIn2()">
-								<td><input type="submit" value="送出">
-								<td><input type="reset" value="重置">
+								<td><input class="btn btn-secondary" type=button value="一鍵輸入" onclick="keyIn2()">
+								<td><input class="btn btn-secondary" type="submit" value="送出">
+								<td><input class="btn btn-secondary" type="reset" value="重置">
 							</tr>
 
 						</table>
@@ -169,24 +175,16 @@
 	<!-- Page Wrapper --End-->
 	<script>
 		<!-- 預覽圖片功能 -->
-		function readURL100(input) {
+		function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
-
 				reader.onload = function(e) {
-					$('#testImg1').attr('src', e.target.result);
+					var html = "";
+					html += "<img width='320px' height='200px' src='"+e.target.result+"'>";
+					$("#upload_img").html(html);
 				}
-
 				reader.readAsDataURL(input.files[0]);
 			}
-		}
-
-		$("#image100").change(function() {
-			readURL100(this);
-		});
-		
-		function keyIn(){
-			
 		}
 	</script>
 	<!-- 	自己寫的JS -->

@@ -30,6 +30,12 @@
 			/* font-weight: 700; */
 			font-size: 0;
 		}
+		
+		.courseDate, .courseTime, .form-control{
+			margin: 15px 0 15px 0;
+		}
+		
+		
 	</style>
 
 	<title>Demo_MyProduct</title>
@@ -80,25 +86,16 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
 					<!-- 標頭 -->
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">新增課程</h1>
-						<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+						<h1 class="h3 mb-0 text-gray-800">新增課程 - 確認上課教室及開課日期</h1>
 					</div>
 					<!-- 標頭 End -->
 
-					<div class="services-breadcrumb">
-						<div class="container">
-							<ul>
-								<li>
-									<確認上課教室及開課日期>
-								</li>
-							</ul>
-						</div>
-					</div>
-
+					<div class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+					<div class='ui-tabs-panel ui-corner-bottom ui-widget-content' style="height:630px">	
+					
 					<div class='container'>
 						<div class="row">
 							<div class="col-sm-4">
@@ -126,8 +123,8 @@
 													<div class="courseDate" id="courseDate">
 														<span id="showStartDate">課程日期: </span>
 													</div>
-													<div>
-														<span> 　上課時間: </span>
+													<div class="courseTime">
+														<span>上課時間: </span>
 														<select class="form-control"
 															style="height: 35px; width: 70px;display:inline-block"
 															name="courseH" id="courseH" required="required">
@@ -145,10 +142,10 @@
 															<option value='30'>30</option>
 														</select>
 													</div>
-													<div>
-														<span> 　上課時數: </span>
+													<div class="courseTime">
+														<span>上課時數: </span>
 														<select class="form-control"
-															style="height: 35px; width: 55px;display:inline-block"
+															style="height: 35px; width: 60px;display:inline-block"
 															name="courseHour" id="courseHour" required>
 															<c:forEach var="i" begin="1" end="6" step="1">
 																<option value='${i}'>${i}</option>
@@ -181,6 +178,8 @@
 						</c:forEach>
 					</div> -->
 
+				</div>
+				</div>
 				</div>
 				<!-- Begin Page Content --End -->
 			</div>

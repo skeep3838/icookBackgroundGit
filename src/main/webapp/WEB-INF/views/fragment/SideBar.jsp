@@ -67,7 +67,7 @@
 					<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="<c:url value='/ManagerOrders' />">訂單管理</a> 
-							<a class="collapse-item" href="#">物流管理</a>
+<!-- 							<a class="collapse-item" href="#">物流管理</a> -->
 						</div>
 					</div>
 				</c:if>	
@@ -182,25 +182,25 @@
 			<hr class="sidebar-divider">
 
 			<!-- Heading -->
-			<div class="sidebar-heading">前台連結</div>
+<!-- 			<div class="sidebar-heading">前台連結</div> -->
 
-			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item"><a class="nav-link collapsed" href="#"
-				data-toggle="collapse" data-target="#test4Pages"
-				aria-expanded="true" aria-controls="collapsePages"> <!--           <i class="fas fa-fw fa-folder"></i> -->
-					<span style="margin-left: 20px">iCook</span>
-			</a>
-				<div id="test4Pages" class="collapse"
-					aria-labelledby="headingPages" data-parent="#accordionSidebar">
-					<div class="bg-white py-2 collapse-inner rounded">
-						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">iCook首頁</a> 
-						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">食譜</a>
-						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">市集</a> 
-						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">課程</a>
-					</div>
-				</div></li>
+<!-- 			<!-- Nav Item - Pages Collapse Menu --> 
+<!-- 			<li class="nav-item"><a class="nav-link collapsed" href="#" -->
+<!-- 				data-toggle="collapse" data-target="#test4Pages" -->
+<!-- 				aria-expanded="true" aria-controls="collapsePages">           <i class="fas fa-fw fa-folder"></i> -->
+<!-- 					<span style="margin-left: 20px">iCook</span> -->
+<!-- 			</a> -->
+<!-- 				<div id="test4Pages" class="collapse" -->
+<!-- 					aria-labelledby="headingPages" data-parent="#accordionSidebar"> -->
+<!-- 					<div class="bg-white py-2 collapse-inner rounded"> -->
+<%-- 						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">iCook首頁</a>  --%>
+<%-- 						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">食譜</a> --%>
+<%-- 						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">市集</a>  --%>
+<%-- 						<a class="collapse-item" href="<c:url value='http://localhost:8080/icookProjectSpringMVC200121/' />">課程</a> --%>
+<!-- 					</div> -->
+<!-- 				</div></li> -->
 			
 
-			<hr class="sidebar-divider d-none d-md-block">
+<!-- 			<hr class="sidebar-divider d-none d-md-block"> -->
 
 		</ul>

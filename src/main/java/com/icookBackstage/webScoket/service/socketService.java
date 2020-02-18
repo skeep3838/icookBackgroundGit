@@ -1,9 +1,12 @@
 package com.icookBackstage.webScoket.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.icookBackstage.model.chatMember;
 import com.icookBackstage.model.socketBean;
 import com.icookBackstage.webScoket.dao.socketDao;
 
@@ -26,6 +29,11 @@ public class socketService implements socketServiceDao {
 		boolean result = dao.checkWebSocketMessage(userId);
 		if(result == true) return true;
 		else return false;
+	}
+	@Override
+	public List<chatMember> getAllChatMember() {
+		List<chatMember> list = dao.getChatMember();
+		return list;
 	}
 	
  }

@@ -34,6 +34,8 @@ let pirtureNumber;
 
 let imgLength;
 
+let cateArray = ["肉類","鍋具","菜類","咖啡","家電","麵包","乾貨","餐廚"]
+
 //載入完成先觸發一次"上架商品"頁籤
 $(document).ready(function(){
 	console.log("start_first_click_Tag1")
@@ -412,17 +414,14 @@ function detailUpdate(number){
 					<td style=" width: 200px;padding-right: 50px;">
 						<div class='form-group'>
 							<label>商品總類</label>
-							<select class='form-control' name="category">
-								<option>肉類</option>
-								<option>鍋具</option>
-								<option>菜類</option>
-								<option>咖啡</option>
-								<option>家電</option>
-								<option>麵包</option>
-								<option>乾貨</option>
-								<option>餐廚</option>
+							<select class='form-control' name="category">`;
+	for(let i=0 ; i < cateArray.length ; ++i){
+		detailContant 	+=	"<option value='"+ cateArray[i] +"'"
+						+ 	((productPageJson[number].category === cateArray[i])?(" selected"):("")) 
+						+	">" + cateArray[i];
+	}
 								
-							</select>
+	detailContant	+=		`</select>
 						</div>
 					</td>
 				</tr>

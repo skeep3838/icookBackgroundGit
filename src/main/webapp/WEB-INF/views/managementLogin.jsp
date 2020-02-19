@@ -36,6 +36,21 @@
     	color: red;
     }
     
+    #demo{
+    	margin-left: 100px;
+    	margin-top: 100px;
+    }
+    
+    .demoBut{
+    	width: 150px;
+    	margin-left: 100px;
+    	padding: .5rem 1rem;
+   		 /* font-size: 1.25rem; */
+    	line-height: 1.5;
+    	border-radius: .3rem;
+    	
+    }
+    
 
   </style>
 
@@ -88,11 +103,11 @@
                       <input type="submit" class="btn btn-primary btn-user btn-block" style="margin-top: 50px;" value="Login">
 
                     </div>
-                    <div>
-                    <a href="<c:url value='/' />">
-                      <input type="button" class="btn btn-primary btn-user btn-block" style="margin-top: 10px;" value="Turn Back to iCook">
-                    </a>
-                    </div>
+<!--                     <div> -->
+<%--                     <a href="<c:url value='/' />"> --%>
+<!--                       <input type="button" class="btn btn-primary btn-user btn-block" style="margin-top: 10px;" value="Turn Back to iCook"> -->
+<!--                     </a> -->
+<!--                     </div> -->
                     <!-- <a href="index.html" class="btn btn-primary btn-user btn-block">
                       Login
                     </a> -->
@@ -120,7 +135,11 @@
       </div>
 
     </div>
-
+	<div id='demo'>
+		<input class='demoBut btn btn-secondary ' type='button' value='最高權限' onclick='adminAcc()'>
+		<input class='demoBut btn btn-secondary ' type='button' value='產品管理員' onclick='productAcc()'>
+		<input class='demoBut btn btn-secondary ' type='button' value='網站管理員' onclick='webAcc()'>
+	</div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
@@ -147,6 +166,21 @@
  	if($.cookie("remPassword")){
   		$("#inputPassword").val($.cookie("remPassword"));
   	}
+ 	
+ 	function adminAcc(){
+ 		$("#inputAccount").val("administrator");
+ 		$("#inputPassword").val("administrator");
+ 	}
+ 	
+ 	function productAcc(){
+ 		$("#inputAccount").val("productManager");
+ 		$("#inputPassword").val("product");
+ 	}
+ 	
+ 	function webAcc(){
+ 		$("#inputAccount").val("webMaintain");
+ 		$("#inputPassword").val("webMaintain");
+ 	}
   </script>
 </body>
 

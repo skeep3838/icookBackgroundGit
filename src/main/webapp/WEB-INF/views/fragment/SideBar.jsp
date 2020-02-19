@@ -132,9 +132,9 @@
 				<c:if test="${currentManager.webMaintainAuth}">
 					<div id="test3Pages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="<c:url value='news.page' />">布告欄公告</a>
-							<a class="collapse-item" href="<c:url value='Managerhelp' />">客服管理</a>
-							<a class="collapse-item" href="<c:url value='GoWebSocket'/>">客服回應</a>
+							<a class="collapse-item" href="<c:url value='/news.page' />">布告欄公告</a>
+							<a class="collapse-item" href="<c:url value='/Managerhelp' />">客服管理</a>
+							<a class="collapse-item" href="<c:url value='/GoWebSocket'/>">客服回應</a>
 						</div>
 					</div>
 				</c:if>

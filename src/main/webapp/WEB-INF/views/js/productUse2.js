@@ -19,6 +19,11 @@ function openWait(){
     $("#dialog_div_wait").dialog("open");
 }
 
+//一鍵輸入
+function speetIn(){
+	CKEDITOR.instances["test1"].setData("123");
+}
+
 
 //預覽圖片功能
 function readURL(input) {
